@@ -1,15 +1,26 @@
+#c compiler
 CC = g++
-CFLAGS = -Wall -Werror -std=c++11 -I$(IDIR)
-SDIR = ./src
+#compiler flags
+CFLAGS = -Wall -Werror -std=c++11 -I$(IDIR) 
+#source directory
+SDIR = ./src 
+#include directory
 IDIR = ./include
+#object directory
 ODIR = ./src/obj
-_DEPS = hello.h
-_OBJ = hello.o main.o
-OUT = hello
 
+#all dependent files (names)
+_DEPS = hello.h
+#all objective targets (names)
+_OBJ = hello.o main.o
+#output exxecutable name
+OUT = hello
+#full dependables list (with path)
 DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
+#full objectives list (with path)
 OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
 
+#this target makes an objective module from corresponding .cpp file for each file in _OBJ
 $(ODIR)/%.o: $(SDIR)/%.cpp $(DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS)
 
