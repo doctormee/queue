@@ -40,4 +40,4 @@ gg: build
 .PHONY: clean
 
 clean:
-	rm -rf *.o *~ ./$(OUT) *~
+	rm -rf $(ODIR)/*.o *~ ./$(OUT) *~
