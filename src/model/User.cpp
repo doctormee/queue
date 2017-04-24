@@ -10,7 +10,15 @@ User::User(int uid_) {
     gender = 'M';
 }
 
-User::User(int uid_, std::string name_, std::string surname_, int age_, int height_, int weight_, char gender_): uid(uid_), name(name_), surname(surname_), age(age_), height(height_), weight(weight_), gender(gender_) {};
+User::User(int uid_, std::string name_, std::string surname_, int age_, int height_, int weight_, char gender_) {
+    uid = uid_;
+    name = name_;
+    surname = surname_;
+    age = age_;
+    height = height_;
+    weight = weight_;
+    gender = gender_;
+};
 
 std::string User::get_name() const {
     return name;
