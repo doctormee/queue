@@ -26,6 +26,13 @@ int main() {
     catch (std::out_of_range &ex) {
         std::cout << ex.what() << std::endl;
     }
+    spec1.add_service("anal");
+    try {
+        std::cout << spec1.get_service(1) << std::endl;
+    }
+    catch (std::out_of_range &ex) {
+        std::cout << ex.what() << std::endl;
+    }
     Specialist spec2("Ivan", "Ivanov");
     spec2.add_service("Therapist");
     std::cout << spec2.get_name() << " " << spec2.get_surname() << " is a " << spec2.get_service(0) << std::endl;
