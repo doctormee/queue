@@ -18,7 +18,7 @@ int main() {
     }
     Specialist spec1;
     std::cout << spec1.get_name() << std::endl;
-    spec1.add_service("blowjob");
+    spec1.add_service("Dentist");
     std::cout << spec1.get_service(0) << std::endl;
     try {
         std::cout << spec1.get_service(1) << std::endl;
@@ -26,7 +26,7 @@ int main() {
     catch (std::out_of_range &ex) {
         std::cout << ex.what() << std::endl;
     }
-    spec1.add_service("anal");
+    spec1.add_service("Vet");
     try {
         std::cout << spec1.get_service(1) << std::endl;
     }
