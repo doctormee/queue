@@ -14,7 +14,5 @@ class Queue {
 public:
     void push(std::shared_ptr<User>);
     void update();
-    
-
 };
 #endif
