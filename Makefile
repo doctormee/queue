@@ -10,8 +10,10 @@ OBJDIR = ./src/obj
 DEPSDIR = ./src/deps
 #all compiler flags
 CPPFLAGS = -Wall -Werror -std=c++11 $(IDIRS:%=-I% )
+#all files (names)
+FILES = main
 #all .cpp files (names)
-CPPFILES = main.cpp 
+CPPFILES = $(FILES:%=%.cpp) 
 #all header files (names), derived from .cpp files
 DEPS = $(filter-out main.h,$(CPPFILES:%.cpp=%.h))
 #all object files (full paths), derived from .cpp files
