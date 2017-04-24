@@ -8,7 +8,7 @@ class Queue {
     struct Item {
         std::shared_ptr<User> user;
         int priority;
-        Item( std::shared_ptr<user> );
+        Item(std::shared_ptr<User>);
     };
     std::vector<Item> queue;
 public:
