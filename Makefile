@@ -51,4 +51,4 @@ gg: build
 .PHONY: clean
 
 clean:
-	rm -rf $(OBJDIR)/*.o *~ ./$(OUT) $(DEPSDIR)/deps.make
+	rm -rf $(OBJDIR)/*.o *~ $(foreach exec, $(OUT), ./$(exec)) $(DEPSDIR)/deps.make
