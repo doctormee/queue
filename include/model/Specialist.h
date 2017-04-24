@@ -1,3 +1,5 @@
+#include <string>
+#include <vector>
 class Specialist {
     std::string name, surname;
     std::vector<std::string> services;
@@ -8,4 +10,5 @@ public:
     std::string get_surname() const;
     void add_service(std::string);
     std::string get_service(int);
+    int size();
 };

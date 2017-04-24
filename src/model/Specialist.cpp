@@ -30,3 +30,7 @@ std::string Specialist::get_surname() const {
 void Specialist::add_service(std::string service) {
     services.push_back(service);
 }
+
+int Specialist::size() {
+    return services.size();
+}
