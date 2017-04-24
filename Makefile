@@ -10,7 +10,7 @@ OBJDIR = ./src/obj
 DEPSDIR = ./src/deps
 #all compiler flags
 CPPFLAGS = -Wall -Werror -std=c++11 $(IDIRS:%=-I% )
-#output executable name
+#output executable names
 OUT =
 #all other files (names)
 OTHERFILES = User
