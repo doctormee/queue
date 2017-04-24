@@ -12,6 +12,8 @@ class Queue {
     };
     std::vector<Item> queue;
 public:
+    void push(std::shared_ptr<User>);
+    void update();
     
 
 };
