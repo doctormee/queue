@@ -13,7 +13,7 @@ CPPFLAGS = -Wall -Werror -std=c++11 $(IDIRS:%=-I% )
 #output executable names
 OUT =
 #all other files (names)
-OTHERFILES = User
+OTHERFILES = $(patsubst %.h, %, $(shell ls include/** | grep .h))
 #all files: executables plus other
 FILES = $(OTHERFILES) $(OUT)
 #all .cpp files 
