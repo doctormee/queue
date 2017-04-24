@@ -10,18 +10,20 @@ OBJDIR = ./src/obj
 DEPSDIR = ./src/deps
 #all compiler flags
 CPPFLAGS = -Wall -Werror -std=c++11 $(IDIRS:%=-I% )
-#all files (names)
-FILES = User main
-#all .cpp files (names)
+#output executable name
+OUT = main
+#all other files (names)
+OTHERFILES = User
+#all files: executables plus other
+FILES = $(OTHERFILES) $(OUT)
+#all .cpp files 
 CPPFILES = $(FILES:%=%.cpp) 
-#all header files (names), derived from .cpp files
-DEPS = $(filter-out main.h,$(CPPFILES:%.cpp=%.h))
+#all header files, derived from other files
+DEPS = $(OTHERFILES:%=%.h)
 #all object files (full paths), derived from .cpp files
 OBJFILES = $(CPPFILES:%.cpp=$(OBJDIR)/%.o)
 #all source files
 SRCFILES = $(CPPFILES) $(DEPS) 
-#output executable name
-OUT = main
 #full objectives list (with path)
 ##OBJ = $(patsubst %,$(OBJDIR)/%,$(_OBJ))
 vpath
