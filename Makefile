@@ -1,38 +1,40 @@
-#c compiler
-CC = g++
-#compiler flags
-CFLAGS = -Wall -Werror -std=c++11 -I ./include/logic -I ./include/interface -I ./include/model
-#source directory
-#SDIR = ./src 
-#include directory
-#IDIR = ./include
+#default compiler
+CPPC = g++
+#include directories
+IDIRS = include/logic include/interface include/model
+#source directories
+SRCDIRS = src/logic src/interface src/model
 #object directory
-ODIR = ./src/obj
-
-#all dependent files (names)
+OBJDIR = ./src/obj
+#all compiler flags
+CPPFLAGS = -Wall -Werror -std=c++11 $(IDIRS:%=-I% )
+#all header files (names)
 DEPS = main.h
-#all objective targets (names)
-_OBJ = main.o
-#output exxecutable name
+#all .cpp files (names)
+CPPFILES = main.cpp
+#all source files
+SRCFILES = $(CPPFILES) $(DEPS) 
+#output executable name
 OUT = main
-#full dependables list (with path)
-#DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
 #full objectives list (with path)
-OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
-
-#this target makes an objective module from corresponding .cpp file for each file in _OBJ
+##OBJ = $(patsubst %,$(OBJDIR)/%,$(_OBJ))
 vpath
-vpath %.h include/logic include/interface include/model
-vpath %.cpp src/logic src/interface src/model
-vpath %.o ./src/obj
-
-$(ODIR)/%.o: %.cpp $(DEPS)
-	$(CC) -c -o $@ $< $(CFLAGS)
+vpath %.h $(IDIRS)
+vpath %.cpp $(SRCDIRS)
+vpath %.o $(OBJDIR)
 
 all: build #test
 
-build: $(OBJ) 
-	$(CC) -o $(OUT) $^ $(CFLAGS)
+$(OBJDIR)/%.o: %.cpp
+	$(CPPC) -c $(CPPFLAGS) $< -o $@
+
+deps.make: $(SRCFILES)
+	$(CPPC) -MM $(filter-out %.h,$^) $(CPPFLAGS) > deps.make
+
+include deps.make
+
+build: $(CPPFILES:%.cpp=$(OBJDIR)/%.o) 
+	$(CPPC) -o $(OUT) $^ $(CPPFLAGS)
 	
 gg: build 
 	clear && ./$(OUT) && rm -rf *.o *~ $(OUT) *~
@@ -40,4 +42,4 @@ gg: build
 .PHONY: clean
 
 clean:
-	rm -rf $(ODIR)/*.o *~ ./$(OUT) *~
+	rm -rf $(OBJDIR)/*.o *~ ./$(OUT) ./deps.make
