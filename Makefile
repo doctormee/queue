@@ -11,7 +11,7 @@ DEPSDIR = ./src/deps
 #all compiler flags
 CPPFLAGS = -Wall -Werror -std=c++11 $(IDIRS:%=-I% )
 #all files (names)
-FILES = main
+FILES = User main
 #all .cpp files (names)
 CPPFILES = $(FILES:%=%.cpp) 
 #all header files (names), derived from .cpp files
@@ -21,7 +21,7 @@ OBJFILES = $(CPPFILES:%.cpp=$(OBJDIR)/%.o)
 #all source files
 SRCFILES = $(CPPFILES) $(DEPS) 
 #output executable name
-OUT = test
+OUT = main
 #full objectives list (with path)
 ##OBJ = $(patsubst %,$(OBJDIR)/%,$(_OBJ))
 vpath
@@ -33,6 +33,7 @@ all: build #test
 
 $(DEPSDIR)/deps.make: $(SRCFILES)
 	rm -rf $(DEPSDIR)/deps.make $(foreach cpp, $(filter-out %.h, $^), && $(CPPC) -MM -MT '$(patsubst %.cpp,$(OBJDIR)/%.o, $(notdir $(cpp)))' $(cpp) $(CPPFLAGS) >> $(DEPSDIR)/deps.make)
+	#$(CPPC) $(CPPFLAGS) -MM $(filter-out %.h, $^) > $(DEPSDIR)/deps.make 
 
 include $(DEPSDIR)/deps.make
 
