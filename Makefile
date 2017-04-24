@@ -11,7 +11,7 @@ DEPSDIR = ./src/deps
 #all compiler flags
 CPPFLAGS = -Wall -Werror -std=c++11 $(IDIRS:%=-I% )
 #output executable name
-OUT =
+OUT = test
 #all other files (names)
 OTHERFILES = User
 #all files: executables plus other
