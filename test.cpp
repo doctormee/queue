@@ -3,6 +3,7 @@
 #include <vector>
 #include <memory>
 #include <Specialist.h>
+#include <Queue.h>
 
 void add( std::vector<std::unique_ptr<User>> &vect, User* u ) {
     std::unique_ptr<User> s(u);
@@ -28,7 +29,9 @@ int main() {
     }
     spec1.add_service("Vet");
     try {
-        std::cout << spec1.get_service(1) << std::endl;
+        for (auto i = 0; i < spec1.size(); ++i) {
+            std::cout << spec1.get_service(i) << std::endl;
+        }
     }
     catch (std::out_of_range &ex) {
         std::cout << ex.what() << std::endl;
