@@ -12,14 +12,10 @@ DEPSDIR = ./src/deps
 CPPFLAGS = -Wall -Werror -std=c++11 $(IDIRS:%=-I% )
 #output executable names
 OUT =
-#all other files (names)
-OTHERFILES = $(patsubst %.h, %, $(shell ls include/** | grep .h))
-#all files: executables plus other
-FILES = $(OTHERFILES) $(OUT)
 #all .cpp files 
-CPPFILES = $(FILES:%=%.cpp) 
-#all header files, derived from other files
-DEPS = $(OTHERFILES:%=%.h)
+CPPFILES = $(shell ls $(SRCDIRS)| grep .cpp)
+#all header files
+DEPS = $(shell ls $(IDIRS) | grep -E .h)
 #all object files (full paths), derived from .cpp files
 OBJFILES = $(CPPFILES:%.cpp=$(OBJDIR)/%.o)
 #all source files
