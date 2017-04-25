@@ -15,7 +15,7 @@ OUT =
 #all .cpp files 
 CPPFILES = $(shell ls $(SRCDIRS)| grep .cpp)
 #all header files
-DEPS = $(shell ls $(IDIRS) | grep -E .h)
+DEPS = $(shell ls $(IDIRS) | grep .h)
 #all object files (full paths), derived from .cpp files
 OBJFILES = $(CPPFILES:%.cpp=$(OBJDIR)/%.o)
 #all source files
