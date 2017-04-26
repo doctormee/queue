@@ -1,15 +1,26 @@
-/*class Queue {
+/*#ifndef QUEUE_H
+#define QUEUE_H
+#include <vector>
+#include <memory>
+class User;
+class Rule;
+
+class Queue {
     struct Item {
         std::unique_ptr<User> user;
         int priority;
         Item(User *);
+        void set_priority(int);
     };
     std::vector<std::unique_ptr<Item>> container;
-    int top;
+    static bool queue_less(const std::unique_ptr<Item> &, const std::unique_ptr<Item> &);
 public:
+    Queue();
     void push(User* );
-    void remove(int);
-};*/
+    void remove(int); //removes a user with a specific UID from queue
+    void sort();
+};
+#endif*/
 #include "Queue.h"
 #include "User.h"
 #include <algorithm>
@@ -33,6 +44,7 @@ void Queue::update(std::vector<std::unique_ptr<Rule>> &rules) {
         } 
     }
 } */
+
 void Queue::remove(int uid) {
     for (auto i = container.begin(); i != container.end(); ++i) {
         if (((*i)->user->get_uid()) == uid) {
@@ -48,4 +60,11 @@ bool Queue::queue_less(const std::unique_ptr<Item> &left, const std::unique_ptr<
 
 void Queue::sort() {
     std::sort(container.begin(), container.end(), Queue::queue_less);
+}
+
+std::vector<std::unique_ptr<Item>>::iterator Queue::begin() {
+    return container.begin();
+}
+std::vector<std::unique_ptr<Item>>::iterator Queue::end() {
+    return container.end();
 }
