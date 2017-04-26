@@ -22,7 +22,7 @@ void Queue::update(std::vector<std::unique_ptr<Rule>> &rules) {
         i->priority = 0;
         for (auto &j: container) {
             for (auto &k:rules) {
-                i->priority += *k(i->user, j->user);
+                i->priority += (*k)(*(i->user), *(j->user));
             }
         }
     }
