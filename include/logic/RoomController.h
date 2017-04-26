@@ -20,6 +20,6 @@ public:
     //RoomController();
     int matching_rules(User&, User&) const;
     bool evaluate(Rule &, int, User&) const;
-    bool update(Queue &);
+    void update(Queue &);
 };
 #endif

@@ -91,3 +91,13 @@ int RoomController::matching_rules(User &user1, User &user2) const {
     }
     return ret;
 }
+void RoomController::update(Queue &q) const {
+    for (auto &i: rules) {
+        i->priority = 0;
+        for (auto &j: container) {
+            for (auto &k:rules) {
+                i->priority += (*k)(*(i->user), *(j->user));
+            }
+        } 
+    }
+}
