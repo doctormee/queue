@@ -14,6 +14,7 @@ public:
 #include "User.h"
 #include <algorithm>
 Queue::Item::Item(User *user_): user(user_), priority(0) {}
+Queue::Queue() {}
 void Queue::push(User* user_) {
     std::unique_ptr<Item> tmp(new Item(user_));
     container.push_back(std::move(tmp));

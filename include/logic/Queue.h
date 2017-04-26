@@ -14,6 +14,7 @@ class Queue {
     };
     std::vector<std::unique_ptr<Item>> container;
 public:
+    Queue();
     void push(User* );
     void remove(int); //removes a user with a specific UID from queue
     void sort();
