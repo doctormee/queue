@@ -91,3 +91,6 @@ int RoomController::matching_rules(User &user1, User &user2) const {
     }
     return ret;
 }
+void RoomController::update(Queue &q) const {
+    
+}

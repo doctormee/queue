@@ -19,5 +19,6 @@ public:
     void push(User* );
     void remove(int); //removes a user with a specific UID from queue
     void sort();
+    //void update(std::vector<std::unique_ptr<Rule>> &);
 };
 #endif
