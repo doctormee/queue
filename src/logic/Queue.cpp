@@ -12,6 +12,7 @@ public:
 };*/
 #include "Queue.h"
 #include "User.h"
+#include <algorithm>
 Queue::Item::Item(User *user_): user(user_), priority(0) {}
 void Queue::push(User* user_) {
     std::unique_ptr<Item> tmp(new Item(user_));
@@ -33,9 +34,17 @@ void Queue::update(std::vector<std::unique_ptr<Rule>> &rules) {
 } */
 void Queue::remove(int uid) {
     for (auto i = container.begin(); i != container.end(); ++i) {
-        if (((*i)->user.get_uid()) == uid) {
-            container.clear(i);
+        if (((*i)->user->get_uid()) == uid) {
+            container.erase(i);
             break;
         }
     }
+}
+
+bool queue_less(const std::unique_ptr<Item> &left, const std::unique_ptr<Item> &right) {
+    return (left->priority < right->priority);
+}
+
+void Queue::sort() {
+    sort(container.begin(), container.end(), queue_less);
 }

@@ -17,5 +17,6 @@ class Queue {
 public:
     void push(User* );
     void remove(int); //removes a user with a specific UID from queue
+    void sort();
 };
 #endif
