@@ -1,2 +1,2 @@
 #include "Queue.h"
-Queue::Item::Item(std::shared_ptr<User> user_): user(user_), priority(0) {}
+Queue::Item::Item(User *user_): user(user_), priority(0) {}
