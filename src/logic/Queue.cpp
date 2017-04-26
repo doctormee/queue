@@ -61,3 +61,10 @@ bool Queue::queue_less(const std::unique_ptr<Item> &left, const std::unique_ptr<
 void Queue::sort() {
     std::sort(container.begin(), container.end(), Queue::queue_less);
 }
+
+std::vector<std::unique_ptr<Item>>::iterator Queue::begin() {
+    return container.begin();
+}
+std::vector<std::unique_ptr<Item>>::iterator Queue::end() {
+    return container.end();
+}
