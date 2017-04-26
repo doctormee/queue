@@ -13,5 +13,7 @@ public:
     Field get_field(int);
     Sign get_sign(int);
     int get_value(int);
+    bool evaluate_first(User &);
+    bool evaluate_second(User &);
 };
 #endif
