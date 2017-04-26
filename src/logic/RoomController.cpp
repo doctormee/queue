@@ -12,8 +12,10 @@ public:
     bool evaluate(Rule &, int, User&) const;
 };
 #endif */
+#include "RoomController.h"
 #include "Rule.h"
 #include "Constants.h"
+#include "User.h"
 
 bool RoomController::evaluate(Rule &rule, int side, User& user) const{
     int u_value;
