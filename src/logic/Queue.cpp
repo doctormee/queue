@@ -42,10 +42,10 @@ void Queue::remove(int uid) {
     }
 }
 
-bool Queue::queue_less(const std::unique_ptr<Item> &left, const std::unique_ptr<Item> &right) {
+static bool Queue::queue_less(const std::unique_ptr<Item> &left, const std::unique_ptr<Item> &right) const {
     return (left->priority >= right->priority);
 }
 
 void Queue::sort() {
-    sort(container.begin(), container.end(), queue_less);
+    std::sort(container.begin(), container.end(), Queue::queue_less);
 }
