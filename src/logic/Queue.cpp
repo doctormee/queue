@@ -41,8 +41,8 @@ void Queue::remove(int uid) {
     }
 }
 
-bool queue_less(const std::unique_ptr<Item> &left, const std::unique_ptr<Item> &right) {
-    return (left->priority < right->priority);
+bool queue_less(const std::unique_ptr<Queue::Item> &left, const std::unique_ptr<Queue::Item> &right) {
+    return (left->priority >= right->priority);
 }
 
 void Queue::sort() {
