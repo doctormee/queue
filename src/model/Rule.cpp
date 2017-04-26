@@ -1,4 +1,5 @@
 #include "Rule.h"
+#include <stdexcept>
 
 /*class Rule {
     Field field1, field2;
@@ -33,7 +34,8 @@ Sign Rule::get_sign(int i) const{
             return sign2;
         }
         default: {
-            return sign1;
+            std::out_of_range ex("Out of range! Rule has only two expressions that can be evaluated!");
+            throw ex;
         }
     }
 }
@@ -46,7 +48,8 @@ int Rule::get_value(int i) const {
             return value2;
         }
         default: {
-            return value1;
+            std::out_of_range ex("Out of range! Rule has only two expressions that can be evaluated!");
+            throw ex;
         }
     }
 }
