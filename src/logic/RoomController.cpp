@@ -96,8 +96,8 @@ void RoomController::update(Queue &q) const {
     for (auto &i = q.begin(); i != q.end(); ++i) {
         priority = 0;
         for (auto &j = i + 1; j != q.end(); ++j) {
-            priority += matching_rules(*i->user, *j->user);
+            priority += matching_rules(*((*i)->user), *((*j)->user));
         }
-        *i->set_priority(priority);
+        (*i)->set_priority(priority);
     }
 }
