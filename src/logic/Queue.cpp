@@ -12,6 +12,7 @@ public:
     void remove(int);
 };*/
 #include "Queue.h"
+#include "User.h"
 Queue::Item::Item(User *user_): user(user_), priority(0) {}
 void Queue::push(User* user_) {
     std::unique_ptr<Item> tmp(new Item(user_));
@@ -22,7 +23,7 @@ void Queue::update(std::vector<std::unique_ptr<Rule>> &rules) {
         i->priority = 0;
         for (auto &j: container) {
             for (auto &k:rules) {
-                i->priority += (*k)(*(i->user), *(j->user));
+                //i->priority += (*k)(*(i->user), *(j->user));
             }
         }
     }
