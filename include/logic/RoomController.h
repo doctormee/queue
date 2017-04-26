@@ -2,6 +2,7 @@
 #define ROOMCONTROLLER_H
 #include <vector>
 #include <memory>
+#include <map>
 class Specialist;
 class Queue;
 class User;
@@ -13,7 +14,7 @@ class RoomController {
         std::unique_ptr<Queue> queue;
         Room(int, std::string, std::string);
         };
-    std::map<int, std::unique_ptr<Room>>;
+    std::map<int, std::unique_ptr<Room>> rooms;
     std::vector<std::unique_ptr<Rule>> rules;
 public:
     //RoomController();
