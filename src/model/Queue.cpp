@@ -14,7 +14,8 @@ public:
 #include "Queue.h"
 Queue::Item::Item(User *user_): user(user_), priority(0) {}
 void Queue::push(User* user_) {
-    container.push_back(new Item(user_));
+    std::unique_ptr<Item> tmp(new Item(user_));
+    container.push_back(std::move(tmp));
 }
 void Queue::update(std::vector<std::unique_ptr<Rule>> &rules) {
     for (auto &i: container) {
