@@ -10,12 +10,12 @@ class Queue {
         std::unique_ptr<User> user;
         int priority;
         Item(User *);
+        void set_priority(int);
     };
     std::vector<std::unique_ptr<Item>> container;
-    int top;
 public:
     void push(User* );
-    void update(std::vector<std::unique_ptr<Rule>> &);
-    void remove(int);
+    void remove(int); //removes a user with a specific UID from queue
+    void sort();
 };
 #endif
