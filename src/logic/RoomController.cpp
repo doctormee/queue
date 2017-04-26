@@ -2,20 +2,33 @@
 #define ROOMCONTROLLER_H
 #include <vector>
 #include <memory>
+class Specialist;
+class Queue;
 class User;
 class Rule;
 class RoomController {
+    struct Room {
+        int rid;
+        std::unique_ptr<Specialist> specialist;
+        std::unique_ptr<Queue> queue;
+        Room(int);
+        };
     std::vector<std::unique_ptr<Rule>> rules;
 public:
     //RoomController();
     int matching_rules(User&, User&) const;
     bool evaluate(Rule &, int, User&) const;
+    bool update(Queue &);
 };
-#endif */
+#endif*/
 #include "RoomController.h"
 #include "Rule.h"
 #include "Constants.h"
 #include "User.h"
+#include "Queue.h"
+#include "Specialist.h"
+
+RoomController::Room(int rid_, std::string spec_name, std::string spec_surname): rid(rid_), specialist(new Specialist(spec_name, spec_surname)) {} 
 
 bool RoomController::evaluate(Rule &rule, int side, User& user) const{
     int u_value;
