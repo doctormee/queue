@@ -8,7 +8,7 @@
 #include "Constants.h"
 
 int main() {
-    Rule* r = new Rule(FIELD::AGE, SIGN::LESS, 10, FIELD::AGE, SIGN::MORE, 30);
+    Rule* r = new Rule(Field::AGE, Sign::LESS, 10, Field::AGE, Sign::MORE, 30);
     std::cout << r->get_field(1);
     delete r;
     return 0;
