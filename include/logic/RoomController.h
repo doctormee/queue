@@ -2,6 +2,7 @@
 #define ROOMCONTROLLER_H
 #include <vector>
 #include <memory>
+#include <map>
 class Specialist;
 class Queue;
 class User;
