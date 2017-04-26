@@ -21,24 +21,25 @@ bool RoomController::evaluate(Rule &rule, int side, User& user) const{
     int u_value;
     Field field = rule.get_field(side);
     Sign sign = rule.get_sign(side);
+    int value = rule.get_value(side);
     switch (field) {
         //ALL, AGE, HEIGHT, WEIGHT, GENDER
-        case ALL: {
+        case Field::ALL: {
             return true;
         }
-        case AGE: {
+        case Field::AGE: {
             u_value = user.get_age();
             break;
         }
-        case HEIGHT: {
+        case Field::HEIGHT: {
             u_value = user.get_height();
             break;
         }
-        case WEIGHT: {
+        case Field::WEIGHT: {
             u_value = user.get_weight();
             break;
         }
-        case GENDER: {
+        case Field::GENDER: {
             u_value = user.get_gender();
             break;
         }
@@ -47,22 +48,22 @@ bool RoomController::evaluate(Rule &rule, int side, User& user) const{
         }
     }
     switch (sign) {
-        case LESS: {
+        case Sign::LESS: {
             return (u_value < value);
         }
-        case LESSEQ: {
+        case Sign::LESSEQ: {
             return (u_value <= value);
         }
-        case EQ: {
+        case Sign::EQ: {
             return (u_value == value);
         }
-        case MOREEQ: {
+        case Sign::MOREEQ: {
             return (u_value >= value);
         }
-        case MORE: {
+        case Sign::MORE: {
             return (u_value > value);
         }
-        case NOTEQ: {
+        case Sign::NOTEQ: {
             return (u_value != value);
         }
         default: {
@@ -73,7 +74,7 @@ bool RoomController::evaluate(Rule &rule, int side, User& user) const{
 int RoomController::matching_rules(User &user1, User &user2) const {
     int ret = 0;
     for (auto &i: rules) {
-        ret += evaluate(i, 1, user1) && evaluate(i, 2, user2);
+        ret += evaluate(*i, 1, user1) && evaluate(*i, 2, user2);
     }
     return ret;
 }
