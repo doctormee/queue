@@ -20,7 +20,7 @@ Field Rule::get_field(int i) const{
             return field2;
         }
         default: {
-            return 0;
+            return field1;
         }
     }
 }
@@ -33,7 +33,7 @@ Sign Rule::get_sign(int i) const{
             return sign2;
         }
         default: {
-            return 0;
+            return sign1;
         }
     }
 }
@@ -46,7 +46,7 @@ int Rule::get_value(int i) const {
             return value2;
         }
         default: {
-            return 0;
+            return value1;
         }
     }
 }
