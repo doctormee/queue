@@ -21,10 +21,10 @@ void Queue::push(User* user_) {
 void Queue::update(std::vector<std::unique_ptr<Rule>> &rules) {
     for (auto &i: container) {
         i->priority = 0;
-        for (auto &j: container) {
+        /*for (auto &j: container) {
             for (auto &k:rules) {
                 //i->priority += (*k)(*(i->user), *(j->user));
             }
-        }
+        } */
     }
 }
