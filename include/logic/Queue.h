@@ -2,8 +2,8 @@
 #define QUEUE_H
 #include <vector>
 #include <memory>
-#include "User.h"
-#include "Rule.h"
+class User;
+class Rule;
 
 class Queue {
     struct Item {

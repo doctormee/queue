@@ -16,6 +16,6 @@ public:
     int get_weight() const;
     char get_gender() const;
     int get_uid() const;
-    void set_uid(int);
+    //void set_uid(int);
 };
 #endif
