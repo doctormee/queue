@@ -28,7 +28,7 @@ public:
 #include "Queue.h"
 #include "Specialist.h"
 
-RoomController::Room(int rid_, std::string spec_name, std::string spec_surname): rid(rid_), specialist(new Specialist(spec_name, spec_surname)) {} 
+RoomController::Room::Room(int rid_, std::string spec_name, std::string spec_surname): rid(rid_), specialist(new Specialist(spec_name, spec_surname)) {} 
 
 bool RoomController::evaluate(Rule &rule, int side, User& user) const{
     int u_value;
