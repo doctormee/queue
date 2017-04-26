@@ -19,6 +19,9 @@ Field Rule::get_field(int i) const{
         case 2: {
             return field2;
         }
+        default: {
+            return 0;
+        }
     }
 }
 Sign Rule::get_sign(int i) const{
@@ -29,6 +32,9 @@ Sign Rule::get_sign(int i) const{
         case 2: {
             return sign2;
         }
+        default: {
+            return 0;
+        }
     }
 }
 int Rule::get_value(int i) const {
@@ -38,6 +44,9 @@ int Rule::get_value(int i) const {
         }
         case 2: {
             return value2;
+        }
+        default: {
+            return 0;
         }
     }
 }
