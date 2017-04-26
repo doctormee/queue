@@ -3,18 +3,19 @@
 #include <vector>
 #include <memory>
 #include "User.h"
+#include "Rule.h"
 
 class Queue {
     struct Item {
-        std::shared_ptr<User> user;
+        std::unique_ptr<User> user;
         int priority;
-        Item(std::shared_ptr<User>);
+        Item(User *);
     };
     std::vector<Item> queue;
     int top;
 public:
-    void push(std::shared_ptr<User>);
-    void update();
+    void push(User* );
+    void update(std::vector<Rule>);
     void remove(int);
 };
 #endif
