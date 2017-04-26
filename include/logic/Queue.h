@@ -13,7 +13,7 @@ class Queue {
         void set_priority(int);
     };
     std::vector<std::unique_ptr<Item>> container;
-    static bool queue_less(const std::unique_ptr<Item> &, const std::unique_ptr<Item> &) const;
+    static bool queue_less(const std::unique_ptr<Item> &, const std::unique_ptr<Item> &);
 public:
     Queue();
     void push(User* );
