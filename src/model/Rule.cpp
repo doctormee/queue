@@ -21,7 +21,8 @@ Field Rule::get_field(int i) const{
             return field2;
         }
         default: {
-            return field1;
+            std::out_of_range ex("Out of range! Rule has only two expressions that can be evaluated!");
+            throw ex;
         }
     }
 }
