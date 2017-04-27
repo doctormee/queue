@@ -2,7 +2,7 @@
 #include "Constants.h"
 #include "gtest/gtest.h"
 
-TEST(Rule_Tests, Init_Check) {
+TEST(Rule_Test, Init_Check) {
     Rule* r = new Rule(Field::AGE, Sign::LESS, 10, Field::AGE, Sign::MORE, 30);
     delete r;
     
@@ -15,3 +15,28 @@ TEST(Rule_Test, getters_check) {
         ASSERT_GE(r->get_value(i), 10);
     }
 }
+TEST(Rule_Test, invalid_getter_param) {
+    Rule r(Field::ALL, Sign::LESS, 10, Field::AGE, Sign::MORE, 30);
+    try {
+        r.get_field(3);
+        ASSERT_TRUE(0);
+    }
+    catch (std::out_of_range &ex) {
+        //ok
+    }
+    try {
+        r.get_sign(10);
+        ASSERT_TRUE(0);
+    }
+    catch (std::out_of_range &ex) {
+        //ok
+    }
+    try {
+        r.get_value(0);
+        ASSERT_TRUE(0);
+    }
+    catch (std::out_of_range &ex) {
+        //ok
+    }
+}
+
