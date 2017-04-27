@@ -1,4 +1,4 @@
-#include <User.h>
+#include "User.h"
 
 User::User(int uid_) {
     uid = uid_;
@@ -46,8 +46,4 @@ char User::get_gender() const {
 
 int User::get_uid() const {
     return uid;
-}
-
-void User::set_uid(int uid_) {
-    uid = uid_;
 }
