@@ -11,7 +11,7 @@ DEPSDIR = ./src/deps
 #test directory
 TESTDIR = ./tests
 #googletest directory
-GTESTDIR = ./googletest
+GTESTDIR = ../googletest/googletest
 #user libraries directory
 LIBDIR = ./libs
 #all compiler flags
@@ -56,7 +56,7 @@ build: $(OBJFILES)
 gg: build 
 	clear && ./$(OUT) && rm -rf *.o *~ $(OUT) *~
 test: $(TOBJ) $(OBJFILES)
-	$(CPPC) -isystem $(GTESTDIR)/include -pthread -c $(OBJFILES) -c $(TOBJ) $(LIBDIR)/libgtest.a -o $(TEST)
+	$(CPPC) -isystem $(GTESTDIR)/include -c $^ $(LIBDIR)/libgtest.a -o $(TEST) $(CPPFLAGS) -pthread
 
 .PHONY: clean libtest
 
