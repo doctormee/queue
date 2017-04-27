@@ -9,7 +9,10 @@
 
 int main() {
     Rule* r = new Rule(Field::AGE, Sign::LESS, 10, Field::AGE, Sign::MORE, 30);
-    std::cout << r->get_field(1);
+    for (auto i = 1; i <= 2; ++i) {
+        std::cout << r->get_field(i) << " " << r->get_sign(i) << " " << r->get_value(i) << " " << std::endl;
+    }
     delete r;
+    //std::cout << r->get_field(3) << " " << r->get_sign(3) << " " << r->get_value(3) << " " << std::endl; 
     return 0;
 }
