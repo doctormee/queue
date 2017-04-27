@@ -11,7 +11,7 @@ DEPSDIR = ./src/deps
 #test directory
 TESTDIR = ./tests
 #googletest directory
-GTESTDIR = ./googletest
+GTESTDIR = ../googletest/googletest
 #user libraries directory
 LIBDIR = ./libs
 #all compiler flags
