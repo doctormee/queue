@@ -1,7 +1,7 @@
 #default cpp compiler
 CPPC = g++
 #include directories
-IDIRS = include/logic include/interface include/model
+IDIRS = include/logic include/interface include/model $(GTESTDIR)/include
 #source directories
 SRCDIRS = src/logic src/interface src/model
 #object directory
@@ -15,9 +15,9 @@ GTESTDIR = ../googletest/googletest
 #user libraries directory
 LIBDIR = ./libs
 #all compiler flags
-CPPFLAGS = -std=c++11 $(IDIRS:%=-I% )
+CPPFLAGS = -std=c++11 $(IDIRS:%=-I% ) --coverage
 #test flags
-TESTFLAGS = -isystem $(GTESTDIR)/include -pthread $(LIBDIR)/libgtest.a --coverage
+TESTFLAGS = -isystem $(GTESTDIR)/include -pthread $(LIBDIR)/libgtest.a 
 #output executable names
 OUT =
 #test executable names
@@ -68,4 +68,4 @@ libtest:
 	ar -rv $(LIBDIR)/libgtest.a $(OBJDIR)/gtest-all.o
 
 clean:
-	rm -rf $(OBJDIR)/*.o *~ $(foreach exec, $(OUT) $(TEST), ./$(exec)) $(DEPSDIR)/deps.make
+	rm -rf $(OBJDIR)/* *~ $(foreach exec, $(OUT) $(TEST), ./$(exec)) $(DEPSDIR)/deps.make
