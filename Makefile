@@ -15,7 +15,7 @@ GTESTDIR = ../googletest/googletest
 #user libraries directory
 LIBDIR = ./libs
 #all compiler flags
-CPPFLAGS = -Wall -Werror -std=c++11 $(IDIRS:%=-I% )
+CPPFLAGS = -std=c++11 $(IDIRS:%=-I% )
 #output executable names
 OUT =
 #test executable names
@@ -55,8 +55,9 @@ build: $(OBJFILES)
 	
 gg: build 
 	clear && ./$(OUT) && rm -rf *.o *~ $(OUT) *~
+
 test: $(TOBJ) $(OBJFILES)
-	$(CPPC) -isystem $(GTESTDIR)/include -c $^ $(LIBDIR)/libgtest.a -o $(TEST) $(CPPFLAGS) -pthread
+	$(CPPC) -isystem $(GTESTDIR)/include -pthread $^ $(LIBDIR)/libgtest.a -o $(TEST) $(CPPFLAGS)
 
 .PHONY: clean libtest
 
@@ -65,4 +66,4 @@ libtest:
 	ar -rv $(LIBDIR)/libgtest.a $(OBJDIR)/gtest-all.o
 
 clean:
-	rm -rf $(OBJDIR)/*.o *~ $(foreach exec, $(OUT), ./$(exec)) $(DEPSDIR)/deps.make
+	rm -rf $(OBJDIR)/*.o *~ $(foreach exec, $(OUT) $(TEST), ./$(exec)) $(DEPSDIR)/deps.make
