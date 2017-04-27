@@ -16,10 +16,12 @@ GTESTDIR = ../googletest/googletest
 LIBDIR = ./libs
 #all compiler flags
 CPPFLAGS = -std=c++11 $(IDIRS:%=-I% )
+#test flags
+TESTFLAGS = -isystem $(GTESTDIR)/include -pthread $(LIBDIR)/libgtest.a --coverage
 #output executable names
 OUT =
 #test executable names
-TEST = 
+TEST = test
 #all .cpp files 
 CPPFILES = $(shell ls $(SRCDIRS)| grep .cpp)
 #all test files
@@ -57,7 +59,7 @@ gg: build
 	clear && ./$(OUT) && rm -rf *.o *~ $(OUT) *~
 
 test: $(TOBJ) $(OBJFILES)
-	$(CPPC) -isystem $(GTESTDIR)/include -pthread $^ $(LIBDIR)/libgtest.a -o $(TEST) $(CPPFLAGS)
+	$(CPPC) $^ -o $(TEST) $(CPPFLAGS) $(TESTFLAGS)
 
 .PHONY: clean libtest
 
