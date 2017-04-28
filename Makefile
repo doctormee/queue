@@ -70,7 +70,7 @@ libtest:
 clean:
 	rm -rf $(OBJDIR)/* *~ $(foreach exec, $(OUT) $(TEST), ./$(exec)) $(DEPSDIR)/deps.make
 cov:
-	lcov -c -d . -o cov.info && genhtml -o html cov.info && rm cov.info
+	lcov -c -d . -o cov.info && genhtml -o html cov.info && rm cov.info && open html/index.html
 
 swipe:
 	rm $(OBJDIR)/*.gcda
