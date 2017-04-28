@@ -100,4 +100,5 @@ void DataController::update(Queue &q) {
         }
         (*i)->set_priority(priority);
     }
+    q.sort();
 }
