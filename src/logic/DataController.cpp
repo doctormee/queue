@@ -1,4 +1,4 @@
-/*#ifndef ROOMCONTROLLER_H
+/* //#ifndef ROOMCONTROLLER_H
 #define ROOMCONTROLLER_H
 #include <vector>
 #include <memory>
@@ -18,7 +18,7 @@ public:
     //DataController();
     int matching_rules(User&, User&) const;
     bool evaluate(Rule &, int, User&) const;
-    bool update(Queue &);
+    bool update(Queue &); //
 };
 #endif*/
 #include "DataController.h"
