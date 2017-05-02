@@ -61,7 +61,7 @@ gg: build
 test: $(TOBJ) $(OBJFILES)
 	$(CPPC) $^ -o $(TEST) $(CPPFLAGS) $(TESTFLAGS) && ./$(TEST)
 
-.PHONY: clean libtest cov
+.PHONY: clean libtest cov swipe
 
 libtest:
 	$(CPPC) -isystem $(GTESTDIR)/include -I$(GTESTDIR) -pthread -c $(GTESTDIR)/src/gtest-all.cc -o $(OBJDIR)/gtest-all.o
@@ -70,4 +70,7 @@ libtest:
 clean:
 	@ rm -rf $(OBJDIR)/* *~ $(foreach exec, $(OUT) $(TEST), ./$(exec)) $(DEPSDIR)/deps.make
 cov:
-	lcov -c -d . -o cov.info && genhtml -o html cov.info && rm cov.info && open html/index.html && rm -rf $(OBJDIR)/*.gcda
+	lcov -c -d . -o cov.info && genhtml -o html cov.info && rm cov.info && open html/index.html
+	make swipe
+swipe:
+	rm -rf $(OBJDIR)/*.gcda
