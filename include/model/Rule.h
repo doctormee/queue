@@ -1,15 +1,12 @@
-#ifndef RULE_H
-#define RULE_H 
+#pragma once
 #include "Constants.h"
-
+#include <memory>
+class Predicate;
+class User;
 class Rule {
-    Field field1, field2;
-    Sign sign1, sign2;
-    int value1, value2;
+    std::shared_ptr<Predicate> first, second;
 public:
-    Rule(Field, Sign, int, Field, Sign, int);
-    Field get_field(int) const;
-    Sign get_sign(int) const;
-    int get_value(int) const;
+    Rule(std::shared_ptr<Predicate> &&, std::shared_ptr<Predicate> &&);
+    bool evaluate_first(User &);
+    bool evaluate_second(User &);
 };
-#endif

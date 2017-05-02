@@ -1,5 +1,4 @@
-#ifndef SPECIALIST_H
-#define SPECIALIST_H
+#pragma once
 #include <string>
 #include <vector>
 class Specialist {
@@ -14,4 +13,3 @@ public:
     std::string get_service(int);
     int size();
 };
-#endif

@@ -59,9 +59,9 @@ gg: build
 	clear && ./$(OUT) && rm -rf *.o *~ $(OUT) *~
 
 test: $(TOBJ) $(OBJFILES)
-	$(CPPC) $^ -o $(TEST) $(CPPFLAGS) $(TESTFLAGS) && ./$(TEST) && lcov -c -d . -o cov.info && genhtml -o html cov.info && rm cov.info && open html/index.html && rm -rf $(OBJDIR)/*.gcda
+	$(CPPC) $^ -o $(TEST) $(CPPFLAGS) $(TESTFLAGS) && ./$(TEST)
 
-.PHONY: clean libtest
+.PHONY: clean libtest cov
 
 libtest:
 	$(CPPC) -isystem $(GTESTDIR)/include -I$(GTESTDIR) -pthread -c $(GTESTDIR)/src/gtest-all.cc -o $(OBJDIR)/gtest-all.o
@@ -69,3 +69,5 @@ libtest:
 
 clean:
 	@ rm -rf $(OBJDIR)/* *~ $(foreach exec, $(OUT) $(TEST), ./$(exec)) $(DEPSDIR)/deps.make
+cov:
+	lcov -c -d . -o cov.info && genhtml -o html cov.info && rm cov.info && open html/index.html && rm -rf $(OBJDIR)/*.gcda

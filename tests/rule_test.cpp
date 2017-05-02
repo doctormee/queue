@@ -1,7 +1,7 @@
 #include "Rule.h"
 #include "Constants.h"
 #include "gtest/gtest.h"
-
+/*
 TEST(Rule_Test, Init_Check) {
     Rule* r = new Rule(Field::AGE, Sign::LESS, 10, Field::AGE, Sign::MORE, 30);
     delete r;
@@ -39,4 +39,4 @@ TEST(Rule_Test, invalid_getter_param) {
         //ok
     }
 }
-
+*/

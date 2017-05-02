@@ -38,3 +38,11 @@ Thumbs.db
 # HTML DIR #
 ############
 html/**
+# OBJ DIR #
+###########
+src/obj/**
+# TEST OBJ #
+############
+test
+# DEPS DIR #
+src/deps/**
