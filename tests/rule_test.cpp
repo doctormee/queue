@@ -1,42 +1,43 @@
 #include "Rule.h"
 #include "Constants.h"
 #include "gtest/gtest.h"
+#include "Predicate.h"
+#include "BinaryPredicate.h"
+#include "Term.h"
+#include "User.h"
+#include "Functions.h"
 /*
-TEST(Rule_Test, Init_Check) {
-    Rule* r = new Rule(Field::AGE, Sign::LESS, 10, Field::AGE, Sign::MORE, 30);
-    delete r;
-    
-}
-TEST(Rule_Test, getters_check) {
-    Rule* r = new Rule(Field::AGE, Sign::LESS, 10, Field::AGE, Sign::MORE, 30);
-    for (auto i = 1; i <= 2; ++i) {
-        ASSERT_EQ(r->get_field(i), Field::AGE);
-        ASSERT_NE(r->get_sign(i), Sign::NOTEQ);
-        ASSERT_GE(r->get_value(i), 10);
-    }
-}
-TEST(Rule_Test, invalid_getter_param) {
-    Rule r(Field::ALL, Sign::LESS, 10, Field::AGE, Sign::MORE, 30);
-    try {
-        r.get_field(3);
-        ASSERT_TRUE(0);
-    }
-    catch (std::out_of_range &ex) {
-        //ok
-    }
-    try {
-        r.get_sign(10);
-        ASSERT_TRUE(0);
-    }
-    catch (std::out_of_range &ex) {
-        //ok
-    }
-    try {
-        r.get_value(0);
-        ASSERT_TRUE(0);
-    }
-    catch (std::out_of_range &ex) {
-        //ok
-    }
-}
+#pragma once
+#include "Constants.h"
+#include <memory>
+class Predicate;
+class User;
+class Rule {
+    std::shared_ptr<Predicate> first, second;
+public:
+    Rule(std::shared_ptr<Predicate> &, std::shared_ptr<Predicate> &);
+    bool evaluate_first(User &);
+    bool evaluate_second(User &);
+};
+
 */
+TEST(Rule_test, Rule_Init) {
+    std::shared_ptr<Predicate> t1(new Term(Field::HEIGHT, Sign::MORE, 190));
+    std::shared_ptr<Predicate> t2(new Term(Field::GENDER, Sign::EQ, 'F'));
+    std::shared_ptr<Predicate> t3(new Term(Field::WEIGHT, Sign::NOTEQ, 70));
+    std::shared_ptr<Predicate> bin(new BinaryPredicate(t1, t2, logical_and));
+    std::shared_ptr<Predicate> bin2(new BinaryPredicate(bin, t3, logical_or));
+    Rule rule(bin, bin2);
+}
+
+TEST(Rule_test, Rule_Evaluate) {
+    std::shared_ptr<Predicate> t1(new Term(Field::HEIGHT, Sign::MORE, 190));
+    std::shared_ptr<Predicate> t2(new Term(Field::GENDER, Sign::EQ, 'F'));
+    std::shared_ptr<Predicate> t3(new Term(Field::WEIGHT, Sign::NOTEQ, 70));
+    User ivan(2, "Ivan", "Ivanov", 10, 192, 70, 'F');
+    std::shared_ptr<Predicate> bin(new BinaryPredicate(t1, t2, logical_and));
+    std::shared_ptr<Predicate> bin2(new BinaryPredicate(bin, t3, logical_or));
+    Rule rule(bin, bin2);
+    ASSERT_TRUE(rule.evaluate_first(ivan));
+    ASSERT_TRUE(rule.evaluate_second(ivan));
+}
