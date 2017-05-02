@@ -1,5 +1,8 @@
 #include "Functions.h"
-#include "Predicate.h"
+
 bool logical_and(bool left, bool right) {
     return (left && right);
+}
+bool logical_or(bool left, bool right) {
+    return (left || right);
 }

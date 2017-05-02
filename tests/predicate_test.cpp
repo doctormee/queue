@@ -34,7 +34,31 @@ TEST(Term_test, Test_Evaluation) {
         ASSERT_TRUE(i.eval(ivan));
     }
 }
-TEST(Binary_Predicate_Test)
+TEST(Binary_Predicate_Test, Binary_constructor_and_eval) {
+    std::shared_ptr<Predicate> t1(new Term(Field::HEIGHT, Sign::MORE, 190));
+    std::shared_ptr<Predicate> t2(new Term(Field::GENDER, Sign::EQ, 'F'));
+    User ivan(2, "Ivan", "Ivanov", 10, 192, 70, 'F');
+    BinaryPredicate bin(t1, t2, logical_and);
+    ASSERT_TRUE(bin.eval(ivan));
+}
+TEST(Binary_Predicate_Test, Complex_Binary) {
+    std::shared_ptr<Predicate> t1(new Term(Field::HEIGHT, Sign::MORE, 190));
+    std::shared_ptr<Predicate> t2(new Term(Field::GENDER, Sign::EQ, 'F'));
+    std::shared_ptr<Predicate> t3(new Term(Field::WEIGHT, Sign::NOTEQ, 71));
+    User ivan(2, "Ivan", "Ivanov", 10, 192, 70, 'F');
+    std::shared_ptr<Predicate> bin(new BinaryPredicate(t1, t2, logical_and));
+    std::shared_ptr<Predicate> bin2(new BinaryPredicate(bin, t3, logical_and));
+    ASSERT_TRUE(bin2->eval(ivan));
+}
+TEST(Binary_Predicate_Test, OR_Binary) {
+    std::shared_ptr<Predicate> t1(new Term(Field::HEIGHT, Sign::MORE, 190));
+    std::shared_ptr<Predicate> t2(new Term(Field::GENDER, Sign::EQ, 'F'));
+    std::shared_ptr<Predicate> t3(new Term(Field::WEIGHT, Sign::NOTEQ, 70));
+    User ivan(2, "Ivan", "Ivanov", 10, 192, 70, 'F');
+    std::shared_ptr<Predicate> bin(new BinaryPredicate(t1, t2, logical_and));
+    std::shared_ptr<Predicate> bin2(new BinaryPredicate(bin, t3, logical_or));
+    ASSERT_TRUE(bin2->eval(ivan));
+}
 /*
 TEST(Predicate_test, Binary_construction_and) {
     std::unique_ptr<Predicate> pred(new BinaryPredicate()) 

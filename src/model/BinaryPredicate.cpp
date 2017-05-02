@@ -14,7 +14,7 @@ public:
 */
 #include "BinaryPredicate.h"
 #include "Functions.h"
-BinaryPredicate::BinaryPredicate(std::shared_ptr<Predicate> &&left_, std::shared_ptr<Predicate> &&right_, bool (*func)(bool, bool)): left(left_), right(right_), eval_function(func){} //constructs new Binary Predicate with eval_function
+BinaryPredicate::BinaryPredicate(std::shared_ptr<Predicate> &left_, std::shared_ptr<Predicate> &right_, bool (*func)(bool, bool)): left(left_), right(right_), eval_function(func){} //constructs new Binary Predicate with eval_function
 
 bool BinaryPredicate::eval(User &user) {
     return eval_function(left->eval(user), right->eval(user));
