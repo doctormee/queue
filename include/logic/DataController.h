@@ -1,5 +1,4 @@
-#ifndef DATACONTROLLER_H
-#define DATACONTROLLER_H
+#pragma once
 #include <vector>
 #include <memory>
 #include <map>
@@ -19,7 +18,5 @@ class DataController {
 public:
     //DataController();
     int matching_rules(User&, User&) const;
-    bool evaluate(Rule &, int, User&) const;
     void update(Queue &);
 };
-#endif

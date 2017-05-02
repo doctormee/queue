@@ -1,5 +1,4 @@
-#ifndef QUEUE_H
-#define QUEUE_H
+#pragma once
 #include <vector>
 #include <memory>
 class User;
@@ -24,4 +23,3 @@ public:
     std::vector<std::unique_ptr<Item>>::iterator end();
     //void update(std::vector<std::unique_ptr<Rule>> &);
 };
-#endif

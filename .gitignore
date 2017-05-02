@@ -38,3 +38,7 @@ Thumbs.db
 # HTML DIR #
 ############
 html/**
+# OBJ DIR #
+###########
+src/obj/**
+test
