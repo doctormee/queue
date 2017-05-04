@@ -46,16 +46,23 @@ all: build #test
 .PHONY: clean libtest cov swipe
 
 libtest:
-	$(CPPC) -isystem $(GTESTDIR)/include -I$(GTESTDIR) -pthread -c $(GTESTDIR)/src/gtest-all.cc -o $(OBJDIR)/gtest-all.o
-	ar -rv $(LIBDIR)/libgtest.a $(OBJDIR)/gtest-all.o
+	@ echo Making a gtest library in $(LIBDIR)...
+	@ $(CPPC) -isystem $(GTESTDIR)/include -I$(GTESTDIR) -pthread -c $(GTESTDIR)/src/gtest-all.cc -o $(OBJDIR)/gtest-all.o
+	@ ar -rv $(LIBDIR)/libgtest.a $(OBJDIR)/gtest-all.o
+	@ echo Done!
 
 clean:
 	@ echo Cleaning...
 	@ rm -rf $(OBJDIR)/* *~ $(foreach exec, $(OUT) $(TEST), ./$(exec)) $(DEPSDIR)/deps.make
 	@ echo Done!
 cov:
-	lcov -c -d . -o cov.info && genhtml -o html cov.info && rm cov.info && open html/index.html
-	make swipe
+	@ Echo Making coverage...
+	@ lcov -c -d . -o cov.info
+	@ genhtml -o html cov.info
+	@ rm cov.info
+	@ open html/index.html
+	@ make swipe
+	@ echo Done!
 swipe:
 	@ rm -rf $(OBJDIR)/*.gcda
 
