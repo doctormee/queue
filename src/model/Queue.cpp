@@ -1,5 +1,4 @@
-/*#ifndef QUEUE_H
-#define QUEUE_H
+/*#pragma once
 #include <vector>
 #include <memory>
 class User;
@@ -16,11 +15,15 @@ class Queue {
     static bool queue_less(const std::unique_ptr<Item> &, const std::unique_ptr<Item> &);
 public:
     Queue();
-    void push(User* );
+    void push(User* ); //push(new User(...));
     void remove(int); //removes a user with a specific UID from queue
     void sort();
+    int size();
+    std::vector<std::unique_ptr<Item>>::iterator begin();
+    std::vector<std::unique_ptr<Item>>::iterator end();
+    //void update(std::vector<std::unique_ptr<Rule>> &);
 };
-#endif*/
+*/
 #include "Queue.h"
 #include "User.h"
 #include <algorithm>

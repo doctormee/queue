@@ -1,6 +1,7 @@
 #pragma once
 class User;
+class Visitor;
 class Predicate {
 public:
-    virtual bool eval(User &) = 0;
+    virtual void accept(Visitor &) = 0;
 };

@@ -6,6 +6,7 @@
 #include "Term.h"
 #include "User.h"
 #include "Functions.h"
+#include "Evaluator.h"
 /*
 #pragma once
 #include "Constants.h"
@@ -38,6 +39,16 @@ TEST(Rule_test, Rule_Evaluate) {
     std::shared_ptr<Predicate> bin(new BinaryPredicate(t1, t2, logical_and));
     std::shared_ptr<Predicate> bin2(new BinaryPredicate(bin, t3, logical_or));
     Rule rule(bin, bin2);
-    ASSERT_TRUE(rule.evaluate_first(ivan));
-    ASSERT_TRUE(rule.evaluate_second(ivan));
+    Evaluator eval;
+    eval.set_user(&ivan);
+    t1->accept(eval);
+    ASSERT_TRUE(eval.get_answer());
+    ASSERT_TRUE((rule.get_first()->accept(eval), eval.get_answer()));
+    rule.get_second()->accept(eval);
+    ASSERT_TRUE(eval.get_answer());
+    User john(0);
+    ASSERT_LE(john.get_height(), 190);
+    eval.set_user(&john);
+    t1->accept(eval);
+    ASSERT_FALSE(eval.get_answer());
 }

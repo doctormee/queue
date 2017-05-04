@@ -6,7 +6,7 @@ class Rule;
 
 class Queue {
     struct Item {
-        std::unique_ptr<User> user;
+        std::shared_ptr<User> user;
         int priority;
         Item(User *);
         void set_priority(int);

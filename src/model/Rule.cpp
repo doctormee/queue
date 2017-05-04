@@ -1,16 +1,20 @@
 #include "Rule.h"
 #include <stdexcept>
 #include "Predicate.h"
-/*class Rule {
-    Field field1, field2;
-    Sign sign1, sign2;
-    int value1, value2;
+#include "Visitor.h"
+/*#pragma once
+#include "Constants.h"
+#include <memory>
+class Predicate;
+class User;
+class Visitor;
+class Rule {
+    std::shared_ptr<Predicate> first, second;
 public:
-    Rule(Field, Sign, int, Field, Sign, int);
-    Field get_field(int);
-    Sign get_sign(int);
-    int get_value(int);
-}; 
+    Rule(std::shared_ptr<Predicate> &, std::shared_ptr<Predicate> &);
+    void accept(Visitor &);
+};
+
 Rule::Rule(Field field1_, Sign sign1_, int value1_, Field field2_, Sign sign2_, int value2_): field1(field1_), field2(field2_), sign1(sign1_), sign2(sign2_), value1(value1_), value2(value2_) {};
 Field Rule::get_field(int i) const{
     switch (i) {
@@ -55,10 +59,12 @@ int Rule::get_value(int i) const {
     }
 } */
 Rule::Rule(std::shared_ptr<Predicate> &first_, std::shared_ptr<Predicate> &second_): first(first_), second(second_) {} 
-bool Rule::evaluate_first(User &user) {
-    return first->eval(user);
+
+std::shared_ptr<Predicate> Rule::get_first() const {
+    return first;
 }
-bool Rule::evaluate_second(User &user) {
-    return second->eval(user);
+std::shared_ptr<Predicate> Rule::get_second() const {
+    return second;
 }
+
 

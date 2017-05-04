@@ -10,8 +10,8 @@ class Term: public Predicate {
 public:
     Term();
     Term(Field, Sign, int);
-    bool eval(User &);
     Field get_field() const;
     Sign get_sign() const;
     int get_value() const;
+    void accept(Visitor &) override;
 };

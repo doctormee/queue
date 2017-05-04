@@ -43,14 +43,14 @@ vpath %.o $(OBJDIR)
 
 all: build #test
 
+$(OBJDIR)/%.o: %.cpp
+	$(CPPC) -c $(CPPFLAGS) $< -o $@
+
 $(DEPSDIR)/deps.make: $(SRCFILES)
 	rm -rf $(DEPSDIR)/deps.make $(foreach cpp, $(filter-out %.h, $^), && $(CPPC) -MM -MT '$(patsubst %.cpp,$(OBJDIR)/%.o, $(notdir $(cpp)))' $(cpp) $(CPPFLAGS) >> $(DEPSDIR)/deps.make)
 	#$(CPPC) $(CPPFLAGS) -MM $(filter-out %.h, $^) > $(DEPSDIR)/deps.make 
 
 include $(DEPSDIR)/deps.make
-
-$(OBJDIR)/%.o: %.cpp
-	$(CPPC) -c $(CPPFLAGS) $< -o $@
 
 build: $(OBJFILES) 
 	$(CPPC) -o $(OUT) $^ $(CPPFLAGS)

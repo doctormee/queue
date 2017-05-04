@@ -31,13 +31,15 @@ public:
 DataController::Room::Room(int rid_, std::string spec_name, std::string spec_surname): rid(rid_), specialist(new Specialist(spec_name, spec_surname)) {} 
 
 int DataController::matching_rules(User &user1, User &user2) const {
-    int ret = 0;
+    /*int ret = 0;
     for (auto &i: rules) {
         ret += i->evaluate_first(user1) && i->evaluate_second(user2);
     }
-    return ret;
+    return ret; */
+    return 0;
 }
 void DataController::update(Queue &q) {
+    /*
     int priority;
     for (auto &&i = q.begin(); i != q.end(); ++i) {
         priority = 0;
@@ -47,4 +49,5 @@ void DataController::update(Queue &q) {
         (*i)->set_priority(priority);
     }
     q.sort();
+    */
 }

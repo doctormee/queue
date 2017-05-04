@@ -17,6 +17,6 @@ class DataController {
     std::vector<std::unique_ptr<Rule>> rules;
 public:
     //DataController();
-    int matching_rules(User&, User&) const;
+    int matching_rules(User &, User &) const;
     void update(Queue &);
 };
