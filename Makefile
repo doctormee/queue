@@ -67,19 +67,28 @@ swipe:
 	@ rm -rf $(OBJDIR)/*.gcda
 
 $(OBJDIR)/%.o: %.cpp
-	$(CPPC) -c $(CPPFLAGS) $< -o $@
+	@ echo Making $@
+	@ $(CPPC) -c $(CPPFLAGS) $< -o $@
 
 $(DEPSDIR)/deps.make: $(SRCFILES)
-	rm -rf $(DEPSDIR)/deps.make $(foreach cpp, $(filter-out %.h, $^), && $(CPPC) -MM -MT '$(patsubst %.cpp,$(OBJDIR)/%.o, $(notdir $(cpp)))' $(cpp) $(CPPFLAGS) >> $(DEPSDIR)/deps.make)
-	#$(CPPC) $(CPPFLAGS) -MM $(filter-out %.h, $^) > $(DEPSDIR)/deps.make 
+	@ echo Making a dependencies list
+	@ rm -rf $(DEPSDIR)/deps.make $(foreach cpp, $(filter-out %.h, $^), && $(CPPC) -MM -MT '$(patsubst %.cpp,$(OBJDIR)/%.o, $(notdir $(cpp)))' $(cpp) $(CPPFLAGS) >> $(DEPSDIR)/deps.make)
+	@echo Done!
+	@ #$(CPPC) $(CPPFLAGS) -MM $(filter-out %.h, $^) > $(DEPSDIR)/deps.make 
 
 include $(DEPSDIR)/deps.make
 
 build: $(OBJFILES) 
-	$(CPPC) -o $(OUT) $^ $(CPPFLAGS)
+	@ echo Compiling objective files into $(OUT) executable(s)
+	@ $(CPPC) -o $(OUT) $^ $(CPPFLAGS)
+	@ echo Done!
 	
 gg: build 
 	clear && ./$(OUT) && rm -rf *.o *~ $(OUT) *~
 
 test: $(TOBJ) $(OBJFILES)
-	$(CPPC) $^ -o $(TEST) $(CPPFLAGS) $(TESTFLAGS) && ./$(TEST)
+	@ echo Compiling objective files into $(TEST) test executable
+	@ $(CPPC) $^ -o $(TEST) $(CPPFLAGS) $(TESTFLAGS) 
+	@ echo Done!
+	@ echo Now launching tests
+	@ ./$(TEST)
