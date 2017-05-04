@@ -17,6 +17,7 @@ public:
 #include "User.h"
 #include "Predicate.h"
 #include "BinaryPredicate.h"
+#include "UnaryPredicate.h"
 #include "Term.h"
 #include "Constants.h"
 #include <memory>
@@ -98,12 +99,17 @@ void Evaluator::visit(BinaryPredicate &binary) {
     std::shared_ptr<Predicate> left = binary.get_left();
     std::shared_ptr<Predicate> right = binary.get_right();
     bool (*eval)(bool, bool) = binary.get_eval_function();
-    Evaluator temp;
+    Evaluator temp(user);
     bool first_answer;
-    temp.set_user(user);
     left->accept(temp);
     first_answer = temp.get_answer();
     right->accept(temp);
     answer = eval( first_answer, temp.get_answer());
+}
+void Evaluator::visit(UnaryPredicate &unary) {
+    std::shared_ptr<Predicate> predicate = unary.get_predicate();
+    bool (*eval)(bool) = unary.get_eval_function();
+    Evaluator temp(user);
+    answer = eval( (predicate->accept(temp), temp.get_answer()) );
 }
 

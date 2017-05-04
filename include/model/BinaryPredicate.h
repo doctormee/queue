@@ -1,7 +1,6 @@
 #pragma once
 #include <memory>
 #include "Predicate.h"
-class User;
 class Visitor;
 class BinaryPredicate: public Predicate {
     typedef bool (*BinaryLogicalFunction)(bool, bool);

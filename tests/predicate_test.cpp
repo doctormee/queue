@@ -1,5 +1,6 @@
 #include "Predicate.h"
 #include "BinaryPredicate.h"
+#include "UnaryPredicate.h"
 #include "gtest/gtest.h"
 #include "Functions.h"
 #include "Constants.h"
@@ -67,7 +68,27 @@ TEST(Binary_Predicate_Test, OR_Binary) {
     Evaluator eval(&ivan);
     ASSERT_TRUE((bin2->accept(eval), eval.get_answer()));
 } 
-/*
-TEST(Predicate_test, Binary_construction_and) {
-    std::unique_ptr<Predicate> pred(new BinaryPredicate()) 
-}*/
+
+TEST(Unary_test, Unary_Construction_and_Eval) {
+    std::shared_ptr<Predicate> pred(new Term(Field::AGE, Sign::EQ, 10));
+    UnaryPredicate un(pred, logical_not);
+    User ivan(2, "Ivan", "Ivanov", 10, 192, 70, 'F');
+    Evaluator eval(&ivan);
+    ASSERT_FALSE((un.accept(eval), eval.get_answer()));
+}
+
+
+TEST(Unary_test, Complex_Unary) {
+    std::shared_ptr<Predicate> t1(new Term(Field::HEIGHT, Sign::MORE, 190));
+    std::shared_ptr<Predicate> t2(new Term(Field::GENDER, Sign::EQ, 'F'));
+    std::shared_ptr<Predicate> t3(new Term(Field::WEIGHT, Sign::NOTEQ, 70));
+    User ivan(2, "Ivan", "Ivanov", 10, 192, 70, 'F');
+    std::shared_ptr<Predicate> bin(new BinaryPredicate(t1, t2, logical_and));
+    std::shared_ptr<Predicate> bin2(new BinaryPredicate(bin, t3, logical_or));
+    UnaryPredicate un(bin2, logical_not);
+    Evaluator eval(&ivan);
+    ASSERT_FALSE((un.accept(eval), eval.get_answer()));
+    std::shared_ptr<Predicate> t4(new Term(Field::WEIGHT, Sign::MOREEQ, 80));
+    un = UnaryPredicate(t4, logical_not);
+    ASSERT_TRUE((un.accept(eval), eval.get_answer()));
+}
