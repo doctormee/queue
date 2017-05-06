@@ -1,11 +1,34 @@
 #include "Queue.h"
+#include "User.h"
 #include "gtest/gtest.h"
-/*
-TEST(Rule_Test, Init_Check) {
-    Rule* r = new Rule(Field::AGE, Sign::LESS, 10, Field::AGE, Sign::MORE, 30);
-    delete r;
-    
+
+TEST(Queue_test, Item_init_and_Push) {
+    std::unique_ptr<User> new_user(new User(0));
+    Queue my_queue;
+    my_queue.push(new_user);
+    ASSERT_EQ(new_user, nullptr);
+} 
+TEST(Queue_test, Queue_Remove) {
+    std::unique_ptr<User> new_user(new User(0));
+    Queue my_queue;
+    my_queue.push(new_user);
+    std::unique_ptr<User> new_user2(new User(2));
+    my_queue.push(new_user2);
+    my_queue.remove(2);
+    ASSERT_EQ(my_queue.size(), 1);
+    ASSERT_EQ(my_queue.begin() + 1, my_queue.end());
 }
+TEST(Queue_test, Queue_sort) {
+    std::unique_ptr<User> new_user(new User(0));
+    Queue my_queue;
+    my_queue.push(new_user);
+    std::unique_ptr<User> new_user2(new User(2));
+    my_queue.push(new_user2);
+    (*(my_queue.begin() + 1))->set_priority(2);
+    my_queue.sort();
+    ASSERT_EQ((*(my_queue.begin()))->user->get_uid(), 2);
+}
+/*
 TEST(Rule_Test, getters_check) {
     Rule* r = new Rule(Field::AGE, Sign::LESS, 10, Field::AGE, Sign::MORE, 30);
     for (auto i = 1; i <= 2; ++i) {

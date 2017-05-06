@@ -27,14 +27,10 @@ public:
 #include "Queue.h"
 #include "User.h"
 #include <algorithm>
-Queue::Item::Item(User *user_): user(user_), priority(0) {}
 Queue::Queue() {}
-void Queue::push(User* user_) {
-    std::unique_ptr<Item> tmp(new Item(user_));
+void Queue::push(std::unique_ptr<User> &user_) {
+    std::unique_ptr<Item> tmp(new Item(std::move(user_)));
     container.push_back(std::move(tmp));
-}
-void Queue::Item::set_priority(int priority_) {
-    priority = priority_;
 }
 /*
 void Queue::update(std::vector<std::unique_ptr<Rule>> &rules) {
@@ -70,4 +66,8 @@ std::vector<std::unique_ptr<Queue::Item>>::iterator Queue::begin() {
 }
 std::vector<std::unique_ptr<Queue::Item>>::iterator Queue::end() {
     return container.end();
+}
+
+int Queue::size() {
+    return container.size();
 }
