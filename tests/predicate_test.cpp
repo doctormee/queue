@@ -28,7 +28,7 @@ TEST(Term_test, Test_Evaluation) {
     vect.push_back(Term(Field::GENDER, Sign::EQ, 'F'));
     vect.push_back(Term());
     vect.push_back(Term(Field::HEIGHT, Sign::LESS, 193));
-    vect.push_back(Term(Field::AGE, Sign::MOREEQ, 10));
+    vect.push_back(Term(Field(1), Sign::MOREEQ, 10));
     vect.push_back(Term(Field::ALL, Sign(10), -3));
     vect.push_back(Term(Field::AGE, Sign(10), -3));
     User ivan(2, "Ivan", "Ivanov", 10, 192, 70, 'F');

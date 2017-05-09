@@ -2,7 +2,6 @@
 #include <vector>
 #include <memory>
 class User;
-class Rule;
 
 class Queue {
     struct Item {

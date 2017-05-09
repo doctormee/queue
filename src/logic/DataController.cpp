@@ -27,27 +27,65 @@ public:
 #include "User.h"
 #include "Queue.h"
 #include "Specialist.h"
+#include "Evaluator.h"
+#include "Predicate.h"
+#include <stdexcept>
+#include <memory>
 
-DataController::Room::Room(int rid_, std::string spec_name, std::string spec_surname): rid(rid_), specialist(new Specialist(spec_name, spec_surname)) {} 
+DataController::Room::Room(int rid_, std::unique_ptr<Specialist> &spec): rid(rid_), specialist(std::move(spec)) {} 
+
+void DataController::add_room(int rid, std::string name, std::string surname, std::vector<std::string> services) {
+    std::unique_ptr<Specialist> tmp(new Specialist(name, surname));
+    for (auto &i: services) {
+        tmp->add_service(i);
+    }
+    rooms[rid] = (std::unique_ptr<Room>)(new Room(rid, tmp));
+}
+
+void DataController::delete_room(int rid) {
+    decltype(rooms.begin()) it = rooms.find(rid);
+    if (it == rooms.end()) {
+        std::out_of_range ex("No room with such room id!");
+        throw ex;
+    }
+    rooms.erase(it);
+}
+
+void DataController::add_rule(std::unique_ptr<Rule> &rule) {
+    rules.push_back(std::move(rule));
+}
+
+void DataController::delete_rule(int num) {
+    if ((num > rules.size()) || (num <= 0)) {
+        std::out_of_range ex("No such rule!");
+        throw ex;
+    }
+    rules.erase(rules.begin() + num - 1);   
+}
+
 
 int DataController::matching_rules(User &user1, User &user2) const {
-    /*int ret = 0;
+    int ret = 0;
+    Evaluator eval;
     for (auto &i: rules) {
-        ret += i->evaluate_first(user1) && i->evaluate_second(user2);
+        ret += (eval.set_user(&user1), i->get_first()->accept(eval), eval.get_answer()) && (eval.set_user(&user2), i->get_second()->accept(eval), eval.get_answer());
     }
-    return ret; */
-    return 0;
+    return ret;
 }
-void DataController::update(Queue &q) {
-    /*
+void DataController::update_room(int rid) {
+    decltype(rooms.begin()) it = rooms.find(rid);
+    if (it == rooms.end()) {
+        std::out_of_range ex("No room with such room id!");
+        throw ex;
+    }
+    auto &q = rooms[rid]->queue;
     int priority;
-    for (auto &&i = q.begin(); i != q.end(); ++i) {
+    for (auto &&i = q->begin(); i != q->end(); ++i) {
         priority = 0;
-        for (auto &&j = i + 1; j != q.end(); ++j) {
+        for (auto &&j = i + 1; j != q->end(); ++j) {
             priority += matching_rules(*((*i)->user), *((*j)->user));
         }
         (*i)->set_priority(priority);
     }
-    q.sort();
-    */
+    q->sort();
 }
