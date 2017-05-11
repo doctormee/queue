@@ -1,8 +1,8 @@
 #pragma once
 #include <memory>
-#include "BinaryPredicate.h"
+#include "NaryPredicate.h"
 class Visitor;
-class DisjunctionPredicate: public BinaryPredicate {
+class DisjunctionPredicate: public NaryPredicate {
 public:
     void accept(Visitor &) override;
 };

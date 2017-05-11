@@ -12,9 +12,11 @@ class Evaluator: public Visitor {
 public:
     Evaluator();
     Evaluator(User *);
-    void visit(Term &) override;
-    void visit(BinaryPredicate &) override;
-    void visit(UnaryPredicate &) override;
+    void visit(const Term &) override;
+    void visit(const ConjunctionPredicate &) override;
+    void visit(const DisjunctionPredicate &) override;
+    void visit(const NegationPredicate &) override;
+    void visit(const ImplicationPredicate &) override;
     bool get_answer() const;
     void set_user(User *);
 };

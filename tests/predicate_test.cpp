@@ -1,8 +1,10 @@
 #include "Predicate.h"
-#include "BinaryPredicate.h"
-#include "UnaryPredicate.h"
+#include "NaryPredicate.h"
+#include "ConjunctionPredicate.h"
+#include "DisjunctionPredicate.h"
+#include "NegationPredicate.h"
+#include "ImplicationPredicate.h"
 #include "gtest/gtest.h"
-#include "Functions.h"
 #include "Constants.h"
 #include "User.h"
 #include "Term.h"
@@ -44,51 +46,65 @@ TEST(Binary_Predicate_Test, Binary_constructor_and_eval) {
     std::shared_ptr<Predicate> t1(new Term(Field::HEIGHT, Sign::MORE, 190));
     std::shared_ptr<Predicate> t2(new Term(Field::GENDER, Sign::EQ, 'F'));
     User ivan(2, "Ivan", "Ivanov", 10, 192, 70, 'F');
-    BinaryPredicate bin(t1, t2, logical_and);
+    ConjunctionPredicate bin;
+    bin.add(t1);
+    bin.add(t2);
     Evaluator eval(&ivan);
     ASSERT_TRUE((bin.accept(eval), eval.get_answer()));
 }
 TEST(Binary_Predicate_Test, Complex_Binary) {
-    std::shared_ptr<Predicate> t1(new Term(Field::HEIGHT, Sign::MORE, 190));
-    std::shared_ptr<Predicate> t2(new Term(Field::GENDER, Sign::EQ, 'F'));
-    std::shared_ptr<Predicate> t3(new Term(Field::WEIGHT, Sign::NOTEQ, 71));
+    std::shared_ptr<Term> t1(new Term(Field::HEIGHT, Sign::MORE, 190));
+    std::shared_ptr<Term> t2(new Term(Field::GENDER, Sign::EQ, 'F'));
+    std::shared_ptr<Term> t3(new Term(Field::WEIGHT, Sign::NOTEQ, 71));
     User ivan(2, "Ivan", "Ivanov", 10, 192, 70, 'F');
-    std::shared_ptr<Predicate> bin(new BinaryPredicate(t1, t2, logical_and));
-    std::shared_ptr<Predicate> bin2(new BinaryPredicate(bin, t3, logical_and));
+    std::shared_ptr<ConjunctionPredicate> bin(new ConjunctionPredicate());
+    bin->add(t1);
+    bin->add(t2);
+    std::shared_ptr<ConjunctionPredicate> bin2(new ConjunctionPredicate());
+    bin2->add(bin);
+    bin2->add(t3);
     Evaluator eval(&ivan);
     ASSERT_TRUE((bin2->accept(eval), eval.get_answer()));
 }
 TEST(Binary_Predicate_Test, OR_Binary) {
-    std::shared_ptr<Predicate> t1(new Term(Field::HEIGHT, Sign::MORE, 190));
-    std::shared_ptr<Predicate> t2(new Term(Field::GENDER, Sign::EQ, 'F'));
-    std::shared_ptr<Predicate> t3(new Term(Field::WEIGHT, Sign::NOTEQ, 70));
+    std::shared_ptr<Term> t1(new Term(Field::HEIGHT, Sign::MORE, 190));
+    std::shared_ptr<Term> t2(new Term(Field::GENDER, Sign::EQ, 'F'));
+    std::shared_ptr<Term> t3(new Term(Field::WEIGHT, Sign::NOTEQ, 71));
     User ivan(2, "Ivan", "Ivanov", 10, 192, 70, 'F');
-    std::shared_ptr<Predicate> bin(new BinaryPredicate(t1, t2, logical_and));
-    std::shared_ptr<Predicate> bin2(new BinaryPredicate(bin, t3, logical_or));
+    std::shared_ptr<ConjunctionPredicate> bin(new ConjunctionPredicate());
+    bin->add(t1);
+    bin->add(t2);
+    std::shared_ptr<DisjunctionPredicate> bin2(new DisjunctionPredicate());
+    bin2->add(bin);
+    bin2->add(t3);
     Evaluator eval(&ivan);
     ASSERT_TRUE((bin2->accept(eval), eval.get_answer()));
 } 
 
 TEST(Unary_test, Unary_Construction_and_Eval) {
-    std::shared_ptr<Predicate> pred(new Term(Field::AGE, Sign::EQ, 10));
-    UnaryPredicate un(pred, logical_not);
+    std::shared_ptr<Term> pred(new Term(Field::AGE, Sign::EQ, 10));
+    NegationPredicate neg(pred);
     User ivan(2, "Ivan", "Ivanov", 10, 192, 70, 'F');
     Evaluator eval(&ivan);
-    ASSERT_FALSE((un.accept(eval), eval.get_answer()));
+    ASSERT_FALSE((neg.accept(eval), eval.get_answer()));
 }
 
 
 TEST(Unary_test, Complex_Unary) {
-    std::shared_ptr<Predicate> t1(new Term(Field::HEIGHT, Sign::MORE, 190));
-    std::shared_ptr<Predicate> t2(new Term(Field::GENDER, Sign::EQ, 'F'));
-    std::shared_ptr<Predicate> t3(new Term(Field::WEIGHT, Sign::NOTEQ, 70));
     User ivan(2, "Ivan", "Ivanov", 10, 192, 70, 'F');
-    std::shared_ptr<Predicate> bin(new BinaryPredicate(t1, t2, logical_and));
-    std::shared_ptr<Predicate> bin2(new BinaryPredicate(bin, t3, logical_or));
-    UnaryPredicate un(bin2, logical_not);
+    std::shared_ptr<Term> t1(new Term(Field::HEIGHT, Sign::MORE, 190));
+    std::shared_ptr<Term> t2(new Term(Field::GENDER, Sign::EQ, 'F'));
+    std::shared_ptr<Term> t3(new Term(Field::WEIGHT, Sign::NOTEQ, 70));
+    std::shared_ptr<ConjunctionPredicate> bin(new ConjunctionPredicate());
+    bin->add(t1);
+    bin->add(t2);
+    std::shared_ptr<DisjunctionPredicate> bin2(new DisjunctionPredicate());
+    bin2->add(bin);
+    bin2->add(t3);
+    NegationPredicate neg(bin2);
     Evaluator eval(&ivan);
-    ASSERT_FALSE((un.accept(eval), eval.get_answer()));
-    std::shared_ptr<Predicate> t4(new Term(Field::WEIGHT, Sign::MOREEQ, 80));
-    un = UnaryPredicate(t4, logical_not);
-    ASSERT_TRUE((un.accept(eval), eval.get_answer()));
+    ASSERT_FALSE((neg.accept(eval), eval.get_answer()));
+    std::shared_ptr<Term> t4(new Term(Field::WEIGHT, Sign::MOREEQ, 80));
+    neg = NegationPredicate(t4);
+    ASSERT_TRUE((neg.accept(eval), eval.get_answer()));
 }

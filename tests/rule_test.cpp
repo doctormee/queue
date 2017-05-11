@@ -2,10 +2,13 @@
 #include "Constants.h"
 #include "gtest/gtest.h"
 #include "Predicate.h"
-#include "BinaryPredicate.h"
+#include "NaryPredicate.h"
+#include "ConjunctionPredicate.h"
+#include "DisjunctionPredicate.h"
+#include "NegationPredicate.h"
+#include "ImplicationPredicate.h"
 #include "Term.h"
 #include "User.h"
-#include "Functions.h"
 #include "Evaluator.h"
 /*
 #pragma once
@@ -23,21 +26,29 @@ public:
 
 */
 TEST(Rule_test, Rule_Init) {
-    std::shared_ptr<Predicate> t1(new Term(Field::HEIGHT, Sign::MORE, 190));
-    std::shared_ptr<Predicate> t2(new Term(Field::GENDER, Sign::EQ, 'F'));
-    std::shared_ptr<Predicate> t3(new Term(Field::WEIGHT, Sign::NOTEQ, 70));
-    std::shared_ptr<Predicate> bin(new BinaryPredicate(t1, t2, logical_and));
-    std::shared_ptr<Predicate> bin2(new BinaryPredicate(bin, t3, logical_or));
+    std::shared_ptr<Term> t1(new Term(Field::HEIGHT, Sign::MORE, 190));
+    std::shared_ptr<Term> t2(new Term(Field::GENDER, Sign::EQ, 'F'));
+    std::shared_ptr<Term> t3(new Term(Field::WEIGHT, Sign::NOTEQ, 70));
+    std::shared_ptr<ConjunctionPredicate> bin(new ConjunctionPredicate());
+    bin->add(t1);
+    bin->add(t2);
+    std::shared_ptr<DisjunctionPredicate> bin2(new DisjunctionPredicate());
+    bin2->add(bin);
+    bin2->add(t3);
     Rule rule(bin, bin2);
 }
 
 TEST(Rule_test, Rule_Evaluate) {
-    std::shared_ptr<Predicate> t1(new Term(Field::HEIGHT, Sign::MORE, 190));
-    std::shared_ptr<Predicate> t2(new Term(Field::GENDER, Sign::EQ, 'F'));
-    std::shared_ptr<Predicate> t3(new Term(Field::WEIGHT, Sign::NOTEQ, 70));
     User ivan(2, "Ivan", "Ivanov", 10, 192, 70, 'F');
-    std::shared_ptr<Predicate> bin(new BinaryPredicate(t1, t2, logical_and));
-    std::shared_ptr<Predicate> bin2(new BinaryPredicate(bin, t3, logical_or));
+    std::shared_ptr<Term> t1(new Term(Field::HEIGHT, Sign::MORE, 190));
+    std::shared_ptr<Term> t2(new Term(Field::GENDER, Sign::EQ, 'F'));
+    std::shared_ptr<Term> t3(new Term(Field::WEIGHT, Sign::NOTEQ, 70));
+    std::shared_ptr<ConjunctionPredicate> bin(new ConjunctionPredicate());
+    bin->add(t1);
+    bin->add(t2);
+    std::shared_ptr<DisjunctionPredicate> bin2(new DisjunctionPredicate());
+    bin2->add(bin);
+    bin2->add(t3);
     Rule rule(bin, bin2);
     Evaluator eval;
     eval.set_user(&ivan);

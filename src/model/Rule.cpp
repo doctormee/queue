@@ -58,7 +58,7 @@ int Rule::get_value(int i) const {
         }
     }
 } */
-Rule::Rule(std::shared_ptr<Predicate> &first_, std::shared_ptr<Predicate> &second_): first(first_), second(second_) {} 
+Rule::Rule(std::shared_ptr<Predicate> first_, std::shared_ptr<Predicate> second_): first(first_), second(second_) {} 
 
 std::shared_ptr<Predicate> Rule::get_first() const {
     return first;

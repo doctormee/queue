@@ -1,11 +1,15 @@
 #pragma once
 class Rule;
-class BinaryPredicate;
+class ConjunctionPredicate;
 class Term;
-class UnaryPredicate;
+class DisjunctionPredicate;
+class NegationPredicate;
+class ImplicationPredicate;
 class Visitor {
 public:
-    virtual void visit(Term &) = 0;
-    virtual void visit(BinaryPredicate &) = 0;
-    virtual void visit(UnaryPredicate &) = 0;
+    virtual void visit(const Term &) = 0;
+    virtual void visit(const ConjunctionPredicate &) = 0;
+    virtual void visit(const DisjunctionPredicate &) = 0;
+    virtual void visit(const NegationPredicate &) = 0;
+    virtual void visit(const ImplicationPredicate &) = 0;
 };
