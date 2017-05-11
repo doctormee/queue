@@ -43,29 +43,51 @@ vpath %.o $(OBJDIR)
 
 all: build #test
 
+.PHONY: clean libtest cov swipe
+
+libtest:
+	@ echo Making a gtest library in $(LIBDIR)...
+	@ $(CPPC) -isystem $(GTESTDIR)/include -I$(GTESTDIR) -pthread -c $(GTESTDIR)/src/gtest-all.cc -o $(OBJDIR)/gtest-all.o
+	@ ar -rv $(LIBDIR)/libgtest.a $(OBJDIR)/gtest-all.o
+	@ echo Done!
+
+clean:
+	@ echo Cleaning...
+	@ rm -rf $(OBJDIR)/* *~ $(foreach exec, $(OUT) $(TEST), ./$(exec)) $(DEPSDIR)/deps.make
+	@ echo Done!
+cov:
+	@ Echo Making coverage...
+	@ lcov -c -d . -o cov.info
+	@ genhtml -o html cov.info
+	@ rm cov.info
+	@ open html/index.html
+	@ make swipe
+	@ echo Done!
+swipe:
+	@ rm -rf $(OBJDIR)/*.gcda
+
+$(OBJDIR)/%.o: %.cpp
+	@ echo Making $@
+	@ $(CPPC) -c $(CPPFLAGS) $< -o $@
+
 $(DEPSDIR)/deps.make: $(SRCFILES)
-	rm -rf $(DEPSDIR)/deps.make $(foreach cpp, $(filter-out %.h, $^), && $(CPPC) -MM -MT '$(patsubst %.cpp,$(OBJDIR)/%.o, $(notdir $(cpp)))' $(cpp) $(CPPFLAGS) >> $(DEPSDIR)/deps.make)
-	#$(CPPC) $(CPPFLAGS) -MM $(filter-out %.h, $^) > $(DEPSDIR)/deps.make 
+	@ echo Making a dependencies list
+	@ rm -rf $(DEPSDIR)/deps.make $(foreach cpp, $(filter-out %.h, $^), && $(CPPC) -MM -MT '$(patsubst %.cpp,$(OBJDIR)/%.o, $(notdir $(cpp)))' $(cpp) $(CPPFLAGS) >> $(DEPSDIR)/deps.make)
+	@echo Done!
+	@ #$(CPPC) $(CPPFLAGS) -MM $(filter-out %.h, $^) > $(DEPSDIR)/deps.make 
 
 include $(DEPSDIR)/deps.make
 
-$(OBJDIR)/%.o: %.cpp
-	$(CPPC) -c $(CPPFLAGS) $< -o $@
-
 build: $(OBJFILES) 
-	$(CPPC) -o $(OUT) $^ $(CPPFLAGS)
+	@ echo Compiling objective files into $(OUT) executable(s)
+	@ $(CPPC) -o $(OUT) $^ $(CPPFLAGS)
+	@ echo Done!
 	
 gg: build 
 	clear && ./$(OUT) && rm -rf *.o *~ $(OUT) *~
-
-test: $(TOBJ) $(OBJFILES)
-	$(CPPC) $^ -o $(TEST) $(CPPFLAGS) $(TESTFLAGS) && ./$(TEST) && lcov -c -d . -o cov.info && genhtml -o html cov.info && rm cov.info && open html/index.html && rm -rf $(OBJDIR)/*.gcda
-
-.PHONY: clean libtest
-
-libtest:
-	$(CPPC) -isystem $(GTESTDIR)/include -I$(GTESTDIR) -pthread -c $(GTESTDIR)/src/gtest-all.cc -o $(OBJDIR)/gtest-all.o
-	ar -rv $(LIBDIR)/libgtest.a $(OBJDIR)/gtest-all.o
-
-clean:
-	@ rm -rf $(OBJDIR)/* *~ $(foreach exec, $(OUT) $(TEST), ./$(exec)) $(DEPSDIR)/deps.make
+test: $(OBJFILES) $(TOBJ) 
+	@ echo Compiling objective files into $(TEST) test executable
+	@ $(CPPC) $^ -o $(TEST) $(CPPFLAGS) $(TESTFLAGS) 
+	@ echo Done!
+	@ echo Now launching tests
+	@ ./$(TEST)

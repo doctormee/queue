@@ -1,0 +1,91 @@
+/* //#ifndef ROOMCONTROLLER_H
+#define ROOMCONTROLLER_H
+#include <vector>
+#include <memory>
+class Specialist;
+class Queue;
+class User;
+class Rule;
+class DataController {
+    struct Room {
+        int rid;
+        std::unique_ptr<Specialist> specialist;
+        std::unique_ptr<Queue> queue;
+        Room(int);
+        };
+    std::vector<std::unique_ptr<Rule>> rules;
+public:
+    //DataController();
+    int matching_rules(User&, User&) const;
+    bool evaluate(Rule &, int, User&) const;
+    bool update(Queue &); //
+};
+#endif*/
+#include "DataController.h"
+#include "Rule.h"
+#include "Constants.h"
+#include "User.h"
+#include "Queue.h"
+#include "Specialist.h"
+#include "Evaluator.h"
+#include "Predicate.h"
+#include <stdexcept>
+#include <memory>
+
+DataController::Room::Room(int rid_, std::unique_ptr<Specialist> &spec): rid(rid_), specialist(std::move(spec)) {} 
+
+void DataController::add_room(int rid, std::string name, std::string surname, std::vector<std::string> services) {
+    std::unique_ptr<Specialist> tmp(new Specialist(name, surname));
+    for (auto &i: services) {
+        tmp->add_service(i);
+    }
+    rooms[rid] = (std::unique_ptr<Room>)(new Room(rid, tmp));
+}
+
+void DataController::delete_room(int rid) {
+    decltype(rooms.begin()) it = rooms.find(rid);
+    if (it == rooms.end()) {
+        std::out_of_range ex("No room with such room id!");
+        throw ex;
+    }
+    rooms.erase(it);
+}
+
+void DataController::add_rule(std::unique_ptr<Rule> &rule) {
+    rules.push_back(std::move(rule));
+}
+
+void DataController::delete_rule(int num) {
+    if ((num > rules.size()) || (num <= 0)) {
+        std::out_of_range ex("No such rule!");
+        throw ex;
+    }
+    rules.erase(rules.begin() + num - 1);   
+}
+
+
+int DataController::matching_rules(User &user1, User &user2) const {
+    int ret = 0;
+    Evaluator eval;
+    for (auto &i: rules) {
+        ret += (eval.set_user(&user1), i->get_first()->accept(eval), eval.get_answer()) && (eval.set_user(&user2), i->get_second()->accept(eval), eval.get_answer());
+    }
+    return ret;
+}
+void DataController::update_room(int rid) {
+    decltype(rooms.begin()) it = rooms.find(rid);
+    if (it == rooms.end()) {
+        std::out_of_range ex("No room with such room id!");
+        throw ex;
+    }
+    auto &q = rooms[rid]->queue;
+    int priority;
+    for (auto &&i = q->begin(); i != q->end(); ++i) {
+        priority = 0;
+        for (auto &&j = i + 1; j != q->end(); ++j) {
+            priority += matching_rules(*((*i)->user), *((*j)->user));
+        }
+        (*i)->set_priority(priority);
+    }
+    q->sort();
+}

@@ -1,5 +1,4 @@
-#ifndef USER_H
-#define USER_H
+#pragma once
 #include <string>
 class User {
     int uid;
@@ -18,4 +17,3 @@ public:
     int get_uid() const;
     //void set_uid(int);
 };
-#endif

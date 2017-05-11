@@ -1,42 +1,65 @@
 #include "Rule.h"
 #include "Constants.h"
 #include "gtest/gtest.h"
+#include "Predicate.h"
+#include "NaryPredicate.h"
+#include "ConjunctionPredicate.h"
+#include "DisjunctionPredicate.h"
+#include "NegationPredicate.h"
+#include "ImplicationPredicate.h"
+#include "Term.h"
+#include "User.h"
+#include "Evaluator.h"
+/*
+#pragma once
+#include "Constants.h"
+#include <memory>
+class Predicate;
+class User;
+class Rule {
+    std::shared_ptr<Predicate> first, second;
+public:
+    Rule(std::shared_ptr<Predicate> &, std::shared_ptr<Predicate> &);
+    bool evaluate_first(User &);
+    bool evaluate_second(User &);
+};
 
-TEST(Rule_Test, Init_Check) {
-    Rule* r = new Rule(Field::AGE, Sign::LESS, 10, Field::AGE, Sign::MORE, 30);
-    delete r;
-    
-}
-TEST(Rule_Test, getters_check) {
-    Rule* r = new Rule(Field::AGE, Sign::LESS, 10, Field::AGE, Sign::MORE, 30);
-    for (auto i = 1; i <= 2; ++i) {
-        ASSERT_EQ(r->get_field(i), Field::AGE);
-        ASSERT_NE(r->get_sign(i), Sign::NOTEQ);
-        ASSERT_GE(r->get_value(i), 10);
-    }
-}
-TEST(Rule_Test, invalid_getter_param) {
-    Rule r(Field::ALL, Sign::LESS, 10, Field::AGE, Sign::MORE, 30);
-    try {
-        r.get_field(3);
-        ASSERT_TRUE(0);
-    }
-    catch (std::out_of_range &ex) {
-        //ok
-    }
-    try {
-        r.get_sign(10);
-        ASSERT_TRUE(0);
-    }
-    catch (std::out_of_range &ex) {
-        //ok
-    }
-    try {
-        r.get_value(0);
-        ASSERT_TRUE(0);
-    }
-    catch (std::out_of_range &ex) {
-        //ok
-    }
+*/
+TEST(Rule_test, Rule_Init) {
+    std::shared_ptr<Term> t1(new Term(Field::HEIGHT, Sign::MORE, 190));
+    std::shared_ptr<Term> t2(new Term(Field::GENDER, Sign::EQ, 'F'));
+    std::shared_ptr<Term> t3(new Term(Field::WEIGHT, Sign::NOTEQ, 70));
+    std::shared_ptr<ConjunctionPredicate> bin(new ConjunctionPredicate());
+    bin->add(t1);
+    bin->add(t2);
+    std::shared_ptr<DisjunctionPredicate> bin2(new DisjunctionPredicate());
+    bin2->add(bin);
+    bin2->add(t3);
+    Rule rule(bin, bin2);
 }
 
+TEST(Rule_test, Rule_Evaluate) {
+    User ivan(2, "Ivan", "Ivanov", 10, 192, 70, 'F');
+    std::shared_ptr<Term> t1(new Term(Field::HEIGHT, Sign::MORE, 190));
+    std::shared_ptr<Term> t2(new Term(Field::GENDER, Sign::EQ, 'F'));
+    std::shared_ptr<Term> t3(new Term(Field::WEIGHT, Sign::NOTEQ, 70));
+    std::shared_ptr<ConjunctionPredicate> bin(new ConjunctionPredicate());
+    bin->add(t1);
+    bin->add(t2);
+    std::shared_ptr<DisjunctionPredicate> bin2(new DisjunctionPredicate());
+    bin2->add(bin);
+    bin2->add(t3);
+    Rule rule(bin, bin2);
+    Evaluator eval;
+    eval.set_user(&ivan);
+    t1->accept(eval);
+    ASSERT_TRUE(eval.get_answer());
+    ASSERT_TRUE((rule.get_first()->accept(eval), eval.get_answer()));
+    rule.get_second()->accept(eval);
+    ASSERT_TRUE(eval.get_answer());
+    User john(0);
+    ASSERT_LE(john.get_height(), 190);
+    eval.set_user(&john);
+    t1->accept(eval);
+    ASSERT_FALSE(eval.get_answer());
+}
