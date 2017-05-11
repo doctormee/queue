@@ -69,9 +69,7 @@ TEST(DataController_test, Matching_rules_test) {
     std::shared_ptr<Term> t1(new Term(Field::HEIGHT, Sign::MORE, 190));
     std::shared_ptr<Term> t2(new Term(Field::GENDER, Sign::EQ, 'F'));
     std::shared_ptr<Term> t3(new Term(Field::WEIGHT, Sign::NOTEQ, 70));
-    std::shared_ptr<ConjunctionPredicate> bin(new ConjunctionPredicate());
-    bin->add(t1);
-    bin->add(t2);
+    std::shared_ptr<ConjunctionPredicate> bin(new ConjunctionPredicate(t1, t2));
     std::shared_ptr<DisjunctionPredicate> bin2(new DisjunctionPredicate());
     bin2->add(bin);
     bin2->add(t3);
