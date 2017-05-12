@@ -20,5 +20,6 @@ public:
     int size();
     std::vector<std::unique_ptr<Item>>::iterator begin();
     std::vector<std::unique_ptr<Item>>::iterator end();
+    User &get_user(int);
     //void update(std::vector<std::unique_ptr<Rule>> &);
 };

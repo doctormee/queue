@@ -99,6 +99,13 @@ TEST(DataController_test, Add_user_ptr) {
     dc.add_room(0, "Ivan", "Ivanov", serv);
     std::unique_ptr<User> jack(new User(2, "Jack", "Kindred", 10, 192, 78, 'F'));
     dc.add_user(0, jack);
+    try {
+        dc.add_user(1, jack);
+        ASSERT_FALSE(true);
+    }
+    catch (...) {
+        //ok
+    }
 } 
 
 TEST(DataController_test, Update_room) {
@@ -130,4 +137,12 @@ TEST(DataController_test, Get_queue_test) {
     std::unique_ptr<User> jack(new User(2, "Jack", "Kindred", 10, 192, 78, 'F'));
     dc.add_user(0, jack);
     ASSERT_EQ(q.size(), 1);
+    try {
+        dc.get_queue(1);
+        ASSERT_TRUE(false);
+    }
+    catch (...)
+    {
+        //ok
+    }
 } 
