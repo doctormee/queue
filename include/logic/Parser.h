@@ -24,7 +24,8 @@
      EQNOTEQ = '=' | '!=' 
          */
 class Parser {
-
+public:
+    void operator()();
 };
 /*
 private:
