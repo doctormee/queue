@@ -121,7 +121,7 @@ TEST(DataController_test, Delete_user) {
     auto &q = dc.get_queue(0);
     ASSERT_EQ(q.size(), 0);
 } 
-/*
+
 TEST(DataController_test, Update_room) {
     DataController dc;
     std::shared_ptr<Term> t1(new Term(Field::HEIGHT, Sign::MORE, 190));
@@ -139,7 +139,25 @@ TEST(DataController_test, Update_room) {
     auto &q = dc.get_queue(0);
     ASSERT_EQ((*(q.begin()))->user->get_uid(), 2);
 } 
-*/
+TEST(DataController_test, Update_All) {
+    DataController dc;
+    std::vector<std::string> serv;
+    serv.push_back("Dental");
+    dc.add_room(0, "Peter", "Jackson", serv);
+    dc.add_room(1, "John", "Snow", serv);
+    std::shared_ptr<Term> t1(new Term(Field::HEIGHT, Sign::MORE, 190));
+    std::shared_ptr<Term> t2(new Term(Field::GENDER, Sign::EQ, 'F'));
+    std::unique_ptr<Rule> rule(new Rule(t1, t2));
+    dc.add_rule(rule);
+    std::unique_ptr<User> ivan(new User(1, "Ivan", "Ivanov", 10, 192, 70, 'F'));
+    std::unique_ptr<User> peter(new User(2, "Peter", "Petroff", 10, 191, 69, 'M'));
+    dc.add_user(0, ivan);
+    dc.add_user(0, peter);
+    dc.update_room(0);
+    auto &q = dc.get_queue(0);
+    ASSERT_EQ((*(q.begin()))->user->get_uid(), 2);
+} 
+
 TEST(DataController_test, Get_queue_test) {
     DataController dc;
     std::vector<std::string> serv;
@@ -159,4 +177,16 @@ TEST(DataController_test, Get_queue_test) {
     {
         //ok
     }
+} 
+TEST(DataController_test, Get_specialist_test) {
+    DataController dc;
+    std::vector<std::string> serv;
+    serv.push_back("One");
+    serv.push_back("Two");
+    dc.add_room(0, "Ivan", "Ivanov", serv);
+    auto &s = dc.get_specialist(0);
+    ASSERT_EQ(s.size(), 2);
+    ASSERT_STREQ(s.get_service(0).c_str(), "One");
+    ASSERT_STREQ(s.get_service(1).c_str(), "Two");
+    
 } 

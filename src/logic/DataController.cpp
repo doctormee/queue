@@ -108,6 +108,16 @@ Queue &DataController::get_queue(int rid) {
     return *(rooms[rid]->queue);
 }
 
+Specialist &DataController::get_specialist(int rid) {
+    decltype(rooms.begin()) it = rooms.find(rid);
+    if (it == rooms.end()) {
+        std::out_of_range ex("No room with such room id!");
+        throw ex;
+    }
+    return *(rooms[rid]->specialist);
+}
+
+
 void DataController::add_user(int rid, int uid, std::string name, std::string surname, int age, int height, int weight, char gender)
  {
     decltype(rooms.begin()) it = rooms.find(rid);

@@ -21,6 +21,7 @@ public:
     ~DataController() = default;
     void add_room(int, std::string, std::string, std::vector<std::string>);
     void delete_room(int);
+    Specialist &get_specialist(int);
     void add_user(int, int, std::string, std::string, int, int, int, char);
     void add_user(int, std::unique_ptr<User> &);
     void delete_user(int, int);
