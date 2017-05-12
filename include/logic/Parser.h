@@ -1,14 +1,32 @@
 #pragma once
 
+    /*
+     IMP = DISJ {'->' IMP}
+ 
+     DISJ = CONJ {'|' DISJ} 
+ 
+     CONJ = NEG {'&' CONJ}
+ 
+     NEG = {'!'}PAR
+ 
+     PAR = '('DISJ')' | TERM
+ 
+     TERM = FIELD SIGN VALUE | 'gender' EQNOTEQ GENVALUE| all
+ 
+     FIELD = 'height' | 'weight' | 'age'
+ 
+     SIGN = '>' | '>=' | '<' | '<=' | EQNOTEQ
+ 
+     VALUE = {'0'}{1..9} 
+ 
+     GENVALUE = 'M' | 'F'
+ 
+     EQNOTEQ = '=' | '!=' 
+         */
 class Parser {
-/* GRAMMAR: 
- * IMP = DISJ {'->' IMP}
- * DISJ = CONJ {'|' DISJ} 
- * CONJ = NEG {'&' CONJ}
- * NEG = {!}PAR
- * PAR = (DISJ) | VAR
- * VAR = {a..z | A..Z}
- */
+
+};
+/*
 private:
     int t;
     void gt() {
@@ -93,4 +111,4 @@ public:
         }
         return ret;    
     }
-};
+}; */
