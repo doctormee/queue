@@ -43,7 +43,13 @@ vpath %.o $(OBJDIR)
 
 all: build #test
 
-.PHONY: clean libtest cov swipe
+.PHONY: clean libtest cov swipe gtest
+
+gtest:
+	@ echo Cloning Google Tests into $(GTESTDIR)
+	@ git clone https://github.com/google/googletest -q $(GTESTDIR) 2>/dev/null|| echo Already installed!
+	@ echo Done!
+	@ make libtest
 
 libtest:
 	@ echo Making a gtest library in $(LIBDIR)...

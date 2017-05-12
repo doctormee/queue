@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <memory>
+#include <string>
 #include <map>
 class Rule;
 class Constants;
@@ -20,6 +21,9 @@ public:
     ~DataController() = default;
     void add_room(int, std::string, std::string, std::vector<std::string>);
     void delete_room(int);
+    void add_user(int, int, std::string, std::string, int, int, int, char);
+    void add_user(int, std::unique_ptr<User> &);
+    Queue &get_queue(int); 
     void add_rule(std::unique_ptr<Rule> &);
     void delete_rule(int);
     int matching_rules(User &, User &) const;

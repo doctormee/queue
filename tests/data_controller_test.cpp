@@ -82,4 +82,52 @@ TEST(DataController_test, Matching_rules_test) {
     ASSERT_EQ(dc.matching_rules(ivan, peter), 2);
     User jack(2, "Jack", "Kindred", 10, 192, 78, 'F');
     ASSERT_EQ(dc.matching_rules(peter, jack), 1);
-}
+} 
+TEST(DataController_test, Add_user_simple) {
+    DataController dc;
+    std::vector<std::string> serv;
+    serv.push_back("One");
+    serv.push_back("Two");
+    dc.add_room(0, "Ivan", "Ivanov", serv);
+    dc.add_user(0, 2, "Ivan", "Ivanov", 10, 192, 70, 'F');
+} 
+TEST(DataController_test, Add_user_ptr) {
+    DataController dc;
+    std::vector<std::string> serv;
+    serv.push_back("One");
+    serv.push_back("Two");
+    dc.add_room(0, "Ivan", "Ivanov", serv);
+    std::unique_ptr<User> jack(new User(2, "Jack", "Kindred", 10, 192, 78, 'F'));
+    dc.add_user(0, jack);
+} 
+
+TEST(DataController_test, Update_room) {
+    DataController dc;
+    std::shared_ptr<Term> t1(new Term(Field::HEIGHT, Sign::MORE, 190));
+    std::shared_ptr<Term> t2(new Term(Field::GENDER, Sign::EQ, 'F'));
+    std::unique_ptr<Rule> rule(new Rule(t1, t2));
+    dc.add_rule(rule);
+    std::vector<std::string> serv;
+    serv.push_back("Dental");
+    dc.add_room(0, "Peter", "Jackson", serv);
+    std::unique_ptr<User> ivan(new User(1, "Ivan", "Ivanov", 10, 192, 70, 'F'));
+    std::unique_ptr<User> peter(new User(2, "Peter", "Petroff", 10, 191, 69, 'M'));
+    dc.add_user(0, ivan);
+    dc.add_user(0, peter);
+    dc.update_room(0);
+    auto &q = dc.get_queue(0);
+    ASSERT_EQ((*(q.begin()))->user->get_uid(), 2);
+} 
+
+TEST(DataController_test, Get_queue_test) {
+    DataController dc;
+    std::vector<std::string> serv;
+    serv.push_back("One");
+    serv.push_back("Two");
+    dc.add_room(0, "Ivan", "Ivanov", serv);
+    auto &q = dc.get_queue(0);
+    ASSERT_EQ(q.size(), 0);
+    std::unique_ptr<User> jack(new User(2, "Jack", "Kindred", 10, 192, 78, 'F'));
+    dc.add_user(0, jack);
+    ASSERT_EQ(q.size(), 1);
+} 
