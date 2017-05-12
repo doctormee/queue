@@ -23,9 +23,11 @@ public:
     void delete_room(int);
     void add_user(int, int, std::string, std::string, int, int, int, char);
     void add_user(int, std::unique_ptr<User> &);
+    void delete_user(int, int);
     Queue &get_queue(int); 
     void add_rule(std::unique_ptr<Rule> &);
     void delete_rule(int);
     int matching_rules(User &, User &) const;
     void update_room(int);
+    void update_all();
 };

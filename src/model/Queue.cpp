@@ -71,3 +71,12 @@ std::vector<std::unique_ptr<Queue::Item>>::iterator Queue::end() {
 int Queue::size() {
     return container.size();
 }
+
+User &Queue::get_user(int uid) {
+    for (auto i = container.begin(); i != container.end(); ++i) {
+        if (((*i)->user->get_uid()) == uid) {
+            return *((*i)->user);
+        }
+    }
+    throw std::out_of_range("No such User!");
+}

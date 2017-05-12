@@ -99,8 +99,29 @@ TEST(DataController_test, Add_user_ptr) {
     dc.add_room(0, "Ivan", "Ivanov", serv);
     std::unique_ptr<User> jack(new User(2, "Jack", "Kindred", 10, 192, 78, 'F'));
     dc.add_user(0, jack);
+    auto &q = dc.get_queue(0);
+    ASSERT_EQ(q.size(), 1);
+    try {
+        dc.add_user(1, jack);
+        ASSERT_FALSE(true);
+    }
+    catch (...) {
+        //ok
+    }
 } 
-
+TEST(DataController_test, Delete_user) {
+    DataController dc;
+    std::vector<std::string> serv;
+    serv.push_back("One");
+    serv.push_back("Two");
+    dc.add_room(0, "Ivan", "Ivanov", serv);
+    std::unique_ptr<User> jack(new User(2, "Jack", "Kindred", 10, 192, 78, 'F'));
+    dc.add_user(0, jack);
+    dc.delete_user(0, 2);
+    auto &q = dc.get_queue(0);
+    ASSERT_EQ(q.size(), 0);
+} 
+/*
 TEST(DataController_test, Update_room) {
     DataController dc;
     std::shared_ptr<Term> t1(new Term(Field::HEIGHT, Sign::MORE, 190));
@@ -118,7 +139,7 @@ TEST(DataController_test, Update_room) {
     auto &q = dc.get_queue(0);
     ASSERT_EQ((*(q.begin()))->user->get_uid(), 2);
 } 
-
+*/
 TEST(DataController_test, Get_queue_test) {
     DataController dc;
     std::vector<std::string> serv;
@@ -130,4 +151,12 @@ TEST(DataController_test, Get_queue_test) {
     std::unique_ptr<User> jack(new User(2, "Jack", "Kindred", 10, 192, 78, 'F'));
     dc.add_user(0, jack);
     ASSERT_EQ(q.size(), 1);
+    try {
+        dc.get_queue(1);
+        ASSERT_TRUE(false);
+    }
+    catch (...)
+    {
+        //ok
+    }
 } 

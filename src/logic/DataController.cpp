@@ -51,27 +51,6 @@ void DataController::delete_room(int rid) {
     rooms.erase(it);
 }
 
-void DataController::add_rule(std::unique_ptr<Rule> &rule) {
-    rules.push_back(std::move(rule));
-}
-
-void DataController::delete_rule(int num) {
-    if ((num > rules.size()) || (num <= 0)) {
-        std::out_of_range ex("No such rule!");
-        throw ex;
-    }
-    rules.erase(rules.begin() + num - 1);   
-}
-
-
-int DataController::matching_rules(User &user1, User &user2) const {
-    int ret = 0;
-    Evaluator eval;
-    for (auto &i: rules) {
-        ret += (eval.set_user(&user1), i->get_first()->accept(eval), eval.get_answer()) && (eval.set_user(&user2), i->get_second()->accept(eval), eval.get_answer());
-    }
-    return ret;
-}
 void DataController::update_room(int rid) {
     decltype(rooms.begin()) it = rooms.find(rid);
     if (it == rooms.end()) {
@@ -88,6 +67,36 @@ void DataController::update_room(int rid) {
         (*i)->set_priority(priority);
     }
     q->sort();
+}
+
+void DataController::update_all() {
+    for (auto &i: rooms) {
+        update_room(i.first);
+    }
+}
+
+void DataController::add_rule(std::unique_ptr<Rule> &rule) {
+    rules.push_back(std::move(rule));
+    update_all();
+}
+
+void DataController::delete_rule(int num) {
+    if ((num > rules.size()) || (num <= 0)) {
+        std::out_of_range ex("No such rule!");
+        throw ex;
+    }
+    rules.erase(rules.begin() + num - 1); 
+    update_all();
+}
+
+
+int DataController::matching_rules(User &user1, User &user2) const {
+    int ret = 0;
+    Evaluator eval;
+    for (auto &i: rules) {
+        ret += (eval.set_user(&user1), i->get_first()->accept(eval), eval.get_answer()) && (eval.set_user(&user2), i->get_second()->accept(eval), eval.get_answer());
+    }
+    return ret;
 }
 
 Queue &DataController::get_queue(int rid) {
@@ -108,6 +117,7 @@ void DataController::add_user(int rid, int uid, std::string name, std::string su
     }
     std::unique_ptr<User> tmp(new User(uid, name, surname, age, height, weight, gender));
     rooms[rid]->queue->push(tmp);
+    update_room(rid);
 }
 void DataController::add_user(int rid, std::unique_ptr<User> &user) {
     decltype(rooms.begin()) it = rooms.find(rid);
@@ -116,4 +126,14 @@ void DataController::add_user(int rid, std::unique_ptr<User> &user) {
         throw ex;
     }
     it->second->queue->push(user);
+    update_room(rid);
+}
+void DataController::delete_user(int rid, int uid) {
+    decltype(rooms.begin()) it = rooms.find(rid);
+    if (it == rooms.end()) {
+        std::out_of_range ex("No room with such room id!");
+        throw ex;
+    }
+    it->second->queue->remove(uid);
+    update_room(rid);
 }

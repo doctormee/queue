@@ -28,38 +28,19 @@ TEST(Queue_test, Queue_sort) {
     my_queue.sort();
     ASSERT_EQ((*(my_queue.begin()))->user->get_uid(), 2);
 }
-/*
-TEST(Rule_Test, getters_check) {
-    Rule* r = new Rule(Field::AGE, Sign::LESS, 10, Field::AGE, Sign::MORE, 30);
-    for (auto i = 1; i <= 2; ++i) {
-        ASSERT_EQ(r->get_field(i), Field::AGE);
-        ASSERT_NE(r->get_sign(i), Sign::NOTEQ);
-        ASSERT_GE(r->get_value(i), 10);
-    }
-}
-TEST(Rule_Test, invalid_getter_param) {
-    Rule r(Field::ALL, Sign::LESS, 10, Field::AGE, Sign::MORE, 30);
+TEST(Queue_test, Get_user) {
+    std::unique_ptr<User> new_user(new User(0));
+    Queue my_queue;
+    my_queue.push(new_user);
+    std::unique_ptr<User> new_user2(new User(2, "Ivan", "Ivanov", 10, 190, 72, 'M'));
+    my_queue.push(new_user2);
+    ASSERT_TRUE(my_queue.get_user(0).get_uid() == 0);
+    ASSERT_TRUE(my_queue.get_user(2).get_weight() == 72);
     try {
-        r.get_field(3);
-        ASSERT_TRUE(0);
+        my_queue.get_user(3);
+        ASSERT_TRUE(false);
     }
-    catch (std::out_of_range &ex) {
-        //ok
-    }
-    try {
-        r.get_sign(10);
-        ASSERT_TRUE(0);
-    }
-    catch (std::out_of_range &ex) {
-        //ok
-    }
-    try {
-        r.get_value(0);
-        ASSERT_TRUE(0);
-    }
-    catch (std::out_of_range &ex) {
+    catch (...) {
         //ok
     }
 }
-
-*/
