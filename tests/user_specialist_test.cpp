@@ -1,7 +1,9 @@
 #include "User.h"
 #include "gtest/gtest.h"
 #include "Specialist.h"
+#include "Evaluator.h"
 #include <vector>
+#include <stdexcept>
 #include <string>
 
 void add( std::vector<std::unique_ptr<User>> &vect, User* u ) {
@@ -63,5 +65,20 @@ TEST(Specialist_Test, Services) {
     }
     catch (...) {
         ASSERT_TRUE(0);//bad
+    }
+}
+
+TEST(Specialist_Test, Trying_to_Evaluate) {
+    Specialist spec1;
+    Evaluator eval;
+    try {
+        spec1.accept(eval);
+        ASSERT_TRUE(false);
+    }
+    catch (std::logic_error &ex) {
+        //ok
+    }
+    catch (...) {
+        ASSERT_TRUE(false);
     }
 }
