@@ -32,8 +32,7 @@ TEST(User_Test, Getters_Test) {
 TEST(Specialist_Test, Spec_init) {
     Specialist spec1;
     Specialist spec2("Ivan", "Ivanov");
-    Specialist* spec3 = new Specialist();
-    delete spec3;
+    std::unique_ptr<Specialist> spec3(new Specialist());
 }
 TEST(Specialist_Test, Default_Getters) {
     Specialist spec1;

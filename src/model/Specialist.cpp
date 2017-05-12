@@ -1,4 +1,5 @@
 #include "Specialist.h"
+#include "Visitor.h"
 #include <stdexcept>
 
 Specialist::Specialist() {
@@ -33,4 +34,8 @@ void Specialist::add_service(std::string service) {
 
 int Specialist::size() {
     return services.size();
+}
+
+void Specialist::accept(Visitor &visitor) {
+    visitor.visit(*this);
 }

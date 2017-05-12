@@ -1,7 +1,9 @@
 #pragma once
 #include <string>
 #include <vector>
-class Specialist {
+#include "Visitable.h"
+class Visitor;
+class Specialist: public Visitable {
     std::string name, surname;
     std::vector<std::string> services;
 public:
@@ -12,4 +14,5 @@ public:
     void add_service(std::string);
     std::string get_service(int);
     int size();
+    void accept(Visitor &) override;
 };

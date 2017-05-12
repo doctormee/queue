@@ -25,6 +25,8 @@ public:
 #include "Constants.h"
 #include <memory>
 #include <vector>
+#include <stdexcept>
+class Specialist;
 
 Evaluator::Evaluator(): answer(false), user(nullptr) {}
 Evaluator::Evaluator(User *user_): answer(false), user(user_) {}
@@ -128,3 +130,8 @@ void Evaluator::visit(const ImplicationPredicate &pred) {
     }
     answer = tmp;
 }
+
+void Evaluator::visit(const Specialist &) {
+    throw std::logic_error("You can not evaluate a Specialist!");
+}
+
