@@ -10,6 +10,8 @@ OBJDIR = ./src/obj
 DEPSDIR = ./src/deps
 #test directory
 TESTDIR = ./tests
+#googletest installing directory
+GTESTIDIR = ../googletest
 #googletest directory
 GTESTDIR = ../googletest/googletest
 #user libraries directory
@@ -46,8 +48,8 @@ all: build test
 .PHONY: clean libtest cov swipe gtest
 
 gtest:
-	@ echo Cloning Google Tests into $(GTESTDIR)
-	@ git clone https://github.com/google/googletest -q $(GTESTDIR) 2>/dev/null|| echo Already installed!
+	@ echo Cloning Google Tests into $(GTESTIDIR)
+	@ git clone https://github.com/google/googletest -q $(GTESTIDIR) 2>/dev/null|| echo Already installed!
 	@ echo Done!
 	@ make libtest
 
