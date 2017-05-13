@@ -5,12 +5,6 @@
 #include <stdexcept>
 #include <iostream>
 
-void System::attached() {
-    if (!interface) {
-        throw std::logic_error("Нет интерфейса");
-    }
-}
-
 int System::get_rid() {
     if (free_rids.size() == 0) {
         throw std::out_of_range("Нельзя добавить больше специалистов!");
@@ -44,50 +38,27 @@ void System::init() {
     }
 }
 
-System::System(): interface(nullptr) {
+System::System() {
     init();
 }
 
-
-System::System(UI *ui): interface(ui) {
-    init();
-}
-
-void System::get_services() {
-    attached();
+std::vector<std::string> System::get_services() {
     if (services_map.size() == 0) {
         throw std::logic_error("Нет доступных услуг!");
     }
     else {
+        std::vector<std::string> ret;
         for (auto &i: services_map) {
-            interface->msg(i.first);
+            ret.push_back(i.first);
         }
+        return ret;
     }
 }
 
-void System::add_user() {
-    attached();
-    std::string name, surname, service;
-    int age, height, weight, rid, uid;
-    char gender;
-    try {
-        uid = get_uid();
-        interface->msg("Выберите услугу (или введите exit для выхода)");
-    }
-    catch (std::exception &ex) {
-        interface->err(ex.what());
-        return;
-    }
-    std::cin >> service;
-    if (service == "exit") {
-        return;
-    }
+int System::add_user(std::string service, std::string name, std::string surname, int age, int height, int weight, char gender) {
+    int rid, uid;
+    uid = get_uid();
     auto it = services_map.find(service);
-    if (it == services_map.end()) {
-        interface->err("Нет такой услуги!");
-        return;
-    }
-    
     //поиск комнаты с наименьшей очередью
     rid = it->second[0];
     for (auto j: it->second) {
@@ -95,43 +66,8 @@ void System::add_user() {
             rid = j;
         }
     }
-    interface->msg("Введите имя");
-    std::cin >> name;
-    if (!std::cin) {
-        interface->err("Некорректное имя!");
-        return;
-    }
-    interface->msg("Введите фамилию");
-    std::cin >> surname;
-    if (!std::cin) {
-        interface->err("Некорректная фамилия!");
-        return;
-    }
-    interface->msg("Введите свой возраст (в годах)");
-    std::cin >> age;
-    if (!std::cin || (age < 0)) {
-        interface->err("Некорректный возраст!");
-        return;
-    }
-    interface->msg("Введите свой рост (в см)");
-    std::cin >> height;
-    if (!std::cin || (height < 0)) {
-        interface->err("Некорректный рост!");
-        return;
-    }
-    interface->msg("Введите свой вес (в кг)");
-    std::cin >> weight;
-    if (!std::cin || (weight < 0)) {
-        interface->err("Некорректный вес!");
-        return;
-    }
-    interface->msg("Введите пол (латинская M или F)");
-    std::cin >> gender;
-    if (!std::cin || ((gender != 'M') && (gender != 'F'))) {
-        interface->err("Некорректный пол!");
-        return;
-    }
-    
+    database.add_user(rid, uid, name, surname, age, height, weight, gender);
+    return uid;
 }
 
 void System::add_room(std::string name, std::string surname, std::vector<std::string> services) {

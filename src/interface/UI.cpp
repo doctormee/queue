@@ -4,6 +4,10 @@
 #include <algorithm>
 #include <iostream>
 
+UI::UI(): database(nullptr) {}
+
+UI::UI(System *src): database(src) {}
+
 void UI::attached() {
     if (database == nullptr) {
         throw std::logic_error("Нет присоединённой системы!");
@@ -15,34 +19,43 @@ void UI::attach(System *src) {
 void UI::set_uid(int uid_) {
     uid = uid_;
 }
+int UI::get_uid() {
+    return uid;
+}
 
 void UI::add_room() {
     attached();
     std::string name, surname, buf;
     std::vector<std::string> services;
-    msg("Введите имя специалиста: ");
-    if (!inp(name)) {
-        err("Некорректное имя!");
-        return;
-    }
-    msg("Введите фамилию специалиста: ");
-    if (!inp(surname)) {
-        err("Некорректная фамилия!");
-        return;
-    }
-    msg("Введите услуги, оказываемые специалистом, по одной услуге на строку. В конце ввода введите строку end");
-    inp(buf);
-    while ((buf != "end") && (!buf.empty())) {
-        if (std::find(services.begin(), services.end(), buf) == services.end()) {
-            services.push_back(buf);
-        }
-        inp(buf);
-    }
-    if (services.empty()) {
-        err("Список услуг не может быть пустым!");
-        return;
-    }
     try {
+        msg("Введите имя специалиста: ");
+        while (!inp(name)) {
+            if (name.empty()) {
+                return;
+            }
+            err("Некорректное имя!");
+            msg("Введите имя специалиста: ");
+        }
+        msg("Введите фамилию специалиста: ");
+        while (!inp(surname)) {
+            if (surname.empty()) {
+                return;
+            }
+            err("Некорректная фамилия!");
+            msg("Введите фамилию специалиста: ");
+        }
+        msg("Введите услуги, оказываемые специалистом, по одной услуге на строку. В конце ввода введите строку end");
+        inp(buf);
+        while ((buf != "end") && (!buf.empty())) {
+            if (std::find(services.begin(), services.end(), buf) == services.end()) {
+                services.push_back(buf);
+            }
+            inp(buf);
+        }
+        if (services.empty()) {
+            err("Список услуг не может быть пустым!");
+            return;
+        }
         database->add_room(name, surname, services);
     }
     catch (std::exception &ex) {
@@ -50,7 +63,82 @@ void UI::add_room() {
         return;
     }
 }
-/*
-void UI::get_services() {
-    msg
-}*/
+
+void UI::add_user() {
+    attached();
+    std::string name, surname, service;
+    int age, height, weight;
+    char gender;
+    try {
+        msg("Выберите услугу (или введите exit для выхода)");
+        std::vector<std::string> services = database->get_services();
+        print_services();
+        inp(service);
+        while (std::find(services.begin(), services.end(), service) == services.end()) {
+            if (service == "exit") {
+                return;
+            } else {
+                if (service.empty()) {
+                    return;
+                }
+                err("Нет такой услуги!");
+                msg("Выберите услугу (или введите exit для выхода)");
+                print_services();
+                inp(service);
+            }
+        }
+        msg("Введите имя");
+        while (!inp(name)) {
+            if (name.empty()) {
+                return;
+            }
+            err("Некорректное имя!");
+            msg("Введите имя");
+        }
+        msg("Введите фамилию");
+        while (!inp(surname)) {
+            if (surname.empty()) {
+                return;
+            }
+            err("Некорректная фамилия!");
+            msg("Введите фамилию");
+        }
+        msg("Введите свой возраст (в годах)");
+        while (!inp(age) || (age < 0)) {
+            err("Некорректный возраст!");
+            msg("Введите свой возраст (в годах)");
+        }
+        msg("Введите свой рост (в см)");
+        while (!inp(height) || (height < 0)) {
+            err("Некорректный рост!");
+            msg("Введите свой рост (в см)");
+        }
+        msg("Введите свой вес (в кг)");
+        while (!inp(weight) || (weight < 0)) {
+            err("Некорректный вес!");
+            msg("Введите свой вес (в кг)");
+        }
+        msg("Введите пол (латинская M или F)");
+        while (!inp(gender) || ((gender != 'M') && (gender != 'F'))) {
+            err("Некорректный пол!");
+            msg("Введите пол (латинская M или F)");
+        }
+        set_uid(database->add_user(service, name, surname, age, height, weight, gender));
+    }
+    catch (std::exception &ex) {
+        err(ex.what());
+        return;
+    }
+}
+
+void UI::print_services() {
+    try {
+        std::vector<std::string> services = database->get_services();
+        for (auto &i: services) {
+            msg(i);
+        }
+    }
+    catch (std::exception &ex) {
+        err(ex.what());
+    }
+}

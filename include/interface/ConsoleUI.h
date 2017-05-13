@@ -4,8 +4,7 @@
 class System;
 
 class ConsoleUI: public UI {
-    int uid;
-    System *database;
+    const std::string ERR_MSG = "Неожиданный конец ввода!";
 public:
     ConsoleUI() = default;
     ConsoleUI(System *);

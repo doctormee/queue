@@ -4,7 +4,7 @@
 #include <algorithm>
 #include <iostream>
 
-ConsoleUI::ConsoleUI(System *src): database(src) {}
+ConsoleUI::ConsoleUI(System *src): UI(src) {}
 
 void ConsoleUI::msg(std::string message) {
     std::cout << message << std::endl;
@@ -14,17 +14,47 @@ void ConsoleUI::err(std::string error_message) {
 }
 bool ConsoleUI::inp(std::string &to) {
     std::cin >> to;
-    return bool(std::cin);
+    if (std::cin.eof()) {
+        throw std::logic_error(ERR_MSG);
+    }
+    if (!std::cin) {
+        std::cin.clear();
+        std::cin.ignore(10000,'\n');
+        return false;
+    }
+    else {
+        return true;
+    }
 }
 
 bool ConsoleUI::inp(int &to) {
     std::cin >> to;
-    return bool(std::cin);
+    if (std::cin.eof()) {
+        throw std::logic_error(ERR_MSG);
+    }
+    if (!std::cin) {
+        std::cin.clear();
+        std::cin.ignore(10000,'\n');
+        return false;
+    }
+    else {
+        return true;
+    }
 }
 
 bool ConsoleUI::inp(char &to) {
     std::cin >> to;
-    return bool(std::cin);
+    if (std::cin.eof()) {
+        throw std::logic_error(ERR_MSG);
+    }
+    if (!std::cin) {
+        std::cin.clear();
+        std::cin.ignore(10000,'\n');
+        return false;
+    }
+    else {
+        return true;
+    }
 }
 /*
 void ConsoleUI::add_room() {

@@ -5,8 +5,6 @@
 #include <string>
 #include <vector>
 
-class UI;
-
 class Parser;
 
 class System {
@@ -18,17 +16,14 @@ class System {
     std::stack<int> free_rids;
     std::map<int, int> users_map;
     std::map<std::string, std::vector<int>> services_map;
-    UI *interface;
     static Parser parser;
-    
-    void attached();
+
     int get_rid();
     int get_uid();
     void init();
 public:
     System();
-    System(UI *);
-    void get_services();
-    void add_user();
+    std::vector<std::string> get_services();
+    int add_user(std::string, std::string, std::string, int, int, int, char);
     void add_room(std::string, std::string, std::vector<std::string>);
 };
