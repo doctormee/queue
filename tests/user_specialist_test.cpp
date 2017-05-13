@@ -52,7 +52,7 @@ TEST(Specialist_Test, Services) {
     ASSERT_STREQ(spec1.get_service(0).c_str(), "Dentist" );
     try {
         spec1.get_service(1);
-        ASSERT_EQ(1, 0);
+        FAIL();
     }
     catch (std::out_of_range &ex) {
         //ok
@@ -64,7 +64,7 @@ TEST(Specialist_Test, Services) {
         }
     }
     catch (...) {
-        ASSERT_TRUE(0);//bad
+        FAIL();//bad
     }
 }
 
@@ -73,12 +73,12 @@ TEST(Specialist_Test, Trying_to_Evaluate) {
     Evaluator eval;
     try {
         spec1.accept(eval);
-        ASSERT_TRUE(false);
+        FAIL();
     }
     catch (std::logic_error &ex) {
         //ok
     }
     catch (...) {
-        ASSERT_TRUE(false);
+        FAIL();
     }
 }

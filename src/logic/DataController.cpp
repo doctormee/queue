@@ -147,3 +147,12 @@ void DataController::delete_user(int rid, int uid) {
     it->second->queue->remove(uid);
     update_room(rid);
 }
+
+int DataController::room_size(int rid) {
+    decltype(rooms.begin()) it = rooms.find(rid);
+    if (it == rooms.end()) {
+        std::out_of_range ex("No room with such room id!");
+        throw ex;
+    }
+    return it->second->queue->size();
+}

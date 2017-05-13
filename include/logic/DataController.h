@@ -3,11 +3,11 @@
 #include <memory>
 #include <string>
 #include <map>
-class Rule;
-class Constants;
-class User;
-class Queue;
-class Specialist;
+#include "Rule.h"
+#include "Constants.h"
+#include "User.h"
+#include "Queue.h"
+#include "Specialist.h"
 class DataController {
     struct Room {
         int rid;
@@ -18,7 +18,6 @@ class DataController {
     std::map<int, std::unique_ptr<Room>> rooms;
     std::vector<std::unique_ptr<Rule>> rules;
 public:
-    ~DataController() = default;
     void add_room(int, std::string, std::string, std::vector<std::string>);
     void delete_room(int);
     Specialist &get_specialist(int);
@@ -31,4 +30,5 @@ public:
     int matching_rules(User &, User &) const;
     void update_room(int);
     void update_all();
+    int room_size(int);
 };

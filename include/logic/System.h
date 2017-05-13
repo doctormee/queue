@@ -1,16 +1,18 @@
 #pragma once
+#include "DataController.h"
 #include <stack>
 #include <map>
 #include <string>
 #include <vector>
 
-#define MAX_USERS 10
-#define MAX_ROOMS 10
+#include "UI.h"
 
-class UI;
 class Parser;
-class DataController;
+
 class System {
+    const int MAX_USERS = 10;
+    const int MAX_ROOMS = 10;
+    
     DataController database;
     std::stack<int> free_uids;
     std::stack<int> free_rids;
@@ -18,4 +20,15 @@ class System {
     std::map<std::string, std::vector<int>> services_map;
     UI *interface;
     static Parser parser;
-}
+    
+    void attached();
+    int get_rid();
+    int get_uid();
+public:
+    System();
+    System(UI *);
+    void init();
+    void get_services();
+    void add_user();
+    void add_room();
+};

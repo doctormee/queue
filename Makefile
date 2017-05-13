@@ -15,7 +15,7 @@ GTESTDIR = ../googletest/googletest
 #user libraries directory
 LIBDIR = ./libs
 #all compiler flags
-CPPFLAGS = -std=c++11 $(IDIRS:%=-I% ) --coverage -Wall -Werror
+CPPFLAGS = -std=c++11 $(IDIRS:%=-I% ) --coverage -Wall
 #test flags
 TESTFLAGS = -isystem $(GTESTDIR)/include $(LIBDIR)/libgtest.a 
 #output executable names

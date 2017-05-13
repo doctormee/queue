@@ -1,8 +1,4 @@
 #include "DataController.h"
-#include "Rule.h"
-#include "Constants.h"
-#include "User.h"
-#include "Queue.h"
 #include "Predicate.h"
 #include "NaryPredicate.h"
 #include "ConjunctionPredicate.h"
@@ -10,7 +6,6 @@
 #include "NegationPredicate.h"
 #include "ImplicationPredicate.h"
 #include "Term.h"
-#include "Specialist.h"
 #include "gtest/gtest.h"
 #include <memory>
 #include <string>
@@ -103,7 +98,7 @@ TEST(DataController_test, Add_user_ptr) {
     ASSERT_EQ(q.size(), 1);
     try {
         dc.add_user(1, jack);
-        ASSERT_FALSE(true);
+        FAIL();
     }
     catch (...) {
         //ok
@@ -139,6 +134,17 @@ TEST(DataController_test, Update_room) {
     auto &q = dc.get_queue(0);
     ASSERT_EQ((*(q.begin()))->user->get_uid(), 2);
 } 
+TEST(DataController_test, Room_size) {
+    DataController dc;
+    std::vector<std::string> serv;
+    serv.push_back("Dental");
+    dc.add_room(0, "Peter", "Jackson", serv);
+    std::unique_ptr<User> ivan(new User(1, "Ivan", "Ivanov", 10, 192, 70, 'F'));
+    std::unique_ptr<User> peter(new User(2, "Peter", "Petroff", 10, 191, 69, 'M'));
+    dc.add_user(0, ivan);
+    dc.add_user(0, peter);
+    ASSERT_EQ(dc.room_size(0), 2);
+} 
 TEST(DataController_test, Update_All) {
     DataController dc;
     std::vector<std::string> serv;
@@ -171,7 +177,7 @@ TEST(DataController_test, Get_queue_test) {
     ASSERT_EQ(q.size(), 1);
     try {
         dc.get_queue(1);
-        ASSERT_TRUE(false);
+        FAIL();
     }
     catch (...)
     {

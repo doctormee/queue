@@ -38,7 +38,7 @@ TEST(Queue_test, Get_user) {
     ASSERT_TRUE(my_queue.get_user(2).get_weight() == 72);
     try {
         my_queue.get_user(3);
-        ASSERT_TRUE(false);
+       FAIL();
     }
     catch (...) {
         //ok
