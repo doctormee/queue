@@ -19,7 +19,7 @@ CPPFLAGS = -std=c++11 $(IDIRS:%=-I% ) --coverage -Wall
 #test flags
 TESTFLAGS = -isystem $(GTESTDIR)/include $(LIBDIR)/libgtest.a 
 #output executable names
-OUT =
+OUT = priority_queue
 #test executable names
 TEST = test
 #all .cpp files 
@@ -41,7 +41,7 @@ vpath %.h $(IDIRS)
 vpath %.cpp $(SRCDIRS) $(TESTDIR)
 vpath %.o $(OBJDIR)
 
-all: build #test
+all: build test
 
 .PHONY: clean libtest cov swipe gtest
 
