@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 
-#include "UI.h"
+class UI;
 
 class Parser;
 
@@ -24,11 +24,11 @@ class System {
     void attached();
     int get_rid();
     int get_uid();
+    void init();
 public:
     System();
     System(UI *);
-    void init();
     void get_services();
     void add_user();
-    void add_room();
+    void add_room(std::string, std::string, std::vector<std::string>);
 };

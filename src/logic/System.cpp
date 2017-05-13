@@ -3,10 +3,11 @@
 #include "Parser.h"
 #include "DataController.h"
 #include <stdexcept>
+#include <iostream>
 
 void System::attached() {
     if (!interface) {
-        throw std::logic_error("No interface attached!");
+        throw std::logic_error("Нет интерфейса");
     }
 }
 
@@ -32,6 +33,16 @@ int System::get_uid() {
     }
 }
 
+void System::init() {
+    int i;
+    for (i = (MAX_USERS - 1); i >= 0; --i) {
+        free_uids.push(i);
+    }
+    for (i = (MAX_ROOMS - 1); i >= 0; --i) {
+        free_rids.push(i);
+        
+    }
+}
 
 System::System(): interface(nullptr) {
     init();
@@ -40,15 +51,6 @@ System::System(): interface(nullptr) {
 
 System::System(UI *ui): interface(ui) {
     init();
-}
-
-void System::init() {
-    for (auto i = (MAX_USERS - 1); i <= 0; --i) {
-        free_uids.push(i);
-    }
-    for (auto i = (MAX_ROOMS - 1); i <= 0; --i) {
-        free_rids.push(i);
-    }
 }
 
 void System::get_services() {
@@ -132,45 +134,11 @@ void System::add_user() {
     
 }
 
-void System::add_room() {
-    attached();
+void System::add_room(std::string name, std::string surname, std::vector<std::string> services) {
     int rid;
-    std::string name, surname, buf;
-    std::vector<std::string> services;
-    try {
-        rid = get_rid();
-    }
-    catch (std::exception &ex) {
-        interface->err(ex.what());
-        return;
-    }
-    interface->msg("Введите имя специалиста: ");
-    std::cin >> name;
-    if (!std::cin) {
-        interface->err("Некорректное имя!");
-        return;
-    }
-    interface->msg("Введите фамилию специалиста: ");
-    std::cin >> surname;
-    if (!std::cin) {
-        interface->err("Некорректная фамилия!");
-        return;
-    }
-    interface->msg("Введите услуги, оказываемые специалистом, по одной услуге на строку. В конце ввода введите строку end");
-    std::cin >> buf;
-    while ((buf != "end") && (!buf.empty())) {
-        services.push_back(buf);
-        std::cin >> buf;
-    }
-    if (services.empty()) {
-        interface->err("Список услуг не может быть пустым!");
-        return;
-    }
-    try {
-        database.add_room(rid, name, surname, services);
-    }
-    catch (std::exception &ex) {
-        interface->err(ex.what());
-        return;
+    rid = get_rid();
+    database.add_room(rid, name, surname, services);
+    for (auto &i: services) {
+        services_map[i].push_back(rid);
     }
 }

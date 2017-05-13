@@ -1,22 +1,33 @@
-#include "UI.h"
+#include "ConsoleUI.h"
 #include "System.h"
 #include <stdexcept>
 #include <algorithm>
 #include <iostream>
 
-void UI::attached() {
-    if (database == nullptr) {
-        throw std::logic_error("Нет присоединённой системы!");
-    }
+ConsoleUI::ConsoleUI(System *src): database(src) {}
+
+void ConsoleUI::msg(std::string message) {
+    std::cout << message << std::endl;
 }
-void UI::attach(System *src) {
-    database = src;
+void ConsoleUI::err(std::string error_message) {
+    std::cout << "Ошибка! " << error_message << std::endl;
 }
-void UI::set_uid(int uid_) {
-    uid = uid_;
+bool ConsoleUI::inp(std::string &to) {
+    std::cin >> to;
+    return bool(std::cin);
 }
 
-void UI::add_room() {
+bool ConsoleUI::inp(int &to) {
+    std::cin >> to;
+    return bool(std::cin);
+}
+
+bool ConsoleUI::inp(char &to) {
+    std::cin >> to;
+    return bool(std::cin);
+}
+/*
+void ConsoleUI::add_room() {
     attached();
     std::string name, surname, buf;
     std::vector<std::string> services;
@@ -50,7 +61,7 @@ void UI::add_room() {
         return;
     }
 }
-/*
-void UI::get_services() {
+
+void ConsoleUI::get_services() {
     msg
 }*/
