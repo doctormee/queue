@@ -99,6 +99,16 @@ TEST(StreamUI_Test, Print_services) {
     ASSERT_EQ(actual, expected);
 }
 
+TEST(StreamUI_Test, Empty_services) {
+    System main;
+    std::stringstream out;
+    StreamUI ui(std::cin, out, &main);
+    ui.print_services();
+    std::string actual = out.str();
+    std::string expected = "Ошибка! Нет доступных услуг!\n";
+    ASSERT_EQ(actual, expected);
+}
+
 TEST(StreamUI_Test, No_system_attached) {
     StreamUI ui(std::cin, std::cout);
     ASSERT_THROW(ui.add_user(), std::logic_error);
