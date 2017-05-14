@@ -129,7 +129,7 @@ std::vector<std::string> System::get_rooms() {
     for (auto i: rids) {
         msg.clear();
         Specialist &spec = database.get_specialist(i);
-        msg = std::to_string(i) + ". " + spec.get_name() + " " + spec.get_surname() + ". Услуги: ";
+        msg = std::to_string(i) + ". " + spec.get_name() + " " + spec.get_surname() + ". В очереди " + std::to_string(database.room_size(i)) + ". Услуги: ";
         for (auto j = 0; j < spec.size(); ++j) {
             msg += spec.get_service(j) + " ";
         }
