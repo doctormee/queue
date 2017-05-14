@@ -61,6 +61,9 @@ void DataController::update_room(int rid) {
     int priority;
     for (auto &&i = q->begin(); i != q->end(); ++i) {
         priority = 0;
+        for (auto &&j = q->begin(); j != i; ++j) {
+            priority += matching_rules(*((*i)->user), *((*j)->user));
+        }
         for (auto &&j = i + 1; j != q->end(); ++j) {
             priority += matching_rules(*((*i)->user), *((*j)->user));
         }

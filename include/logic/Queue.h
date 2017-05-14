@@ -21,5 +21,6 @@ public:
     std::vector<std::unique_ptr<Item>>::iterator begin();
     std::vector<std::unique_ptr<Item>>::iterator end();
     User &get_user(int);
+    //std::vector<User &> get_queue();
     //void update(std::vector<std::unique_ptr<Rule>> &);
 };

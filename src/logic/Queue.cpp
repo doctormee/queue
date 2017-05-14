@@ -54,7 +54,7 @@ void Queue::remove(int uid) {
 }
 
 bool Queue::queue_less(const std::unique_ptr<Item> &left, const std::unique_ptr<Item> &right) {
-    return (left->priority >= right->priority);
+    return (left->priority > right->priority);
 }
 
 void Queue::sort() {
@@ -80,3 +80,12 @@ User &Queue::get_user(int uid) {
     }
     throw std::out_of_range("No such User!");
 }
+/*
+std::vector<User &> Queue::get_queue() {
+    std::vector<User &> ret;
+    ret.clear();
+    for (auto i = container.begin(); i != container.end(); ++i) {
+        ret.push_back(()*i)
+    }
+}
+*/

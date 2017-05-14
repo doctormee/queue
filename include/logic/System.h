@@ -26,4 +26,7 @@ public:
     std::vector<std::string> get_services();
     int add_user(std::string, std::string, std::string, int, int, int, char);
     void add_room(std::string, std::string, std::vector<std::string>);
+    Queue &get_queue(int);
+    void remove_user(int);
+    std::vector<std::string> get_rooms();
 };

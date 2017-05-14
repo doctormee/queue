@@ -113,6 +113,65 @@ TEST(StreamUI_Test, No_system_attached) {
     StreamUI ui(std::cin, std::cout);
     ASSERT_THROW(ui.add_user(), std::logic_error);
 }
+TEST(StreamUI_Test, Print_queue) {
+    System main;
+    std::stringstream out;
+    std::string name, surname;
+    std::vector<std::string> serv;
+    name = "Ivan";
+    surname = "Ivanov";
+    serv.push_back("Dentist");
+    serv.push_back("Therapist");
+    StreamUI ui(std::cin, out, &main);
+    main.add_room(name, surname, serv);
+    main.add_user(serv[0], name, surname, 10, 100, 40, 'M');
+    main.add_user(serv[0], "Semen", surname, 10, 100, 40, 'M');
+    ui.set_uid(0);
+    ui.print_queue();
+    std::string actual, expected;
+    expected = "Ваш идентификатор: 0\nIvan Ivanov. Идентификатор: 0\nSemen Ivanov. Идентификатор: 1\nВаш номер в очереди: 1\n";
+    actual = out.str();
+    ASSERT_EQ(actual, expected);
+}
+TEST(StreamUI_Test, Print_queue_nonexist_user) {
+    System main;
+    std::stringstream out;
+    std::string name, surname;
+    std::vector<std::string> serv;
+    name = "Ivan";
+    surname = "Ivanov";
+    serv.push_back("Dentist");
+    serv.push_back("Therapist");
+    StreamUI ui(std::cin, out, &main);
+    main.add_room(name, surname, serv);
+    main.add_user(serv[0], name, surname, 10, 100, 40, 'M');
+    ui.set_uid(1);
+    ui.print_queue();
+    std::string actual, expected;
+    expected = "Ошибка! Пользователь не существует!\n";
+    actual = out.str();
+    ASSERT_EQ(actual, expected);
+}
+
+TEST(StreamUI_Test, Print_rooms) {
+    System main;
+    std::stringstream out;
+    std::string name, surname;
+    std::vector<std::string> serv;
+    name = "Ivan";
+    surname = "Ivanov";
+    serv.push_back("Dentist");
+    main.add_room(name, surname, serv);
+    name = "Peter";
+    serv.push_back("Therapist");
+    main.add_room(name, surname, serv);
+    StreamUI ui(std::cin, out, &main);
+    std::string actual, expected;
+    ASSERT_NO_THROW(ui.print_rooms());
+    expected = "Ivan Ivanov. Услуги: Dentist \nPeter Ivanov. Услуги: Dentist Therapist \n";
+    actual = out.str();
+    ASSERT_EQ(actual, expected);
+}
 
 TEST(System_Test, Empty_services) {
     System main;
@@ -146,4 +205,30 @@ TEST(System_Test, Add_user) {
     serv.push_back("Therapist");
     main.add_room(name, surname, serv);
     main.add_user(serv[0], name, surname, 10, 100, 60, 'F');
+    ASSERT_EQ(main.get_queue(0).size(), 1);
+    main.add_user(serv[0], name, surname, 10, 100, 60, 'F');
+    ASSERT_EQ(main.get_queue(0).size(), 1);
+    ASSERT_EQ(main.get_queue(1).size(), 1);
 } 
+TEST(System_Test, Remove_user) {
+    System main;
+    std::string name, surname;
+    std::vector<std::string> serv;
+    name = "Ivan";
+    surname = "Ivanov";
+    serv.push_back("Dentist");
+    main.add_room(name, surname, serv);
+    serv.push_back("Therapist");
+    serv.push_back("Therapist");
+    main.add_room(name, surname, serv);
+    main.add_user(serv[0], name, surname, 10, 100, 60, 'F');
+    ASSERT_EQ(main.get_queue(0).size(), 1);
+    main.add_user(serv[0], name, surname, 10, 100, 60, 'F');
+    ASSERT_EQ(main.get_queue(0).size(), 1);
+    ASSERT_EQ(main.get_queue(1).size(), 1);
+    main.remove_user(1);
+    main.remove_user(0);
+    ASSERT_THROW(main.remove_user(0), std::logic_error);
+    ASSERT_EQ(main.add_user(serv[0], name, surname, 10, 100, 60, 'F'), 0);
+}
+

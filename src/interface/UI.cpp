@@ -4,17 +4,17 @@
 #include <algorithm>
 #include <iostream>
 
-UI::UI(): database(nullptr) {}
+UI::UI(): controller(nullptr) {}
 
-UI::UI(System *src): database(src) {}
+UI::UI(System *src): controller(src) {}
 
 void UI::attached() {
-    if (database == nullptr) {
+    if (controller == nullptr) {
         throw std::logic_error("Нет присоединённой системы!");
     }
 }
 void UI::attach(System *src) {
-    database = src;
+    controller = src;
 }
 void UI::set_uid(int uid_) {
     uid = uid_;
@@ -50,7 +50,7 @@ void UI::add_room() {
             err("Список услуг не может быть пустым!");
             return;
         }
-        database->add_room(name, surname, services);
+        controller->add_room(name, surname, services);
     }
     catch (std::exception &ex) {
         err(ex.what());
@@ -65,7 +65,7 @@ void UI::add_user() {
     char gender;
     try {
         msg("Выберите услугу (или введите exit для выхода)");
-        std::vector<std::string> services = database->get_services();
+        std::vector<std::string> services = controller->get_services();
         print_services();
         inp(service);
         while (std::find(services.begin(), services.end(), service) == services.end()) {
@@ -111,7 +111,7 @@ void UI::add_user() {
             err("Некорректный пол!");
             msg("Введите пол (латинская M или F)");
         }
-        set_uid(database->add_user(service, name, surname, age, height, weight, gender));
+        set_uid(controller->add_user(service, name, surname, age, height, weight, gender));
     }
     catch (std::exception &ex) {
         err(ex.what());
@@ -121,12 +121,40 @@ void UI::add_user() {
 
 void UI::print_services() {
     try {
-        std::vector<std::string> services = database->get_services();
+        std::vector<std::string> services = controller->get_services();
         for (auto &i: services) {
             msg(i);
         }
     }
     catch (std::exception &ex) {
         err(ex.what());
+    }
+}
+
+void UI::print_queue() {
+    try {
+        Queue &q = controller->get_queue(uid);
+        std::string message = "Ваш идентификатор: " + std::to_string(uid);
+        msg(message);
+        int pos = 0;
+        auto it = q.begin();
+        for (auto i = 0; it != q.end(); ++i) {
+            msg((*it)->user->get_name() + " " + (*it)->user->get_surname() + ". Идентификатор: " + std::to_string((*it)->user->get_uid()));
+            if ((*it)->user->get_uid() == uid) {
+                pos = i + 1;
+            }
+            ++it;
+        }
+        msg("Ваш номер в очереди: " + std::to_string(pos));
+    }
+    catch (std::exception &ex) {
+        err(ex.what());
+    }
+}
+
+void UI::print_rooms() {
+    std::vector<std::string> buf = controller->get_rooms();
+    for (auto i: buf) {
+        msg(i);
     }
 }

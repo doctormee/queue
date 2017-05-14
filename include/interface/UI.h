@@ -3,7 +3,7 @@
 class System;
 class UI {
     int uid;
-    System *database;
+    System *controller;
     void attached();
 public:
     UI();
@@ -19,4 +19,6 @@ public:
     void add_room();
     void add_user();
     void print_services(); 
+    void print_queue();
+    void print_rooms();
 };

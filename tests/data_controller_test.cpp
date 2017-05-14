@@ -85,6 +85,8 @@ TEST(DataController_test, Add_user_simple) {
     serv.push_back("Two");
     dc.add_room(0, "Ivan", "Ivanov", serv);
     dc.add_user(0, 2, "Ivan", "Ivanov", 10, 192, 70, 'F');
+    ASSERT_THROW(dc.add_user(10, 2, "Ivan", "Ivanov", 10, 192, 70, 'F'), std::out_of_range);
+    
 } 
 TEST(DataController_test, Add_user_ptr) {
     DataController dc;
@@ -112,6 +114,7 @@ TEST(DataController_test, Delete_user) {
     dc.add_room(0, "Ivan", "Ivanov", serv);
     std::unique_ptr<User> jack(new User(2, "Jack", "Kindred", 10, 192, 78, 'F'));
     dc.add_user(0, jack);
+    ASSERT_THROW(dc.delete_user(1, 2), std::out_of_range);
     dc.delete_user(0, 2);
     auto &q = dc.get_queue(0);
     ASSERT_EQ(q.size(), 0);
@@ -133,6 +136,7 @@ TEST(DataController_test, Update_room) {
     dc.update_room(0);
     auto &q = dc.get_queue(0);
     ASSERT_EQ((*(q.begin()))->user->get_uid(), 2);
+    ASSERT_THROW(dc.update_room(1), std::out_of_range);
 } 
 TEST(DataController_test, Room_size) {
     DataController dc;
@@ -144,6 +148,7 @@ TEST(DataController_test, Room_size) {
     dc.add_user(0, ivan);
     dc.add_user(0, peter);
     ASSERT_EQ(dc.room_size(0), 2);
+    ASSERT_THROW(dc.room_size(1), std::out_of_range);
 } 
 TEST(DataController_test, Update_All) {
     DataController dc;
@@ -194,5 +199,6 @@ TEST(DataController_test, Get_specialist_test) {
     ASSERT_EQ(s.size(), 2);
     ASSERT_STREQ(s.get_service(0).c_str(), "One");
     ASSERT_STREQ(s.get_service(1).c_str(), "Two");
+    ASSERT_THROW(dc.get_specialist(1), std::out_of_range);
     
 } 

@@ -4,6 +4,7 @@
 #include "DataController.h"
 #include <stdexcept>
 #include <iostream>
+#include <set>
 
 int System::get_rid() {
     if (free_rids.size() == 0) {
@@ -67,6 +68,7 @@ int System::add_user(std::string service, std::string name, std::string surname,
         }
     }
     database.add_user(rid, uid, name, surname, age, height, weight, gender);
+    users_map[uid] = rid;
     return uid;
 }
 
@@ -77,4 +79,47 @@ void System::add_room(std::string name, std::string surname, std::vector<std::st
     for (auto &i: services) {
         services_map[i].push_back(rid);
     }
+}
+
+Queue &System::get_queue(int uid) {
+    auto it = users_map.find(uid);
+    if (it == users_map.end()) {
+        throw std::logic_error("Пользователь не существует!");
+    }
+    auto rid = it->second;
+    return database.get_queue(rid);
+}
+
+void System::remove_user(int uid) {
+    auto it = users_map.find(uid);
+    if (it == users_map.end()) {
+        throw std::logic_error("Пользователь не существует!");
+    }
+    auto rid = it->second;
+    database.delete_user(rid, uid);
+    free_uids.push(uid);
+    users_map.erase(uid);
+}
+
+std::vector<std::string> System::get_rooms() {
+    std::vector<std::string> ret;
+    std::string msg;
+    std::set<int> rids;
+    for (auto i: services_map) {
+        for (auto j: i.second) {
+            if (rids.find(j) == rids.end()) {
+                rids.insert(j);
+            }
+        }
+    }
+    for (auto i: rids) {
+        msg.clear();
+        Specialist &spec = database.get_specialist(i);
+        msg = spec.get_name() + " " + spec.get_surname() + ". Услуги: ";
+        for (auto j = 0; j < spec.size(); ++j) {
+            msg += spec.get_service(j) + " ";
+        }
+        ret.push_back(msg);
+    }
+    return ret;
 }
