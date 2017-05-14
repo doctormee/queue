@@ -139,7 +139,19 @@ TEST(Parser_test, Term_bad_gender_sign) {
 TEST(Parser_test, Term_bad_gender_value) {
     std::stringstream inp;
     Parser p(inp);
-    inp << "(((gender = 2)))";
+    inp << "(((gender = !F)))";
+    ASSERT_THROW(p.parse(), ParseException);
+}
+TEST(Parser_test, Term_bad_weight) {
+    std::stringstream inp;
+    Parser p(inp);
+    inp << "(((weighh = 2)))";
+    ASSERT_THROW(p.parse(), ParseException);
+}
+TEST(Parser_test, Term_bad_height) {
+    std::stringstream inp;
+    Parser p(inp);
+    inp << "(((heighh = 2)))";
     ASSERT_THROW(p.parse(), ParseException);
 }
 
@@ -205,7 +217,7 @@ TEST(Parser_test, Disjunction_double) {
 TEST(Parser_test, Disjunction_good) {
     std::stringstream inp;
     Parser p(inp);
-    inp << "(age > 19) | ALL";
+    inp << "(weight > 19) | ALL";
     try {
         std::shared_ptr<Predicate> pred(p.parse());
         User ivan(0, "Ivan", "Ivanov", 19, 100, 100, 'M');
@@ -239,7 +251,7 @@ TEST(Parser_test, Implication_bad) {
 TEST(Parser_test, Implication_bad2) {
     std::stringstream inp;
     Parser p(inp);
-    inp << "age >= 19 > ALL ";
+    inp << "age >= 19 --> ALL ";
     ASSERT_THROW(p.parse(), ParseException);
 }
 TEST(Parser_test, Implication_good) {
@@ -260,6 +272,46 @@ TEST(Parser_test, Implication_long) {
     std::stringstream inp;
     Parser p(inp);
     inp << "age >= 19 -> ALL -> gender = M";
+    try {
+        std::shared_ptr<Predicate> pred(p.parse());
+        User ivan(0, "Ivan", "Ivanov", 19, 100, 100, 'M');
+        Evaluator eval(&ivan);
+        ASSERT_TRUE((pred->accept(eval), eval.get_answer()));
+    }
+    catch (...) {
+        FAIL();
+    }
+}
+TEST(Parser_test, Negation_bad) {
+    std::stringstream inp;
+    Parser p(inp);
+    inp << "age >= 19 ! ";
+    ASSERT_THROW(p.parse(), ParseException);
+}
+TEST(Parser_test, Negation_bad2) {
+    std::stringstream inp;
+    Parser p(inp);
+    inp << "!age >= 19 ! ALL! ";
+    ASSERT_THROW(p.parse(), ParseException);
+}
+TEST(Parser_test, Negation_good) {
+    std::stringstream inp;
+    Parser p(inp);
+    inp << "!(age != 19)";
+    try {
+        std::shared_ptr<Predicate> pred(p.parse());
+        User ivan(0, "Ivan", "Ivanov", 19, 100, 100, 'M');
+        Evaluator eval(&ivan);
+        ASSERT_TRUE((pred->accept(eval), eval.get_answer()));
+    }
+    catch (...) {
+        FAIL();
+    }
+}
+TEST(Parser_test, Negation_long) {
+    std::stringstream inp;
+    Parser p(inp);
+    inp << "!!gender = M";
     try {
         std::shared_ptr<Predicate> pred(p.parse());
         User ivan(0, "Ivan", "Ivanov", 19, 100, 100, 'M');
