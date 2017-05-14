@@ -69,7 +69,6 @@ cov:
 	@ genhtml -o html cov.info
 	@ rm cov.info
 	@ open html/index.html
-	@ make swipe
 	@ echo Done!
 swipe:
 	@ rm -rf $(OBJDIR)/*.gcda
