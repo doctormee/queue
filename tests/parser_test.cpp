@@ -126,9 +126,10 @@ TEST(Parser_test, Term_bad_value) {
 TEST(Parser_test, Term_bad_gender) {
     std::stringstream inp;
     Parser p(inp);
-    inp << "(((gendrr = 2)))";
+    inp << "(((gendrr = M)))";
     ASSERT_THROW(p.parse(), ParseException);
 }
+
 TEST(Parser_test, Term_bad_gender_sign) {
     std::stringstream inp;
     Parser p(inp);
@@ -139,6 +140,13 @@ TEST(Parser_test, Term_bad_gender_value) {
     std::stringstream inp;
     Parser p(inp);
     inp << "(((gender = 2)))";
+    ASSERT_THROW(p.parse(), ParseException);
+}
+
+TEST(Parser_test, Term_bad_ALL) {
+    std::stringstream inp;
+    Parser p(inp);
+    inp << "(((AlL)))";
     ASSERT_THROW(p.parse(), ParseException);
 }
 TEST(Parser_test, Conjunction_bad) {
