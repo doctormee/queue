@@ -99,16 +99,46 @@ TEST(Parser_test, Term_bad_field) {
     inp << "(((ags < 19)))";
     ASSERT_THROW(p.parse(), ParseException);
 }
-TEST(Parser_test, Term_bad_sign) {
+TEST(Parser_test, Term_bad_sign1) {
     std::stringstream inp;
     Parser p(inp);
-    inp << "(((ags <> 19)))";
+    inp << "(((age == 19)))";
+    ASSERT_THROW(p.parse(), ParseException);
+}
+TEST(Parser_test, Term_bad_sign2) {
+    std::stringstream inp;
+    Parser p(inp);
+    inp << "(((age <> 19)))";
+    ASSERT_THROW(p.parse(), ParseException);
+}
+TEST(Parser_test, Term_bad_sign3) {
+    std::stringstream inp;
+    Parser p(inp);
+    inp << "(((age x 19)))";
     ASSERT_THROW(p.parse(), ParseException);
 }
 TEST(Parser_test, Term_bad_value) {
     std::stringstream inp;
     Parser p(inp);
-    inp << "(((ags < 12020202)))";
+    inp << "(((age < -12020202)))";
+    ASSERT_THROW(p.parse(), ParseException);
+}
+TEST(Parser_test, Term_bad_gender) {
+    std::stringstream inp;
+    Parser p(inp);
+    inp << "(((gendrr = 2)))";
+    ASSERT_THROW(p.parse(), ParseException);
+}
+TEST(Parser_test, Term_bad_gender_sign) {
+    std::stringstream inp;
+    Parser p(inp);
+    inp << "(((gender < 2)))";
+    ASSERT_THROW(p.parse(), ParseException);
+}
+TEST(Parser_test, Term_bad_gender_value) {
+    std::stringstream inp;
+    Parser p(inp);
+    inp << "(((gender = 2)))";
     ASSERT_THROW(p.parse(), ParseException);
 }
 TEST(Parser_test, Conjunction_bad) {
@@ -141,7 +171,7 @@ TEST(Parser_test, Conjunction_good) {
 TEST(Parser_test, Conjunction_long) {
     std::stringstream inp;
     Parser p(inp);
-    inp << "age >= 19 & ALL & gender = M";
+    inp << "age < 20 & ALL & gender = M";
     try {
         std::shared_ptr<Predicate> pred(p.parse());
         User ivan(0, "Ivan", "Ivanov", 19, 100, 100, 'M');
@@ -167,7 +197,7 @@ TEST(Parser_test, Disjunction_double) {
 TEST(Parser_test, Disjunction_good) {
     std::stringstream inp;
     Parser p(inp);
-    inp << "(age >= 19) | ALL";
+    inp << "(age > 19) | ALL";
     try {
         std::shared_ptr<Predicate> pred(p.parse());
         User ivan(0, "Ivan", "Ivanov", 19, 100, 100, 'M');
@@ -181,7 +211,7 @@ TEST(Parser_test, Disjunction_good) {
 TEST(Parser_test, Disjunction_long) {
     std::stringstream inp;
     Parser p(inp);
-    inp << "age >= 19 | ALL | gender = M";
+    inp << "age <= 12 | height = 100 | gender != M";
     try {
         std::shared_ptr<Predicate> pred(p.parse());
         User ivan(0, "Ivan", "Ivanov", 19, 100, 100, 'M');
@@ -198,7 +228,12 @@ TEST(Parser_test, Implication_bad) {
     inp << "age >= 19 -> ";
     ASSERT_THROW(p.parse(), ParseException);
 }
-
+TEST(Parser_test, Implication_bad2) {
+    std::stringstream inp;
+    Parser p(inp);
+    inp << "age >= 19 > ALL ";
+    ASSERT_THROW(p.parse(), ParseException);
+}
 TEST(Parser_test, Implication_good) {
     std::stringstream inp;
     Parser p(inp);
