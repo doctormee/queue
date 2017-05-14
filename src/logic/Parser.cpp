@@ -19,29 +19,113 @@ std::string Parser::gs() {
     return ret;
 }
 Sign Parser::eqnoteq() {
-    
-    return Sign(0);
+    if (t == '=') {
+        gt();
+        return Sign::EQ;
+    }
+    if (t == '!') {
+        gt();
+        if (t == '=') {
+            gt();
+            return Sign::NOTEQ;
+        }
+    }
+    throw ParseException("Некорректный ввод!");
 }
 char Parser::genvalue() {
-    
-    return 0;
+    if ((t == 'M') || (t == 'F')) {
+        char ret = t;
+        gt();
+        return ret;
+    }
+    else {
+        throw ParseException("Некорректный ввод!");
+    }
 }
 int Parser::value() {
-    
-    return 0;
+    std::string val;
+    val.clear();
+    while ((t >= '0') && (t <= '9')) {
+        val += std::to_string(t);
+        gt();
+    }
+    int ret;
+    try {
+        ret = std::stoi(val);
+        return ret;
+    }
+    catch (...) {
+        throw ParseException("Некорректный ввод!");
+    }
 }
 Sign Parser::sign() {
-    
-    return Sign(0);
+    if (t == '>') {
+        gt();
+        if (t == '=') {
+            gt();
+            return Sign::MOREEQ;
+        }
+        return Sign::MORE;
+    }
+    else if (t == '<') {
+        gt();
+        if (t == '=') {
+            gt();
+            return Sign::LESSEQ;
+        }
+        return Sign::LESS;
+    }
+    else {
+        return eqnoteq();
+    }
 }
 Field Parser::field() {
-    
-    return Field(0);
+    if (t == 'h') {
+        if (gs() == "eight") {
+            gt();
+            return Field::HEIGHT;
+        }
+    }
+    else if (t == 'w') {
+        if (gs() == "eight") {
+            gt();
+            return Field::WEIGHT;
+        } 
+    }
+    else if (t == 'a') {
+        if (gs() == "ge") {
+            gt();
+            return Field::HEIGHT;
+        }
+    }
+    throw ParseException("Некорректный ввод!");
 }
 std::shared_ptr<Predicate> Parser::term() {
     if (t == 'A') {
         if (gs() != "LL") {
             throw ParseException("Некорректный ввод!");
+        }
+        std::shared_ptr<Term> ret(new Term());
+        gt();
+        return ret;
+    }
+    else {
+        if (t == 'g') {
+            if (gs() != "ender") {
+                throw ParseException("Некорректный ввод!");
+            }
+            gt();
+            Sign s = eqnoteq();
+            int val = genvalue();
+            std::shared_ptr<Term> ret(new Term(Field::GENDER, s, val));
+            return ret;
+        }
+        else {
+            Field f = field();
+            Sign s = sign();
+            int val = value();
+            std::shared_ptr<Term> ret(new Term(f, s, val));
+            return ret;
         }
     }
 }
