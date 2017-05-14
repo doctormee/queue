@@ -29,7 +29,7 @@ TEST(DataController_test, Deleting_room) {
     }
     catch(std::exception &ex) {
         std::string actual = ex.what();
-        std::string expected = "No room with such room id!";
+        std::string expected = "Нет комнаты с таким номером!";
         ASSERT_EQ(actual, expected);
     }
     dc.delete_room(0);
@@ -54,7 +54,7 @@ TEST(DataController_test, Add_and_delete_rule) {
     }
     catch(std::exception &ex) {
         std::string actual = ex.what();
-        std::string expected = "No such rule!";
+        std::string expected = "Нет такого правила";
         ASSERT_EQ(actual, expected);
     }
     dc.delete_rule(1);

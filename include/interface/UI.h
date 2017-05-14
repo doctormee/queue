@@ -21,4 +21,6 @@ public:
     void print_services(); 
     void print_queue();
     void print_rooms();
+    void logout();
+    bool login(int);
 };

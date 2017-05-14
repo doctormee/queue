@@ -254,3 +254,33 @@ TEST(System_Test, Remove_room) {
     ASSERT_NO_THROW(main.get_queue(1));
 }
 
+TEST(System_Test, Get_rooms) {
+    System main;
+    ASSERT_EQ(main.get_rooms().size(), 0);
+    std::string name, surname;
+    std::vector<std::string> serv;
+    name = "Ivan";
+    surname = "Ivanov";
+    serv.push_back("Dentist");
+    main.add_room(name, surname, serv);
+    serv.push_back("Therapist");
+    serv.push_back("Therapist");
+    main.add_room(name, surname, serv);
+    ASSERT_EQ(main.get_rooms().size(), 2);
+}
+
+TEST(System_Test, User_in) {
+    System main;
+    std::string name, surname;
+    std::vector<std::string> serv;
+    name = "Ivan";
+    surname = "Ivanov";
+    serv.push_back("Dentist");
+    main.add_room(name, surname, serv);
+    serv.push_back("Therapist");
+    serv.push_back("Therapist");
+    main.add_room(name, surname, serv);
+    main.add_user(serv[0], name, surname, 10, 100, 60, 'F');
+    ASSERT_TRUE(main.user_in(0));
+    ASSERT_FALSE(main.user_in(1));
+}

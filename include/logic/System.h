@@ -30,4 +30,5 @@ public:
     void remove_user(int);
     void remove_room(int);
     std::vector<std::string> get_rooms();
+    bool user_in(int);
 };

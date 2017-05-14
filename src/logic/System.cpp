@@ -137,3 +137,7 @@ std::vector<std::string> System::get_rooms() {
     }
     return ret;
 }
+
+bool System::user_in(int uid) {
+    return (users_map.find(uid) != users_map.end());
+}

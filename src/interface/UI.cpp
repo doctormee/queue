@@ -120,6 +120,7 @@ void UI::add_user() {
 }
 
 void UI::print_services() {
+    attached();
     try {
         std::vector<std::string> services = controller->get_services();
         for (auto &i: services) {
@@ -132,6 +133,7 @@ void UI::print_services() {
 }
 
 void UI::print_queue() {
+    attached();
     try {
         Queue &q = controller->get_queue(uid);
         std::string message = "Ваш идентификатор: " + std::to_string(uid);
@@ -153,8 +155,28 @@ void UI::print_queue() {
 }
 
 void UI::print_rooms() {
+    attached();
     std::vector<std::string> buf = controller->get_rooms();
     for (auto i: buf) {
         msg(i);
     }
+}
+
+void UI::logout() {
+    attached();
+    try {
+        controller->remove_user(uid);
+    }
+    catch (std::exception &ex) {
+        err(ex.what());
+    }
+}
+bool UI::login(int uid_) {
+    attached();
+    if (controller->user_in(uid_)) {
+        set_uid(uid_);
+        return true;
+    }
+    err("Нет такого пользователя!");
+    return false;
 }
