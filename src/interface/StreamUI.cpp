@@ -4,9 +4,9 @@
 #include <algorithm>
 #include <iostream>
 
-StreamUI::StreamUI(std::istream& inp, std::ostream& out): input_stream(inp), output_stream(out) {}
+StreamUI::StreamUI(std::istream &inp, std::ostream &out): input_stream(inp), output_stream(out) {}
 
-StreamUI::StreamUI(std::istream& inp, std::ostream& out, System *src): UI(src), input_stream(inp), output_stream(out) {}
+StreamUI::StreamUI(std::istream &inp, std::ostream &out, System *src): UI(src), input_stream(inp), output_stream(out) {}
 
 void StreamUI::msg(std::string message) {
     output_stream << message << std::endl;
