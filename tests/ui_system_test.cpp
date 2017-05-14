@@ -173,6 +173,29 @@ TEST(StreamUI_Test, Print_rooms) {
     ASSERT_EQ(actual, expected);
 }
 
+TEST(StreamUI_Test, Login_logout) {
+    System main;
+    std::string name, surname;
+    std::vector<std::string> serv;
+    name = "Ivan";
+    surname = "Ivanov";
+    serv.push_back("Dentist");
+    main.add_room(name, surname, serv);
+    main.add_user(serv[0], name, surname, 10, 100, 60, 'F');
+    main.add_user(serv[0], name, surname, 10, 100, 60, 'F');
+    std::stringstream out;
+    std::string actual, expected;
+    StreamUI ui(std::cin, out, &main);
+    ASSERT_FALSE(ui.login(2));
+    ASSERT_TRUE(ui.login(1));
+    ui.logout();
+    ASSERT_FALSE(ui.login(1));
+    ui.logout();
+    expected = "Ошибка! Нет такого пользователя!\nОшибка! Нет такого пользователя!\nОшибка! Пользователь не существует!\n";
+    actual = out.str();
+    ASSERT_EQ(actual, expected);
+}
+
 TEST(System_Test, Empty_services) {
     System main;
     ASSERT_THROW(main.get_services(), std::logic_error);
