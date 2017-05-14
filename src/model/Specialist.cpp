@@ -16,7 +16,7 @@ Specialist::Specialist(std::string name_, std::string surname_) {
 
 std::string Specialist::get_service(int i) {
     if (i >= services.size()) {
-        std::out_of_range ex("Index out of range");
+        std::out_of_range ex("Индекс вне границ");
         throw ex;
     }
     return services[i];

@@ -3,6 +3,7 @@
 #include "Parser.h"
 #include "DataController.h"
 #include <stdexcept>
+#include <algorithm>
 #include <iostream>
 #include <set>
 
@@ -100,7 +101,20 @@ void System::remove_user(int uid) {
     free_uids.push(uid);
     users_map.erase(uid);
 }
-
+void System::remove_room(int rid) {
+    for (auto i: users_map) {
+        if (i.second == rid) {
+            remove_user(i.first);
+        }
+    }
+    auto &spec = database.get_specialist(rid);
+    for (int i = 0; i < spec.size(); ++i) {
+        std::string cur = spec.get_service(i);
+        services_map[cur].erase(std::find(services_map[cur].begin(), services_map[cur].end(), rid));
+    }
+    database.delete_room(rid);
+    free_rids.push(rid);
+}
 std::vector<std::string> System::get_rooms() {
     std::vector<std::string> ret;
     std::string msg;
@@ -115,7 +129,7 @@ std::vector<std::string> System::get_rooms() {
     for (auto i: rids) {
         msg.clear();
         Specialist &spec = database.get_specialist(i);
-        msg = spec.get_name() + " " + spec.get_surname() + ". Услуги: ";
+        msg = std::to_string(i) + ". " + spec.get_name() + " " + spec.get_surname() + ". Услуги: ";
         for (auto j = 0; j < spec.size(); ++j) {
             msg += spec.get_service(j) + " ";
         }

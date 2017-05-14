@@ -28,5 +28,6 @@ public:
     void add_room(std::string, std::string, std::vector<std::string>);
     Queue &get_queue(int);
     void remove_user(int);
+    void remove_room(int);
     std::vector<std::string> get_rooms();
 };

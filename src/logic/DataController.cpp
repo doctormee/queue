@@ -45,7 +45,7 @@ void DataController::add_room(int rid, std::string name, std::string surname, st
 void DataController::delete_room(int rid) {
     decltype(rooms.begin()) it = rooms.find(rid);
     if (it == rooms.end()) {
-        std::out_of_range ex("No room with such room id!");
+        std::out_of_range ex("Нет комнаты с таким номером!");
         throw ex;
     }
     rooms.erase(it);
@@ -54,7 +54,7 @@ void DataController::delete_room(int rid) {
 void DataController::update_room(int rid) {
     decltype(rooms.begin()) it = rooms.find(rid);
     if (it == rooms.end()) {
-        std::out_of_range ex("No room with such room id!");
+        std::out_of_range ex("Нет комнаты с таким номером!");
         throw ex;
     }
     auto &q = rooms[rid]->queue;
@@ -85,7 +85,7 @@ void DataController::add_rule(std::unique_ptr<Rule> &rule) {
 
 void DataController::delete_rule(int num) {
     if ((num > rules.size()) || (num <= 0)) {
-        std::out_of_range ex("No such rule!");
+        std::out_of_range ex("Нет такого правила");
         throw ex;
     }
     rules.erase(rules.begin() + num - 1); 
@@ -105,7 +105,7 @@ int DataController::matching_rules(User &user1, User &user2) const {
 Queue &DataController::get_queue(int rid) {
     decltype(rooms.begin()) it = rooms.find(rid);
     if (it == rooms.end()) {
-        std::out_of_range ex("No room with such room id!");
+        std::out_of_range ex("Нет комнаты с таким номером!");
         throw ex;
     }
     return *(rooms[rid]->queue);
@@ -114,7 +114,7 @@ Queue &DataController::get_queue(int rid) {
 Specialist &DataController::get_specialist(int rid) {
     decltype(rooms.begin()) it = rooms.find(rid);
     if (it == rooms.end()) {
-        std::out_of_range ex("No room with such room id!");
+        std::out_of_range ex("Нет комнаты с таким номером!");
         throw ex;
     }
     return *(rooms[rid]->specialist);
@@ -125,7 +125,7 @@ void DataController::add_user(int rid, int uid, std::string name, std::string su
  {
     decltype(rooms.begin()) it = rooms.find(rid);
     if (it == rooms.end()) {
-        std::out_of_range ex("No room with such room id!");
+        std::out_of_range ex("Нет комнаты с таким номером!");
         throw ex;
     }
     std::unique_ptr<User> tmp(new User(uid, name, surname, age, height, weight, gender));
@@ -135,7 +135,7 @@ void DataController::add_user(int rid, int uid, std::string name, std::string su
 void DataController::add_user(int rid, std::unique_ptr<User> &user) {
     decltype(rooms.begin()) it = rooms.find(rid);
     if (it == rooms.end()) {
-        std::out_of_range ex("No room with such room id!");
+        std::out_of_range ex("Нет комнаты с таким номером!");
         throw ex;
     }
     it->second->queue->push(user);
@@ -144,7 +144,7 @@ void DataController::add_user(int rid, std::unique_ptr<User> &user) {
 void DataController::delete_user(int rid, int uid) {
     decltype(rooms.begin()) it = rooms.find(rid);
     if (it == rooms.end()) {
-        std::out_of_range ex("No room with such room id!");
+        std::out_of_range ex("Нет комнаты с таким номером!");
         throw ex;
     }
     it->second->queue->remove(uid);
@@ -154,7 +154,7 @@ void DataController::delete_user(int rid, int uid) {
 int DataController::room_size(int rid) {
     decltype(rooms.begin()) it = rooms.find(rid);
     if (it == rooms.end()) {
-        std::out_of_range ex("No room with such room id!");
+        std::out_of_range ex("Нет комнаты с таким номером!");
         throw ex;
     }
     return it->second->queue->size();
