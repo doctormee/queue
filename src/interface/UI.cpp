@@ -29,24 +29,18 @@ void UI::add_room() {
     std::vector<std::string> services;
     try {
         msg("Введите имя специалиста: ");
-        while (!inp(name)) {
-            if (name.empty()) {
-                return;
-            }
+        while (!inp(name) || name.empty()) {
             err("Некорректное имя!");
             msg("Введите имя специалиста: ");
         }
         msg("Введите фамилию специалиста: ");
-        while (!inp(surname)) {
-            if (surname.empty()) {
-                return;
-            }
+        while (!inp(surname) || surname.empty()) {
             err("Некорректная фамилия!");
             msg("Введите фамилию специалиста: ");
         }
         msg("Введите услуги, оказываемые специалистом, по одной услуге на строку. В конце ввода введите строку end");
         inp(buf);
-        while ((buf != "end") && (!buf.empty())) {
+        while (buf != "end") {
             if (std::find(services.begin(), services.end(), buf) == services.end()) {
                 services.push_back(buf);
             }
@@ -88,18 +82,12 @@ void UI::add_user() {
             }
         }
         msg("Введите имя");
-        while (!inp(name)) {
-            if (name.empty()) {
-                return;
-            }
+        while (!inp(name) || name.empty()) {
             err("Некорректное имя!");
             msg("Введите имя");
         }
         msg("Введите фамилию");
-        while (!inp(surname)) {
-            if (surname.empty()) {
-                return;
-            }
+        while (!inp(surname) || surname.empty()) {
             err("Некорректная фамилия!");
             msg("Введите фамилию");
         }

@@ -94,6 +94,7 @@ build: $(OBJFILES)
 gg: build 
 	clear && ./$(OUT) && rm -rf *.o *~ $(OUT) *~
 test: $(OBJFILES) $(TOBJ) 
+	@ make swipe
 	@ echo Compiling objective files into $(TEST) test executable
 	@ $(CPPC) $^ -o $(TEST) $(CPPFLAGS) $(TESTFLAGS) 
 	@ echo Done!

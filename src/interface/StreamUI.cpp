@@ -1,25 +1,27 @@
-#include "ConsoleUI.h"
+#include "StreamUI.h"
 #include "System.h"
 #include <stdexcept>
 #include <algorithm>
 #include <iostream>
 
-ConsoleUI::ConsoleUI(System *src): UI(src) {}
+StreamUI::StreamUI(std::istream& inp, std::ostream& out): input_stream(inp), output_stream(out) {}
 
-void ConsoleUI::msg(std::string message) {
-    std::cout << message << std::endl;
+StreamUI::StreamUI(std::istream& inp, std::ostream& out, System *src): UI(src), input_stream(inp), output_stream(out) {}
+
+void StreamUI::msg(std::string message) {
+    output_stream << message << std::endl;
 }
-void ConsoleUI::err(std::string error_message) {
-    std::cout << "Ошибка! " << error_message << std::endl;
+void StreamUI::err(std::string error_message) {
+    output_stream << "Ошибка! " << error_message << std::endl;
 }
-bool ConsoleUI::inp(std::string &to) {
-    std::cin >> to;
-    if (std::cin.eof()) {
+bool StreamUI::inp(std::string &to) {
+    std::getline(input_stream, to, '\n');
+    if (input_stream.eof()) {
         throw std::logic_error(ERR_MSG);
     }
-    if (!std::cin) {
-        std::cin.clear();
-        std::cin.ignore(10000,'\n');
+    if (!input_stream) {
+        input_stream.clear();
+        input_stream.ignore(10000,'\n');
         return false;
     }
     else {
@@ -27,14 +29,14 @@ bool ConsoleUI::inp(std::string &to) {
     }
 }
 
-bool ConsoleUI::inp(int &to) {
-    std::cin >> to;
-    if (std::cin.eof()) {
+bool StreamUI::inp(int &to) {
+    input_stream >> to;
+    if (input_stream.eof()) {
         throw std::logic_error(ERR_MSG);
     }
-    if (!std::cin) {
-        std::cin.clear();
-        std::cin.ignore(10000,'\n');
+    if (!input_stream) {
+        input_stream.clear();
+        input_stream.ignore(10000,'\n');
         return false;
     }
     else {
@@ -42,14 +44,14 @@ bool ConsoleUI::inp(int &to) {
     }
 }
 
-bool ConsoleUI::inp(char &to) {
-    std::cin >> to;
-    if (std::cin.eof()) {
+bool StreamUI::inp(char &to) {
+    input_stream >> to;
+    if (input_stream.eof()) {
         throw std::logic_error(ERR_MSG);
     }
-    if (!std::cin) {
-        std::cin.clear();
-        std::cin.ignore(10000,'\n');
+    if (!input_stream) {
+        input_stream.clear();
+        input_stream.ignore(10000,'\n');
         return false;
     }
     else {
@@ -57,7 +59,7 @@ bool ConsoleUI::inp(char &to) {
     }
 }
 /*
-void ConsoleUI::add_room() {
+void StreamUI::add_room() {
     attached();
     std::string name, surname, buf;
     std::vector<std::string> services;
@@ -92,6 +94,6 @@ void ConsoleUI::add_room() {
     }
 }
 
-void ConsoleUI::get_services() {
+void StreamUI::get_services() {
     msg
 }*/
