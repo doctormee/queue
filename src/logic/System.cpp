@@ -63,7 +63,7 @@ int System::add_user(std::string service, std::string name, std::string surname,
     auto it = services_map.find(service);
     //поиск комнаты с наименьшей очередью
     rid = it->second[0];
-    for (auto j: it->second) {
+    for (auto &j: it->second) {
         if (database.room_size(j) < database.room_size(rid)) {
             rid = j;
         }
@@ -102,7 +102,7 @@ void System::remove_user(int uid) {
     users_map.erase(uid);
 }
 void System::remove_room(int rid) {
-    for (auto i: users_map) {
+    for (auto &i: users_map) {
         if (i.second == rid) {
             remove_user(i.first);
         }
@@ -119,7 +119,7 @@ std::vector<std::string> System::get_rooms() {
     std::vector<std::string> ret;
     std::string msg;
     std::set<int> rids;
-    for (auto i: services_map) {
+    for (auto &i: services_map) {
         for (auto j: i.second) {
             if (rids.find(j) == rids.end()) {
                 rids.insert(j);
