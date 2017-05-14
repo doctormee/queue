@@ -46,7 +46,7 @@ int Parser::value() {
     std::string val;
     val.clear();
     while ((t >= '0') && (t <= '9')) {
-        val += std::to_string(t);
+        val += t;
         gt();
     }
     int ret;
@@ -95,7 +95,7 @@ Field Parser::field() {
     else if (t == 'a') {
         if (gs() == "ge") {
             gt();
-            return Field::HEIGHT;
+            return Field::AGE;
         }
     }
     throw ParseException("Некорректный ввод!");
@@ -189,16 +189,8 @@ std::shared_ptr<Predicate> Parser::imp() {
         if (t == '>') {
             std::shared_ptr<ImplicationPredicate> ret(new ImplicationPredicate());
             ret->add(tmp);
-            while (t == '-') {
-                gt();
-                if (t == '>') {
-                    gt();
-                    ret->add(imp());
-                }
-                else {
-                    throw ParseException("Некорректный ввод!"); 
-                }
-            }
+            gt();
+            ret->add(imp());
             return ret;
         }
         else {
@@ -215,6 +207,6 @@ std::shared_ptr<Predicate> Parser::parse() {
     if (!inp.eof()) {
         throw ParseException("Некорректный ввод!");
     }
-    return ret;    
+    return ret;
 }
 Parser::Parser(std::stringstream &src): inp(src) {}
