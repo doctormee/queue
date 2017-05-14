@@ -57,9 +57,9 @@
      
      PAR = '('DISJ')' | TERM
      
-     TERM = FIELD SIGN VALUE | 'gender' EQNOTEQ GENVALUE| ALL
+     TERM = FIELD SIGN VALUE | 'gender ' EQNOTEQ GENVALUE| 'ALL '
      
-     FIELD = 'height' | 'weight' | 'age'
+     FIELD = 'height ' | 'weight ' | 'age '
      
      SIGN = '>' | '>=' | '<' | '<=' | EQNOTEQ
      

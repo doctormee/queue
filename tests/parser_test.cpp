@@ -322,3 +322,33 @@ TEST(Parser_test, Negation_long) {
         FAIL();
     }
 }
+
+TEST(Parser_test, Priority_check1) {
+    std::stringstream inp;
+    Parser p(inp);
+    inp << "ALL | ALL & gender != M";
+    try {
+        std::shared_ptr<Predicate> pred(p.parse());
+        User ivan(0, "Ivan", "Ivanov", 19, 100, 100, 'M');
+        Evaluator eval(&ivan);
+        ASSERT_TRUE((pred->accept(eval), eval.get_answer()));
+    }
+    catch (...) {
+        FAIL();
+    }
+}
+
+TEST(Parser_test, Priority_check2) {
+    std::stringstream inp;
+    Parser p(inp);
+    inp << "( ALL | ALL ) & gender != M";
+    try {
+        std::shared_ptr<Predicate> pred(p.parse());
+        User ivan(0, "Ivan", "Ivanov", 19, 100, 100, 'M');
+        Evaluator eval(&ivan);
+        ASSERT_FALSE((pred->accept(eval), eval.get_answer()));
+    }
+    catch (...) {
+        FAIL();
+    }
+}
