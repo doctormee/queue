@@ -5,8 +5,8 @@ bool eval(); */
 #include "Constants.h"
 #include "User.h"
 #include "Visitor.h"
-Term::Term(Field field_, Sign sign_, int value_): field(field_), sign(sign_), value(value_) {}
-Term::Term(): field(Field::ALL), sign(Sign::EQ), value(0) {}
+Term::Term(Field field_, Sign sign_, int value_): field{field_}, sign{sign_}, value{value_} {}
+Term::Term(): field{Field::ALL}, sign{Sign::EQ}, value{0} {}
 /*
 bool Term::eval(User &user) {
     int u_value;

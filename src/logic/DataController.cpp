@@ -35,7 +35,7 @@ public:
 DataController::Room::Room(int rid_, std::unique_ptr<Specialist> &spec): rid(rid_), specialist(std::move(spec)), queue(new Queue()) {} 
 
 void DataController::add_room(int rid, std::string name, std::string surname, std::vector<std::string> services) {
-    std::unique_ptr<Specialist> tmp(new Specialist(name, surname));
+    std::unique_ptr<Specialist> tmp(new Specialist{name, surname});
     for (auto &i: services) {
         tmp->add_service(i);
     }
@@ -128,7 +128,7 @@ void DataController::add_user(int rid, int uid, std::string name, std::string su
         std::out_of_range ex("Нет комнаты с таким номером!");
         throw ex;
     }
-    std::unique_ptr<User> tmp(new User(uid, name, surname, age, height, weight, gender));
+    std::unique_ptr<User> tmp(new User{uid, name, surname, age, height, weight, gender});
     rooms[rid]->queue->push(tmp);
     update_room(rid);
 }

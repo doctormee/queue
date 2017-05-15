@@ -105,7 +105,7 @@ std::shared_ptr<Predicate> Parser::term() {
         if (gs() != "LL") {
             throw ParseException("Некорректный ввод!");
         }
-        std::shared_ptr<Term> ret(new Term());
+        std::shared_ptr<Term> ret(new Term{});
         gt();
         return ret;
     }
@@ -117,14 +117,14 @@ std::shared_ptr<Predicate> Parser::term() {
             gt();
             Sign s = eqnoteq();
             int val = genvalue();
-            std::shared_ptr<Term> ret(new Term(Field::GENDER, s, val));
+            std::shared_ptr<Term> ret(new Term{Field::GENDER, s, val});
             return ret;
         }
         else {
             Field f = field();
             Sign s = sign();
             int val = value();
-            std::shared_ptr<Term> ret(new Term(f, s, val));
+            std::shared_ptr<Term> ret(new Term{f, s, val});
             return ret;
         }
     }
@@ -146,7 +146,7 @@ std::shared_ptr<Predicate> Parser::par() {
 std::shared_ptr<Predicate> Parser::neg() {
     if (t == '!') { 
         gt();
-        std::shared_ptr<NegationPredicate> ret(new NegationPredicate(neg()));
+        std::shared_ptr<NegationPredicate> ret(new NegationPredicate{neg()});
         return ret;
     }
     auto ret = par();
@@ -155,7 +155,7 @@ std::shared_ptr<Predicate> Parser::neg() {
 std::shared_ptr<Predicate> Parser::conj() {
     auto tmp = neg();
     if (t == '&') {
-        std::shared_ptr<ConjunctionPredicate> ret(new ConjunctionPredicate());
+        std::shared_ptr<ConjunctionPredicate> ret(new ConjunctionPredicate{});
         ret->add(tmp);
         while (t == '&') {
             gt();
@@ -170,7 +170,7 @@ std::shared_ptr<Predicate> Parser::conj() {
 std::shared_ptr<Predicate> Parser::disj() {
     auto tmp = conj();
     if (t == '|') {
-        std::shared_ptr<DisjunctionPredicate> ret(new DisjunctionPredicate());
+        std::shared_ptr<DisjunctionPredicate> ret(new DisjunctionPredicate{});
         ret->add(tmp);
         while (t == '|') {
             gt();
@@ -187,7 +187,7 @@ std::shared_ptr<Predicate> Parser::imp() {
     if (t == '-') {
         gt();
         if (t == '>') {
-            std::shared_ptr<ImplicationPredicate> ret(new ImplicationPredicate());
+            std::shared_ptr<ImplicationPredicate> ret(new ImplicationPredicate{});
             ret->add(tmp);
             gt();
             ret->add(imp());

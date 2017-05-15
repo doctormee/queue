@@ -8,14 +8,14 @@ class Queue {
     struct Item {
         std::unique_ptr<User> user;
         int priority;
-        Item(User *);
+        Item{User *};
         void set_priority(int);
     };
     std::vector<std::unique_ptr<Item>> container;
     static bool queue_less(const std::unique_ptr<Item> &, const std::unique_ptr<Item> &);
 public:
-    Queue();
-    void push(User* ); //push(new User(...));
+    Queue{};
+    void push(User* ); //push(new User{...});
     void remove(int); //removes a user with a specific UID from queue
     void sort();
     int size();
@@ -29,7 +29,7 @@ public:
 #include <algorithm>
 Queue::Queue() {}
 void Queue::push(std::unique_ptr<User> &user_) {
-    std::unique_ptr<Item> tmp(new Item(std::move(user_)));
+    std::unique_ptr<Item> tmp(new Item{std::move(user_)});
     container.push_back(std::move(tmp));
 }
 /*

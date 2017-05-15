@@ -19,20 +19,20 @@ class User;
 class Rule {
     std::shared_ptr<Predicate> first, second;
 public:
-    Rule(std::shared_ptr<Predicate> &, std::shared_ptr<Predicate> &);
+    Rule{std::shared_ptr<Predicate> &, std::shared_ptr<Predicate> &};
     bool evaluate_first(User &);
     bool evaluate_second(User &);
 };
 
 */
 TEST(Rule_test, Rule_Init) {
-    std::shared_ptr<Term> t1(new Term(Field::HEIGHT, Sign::MORE, 190));
-    std::shared_ptr<Term> t2(new Term(Field::GENDER, Sign::EQ, 'F'));
-    std::shared_ptr<Term> t3(new Term(Field::WEIGHT, Sign::NOTEQ, 70));
-    std::shared_ptr<ConjunctionPredicate> bin(new ConjunctionPredicate());
+    std::shared_ptr<Term> t1(new Term{Field::HEIGHT, Sign::MORE, 190});
+    std::shared_ptr<Term> t2(new Term{Field::GENDER, Sign::EQ, 'F'});
+    std::shared_ptr<Term> t3(new Term{Field::WEIGHT, Sign::NOTEQ, 70});
+    std::shared_ptr<ConjunctionPredicate> bin(new ConjunctionPredicate{});
     bin->add(t1);
     bin->add(t2);
-    std::shared_ptr<DisjunctionPredicate> bin2(new DisjunctionPredicate());
+    std::shared_ptr<DisjunctionPredicate> bin2(new DisjunctionPredicate{});
     bin2->add(bin);
     bin2->add(t3);
     Rule rule(bin, bin2);
@@ -40,13 +40,13 @@ TEST(Rule_test, Rule_Init) {
 
 TEST(Rule_test, Rule_Evaluate) {
     User ivan(2, "Ivan", "Ivanov", 10, 192, 70, 'F');
-    std::shared_ptr<Term> t1(new Term(Field::HEIGHT, Sign::MORE, 190));
-    std::shared_ptr<Term> t2(new Term(Field::GENDER, Sign::EQ, 'F'));
-    std::shared_ptr<Term> t3(new Term(Field::WEIGHT, Sign::NOTEQ, 70));
-    std::shared_ptr<ConjunctionPredicate> bin(new ConjunctionPredicate());
+    std::shared_ptr<Term> t1(new Term{Field::HEIGHT, Sign::MORE, 190});
+    std::shared_ptr<Term> t2(new Term{Field::GENDER, Sign::EQ, 'F'});
+    std::shared_ptr<Term> t3(new Term{Field::WEIGHT, Sign::NOTEQ, 70});
+    std::shared_ptr<ConjunctionPredicate> bin(new ConjunctionPredicate{});
     bin->add(t1);
     bin->add(t2);
-    std::shared_ptr<DisjunctionPredicate> bin2(new DisjunctionPredicate());
+    std::shared_ptr<DisjunctionPredicate> bin2(new DisjunctionPredicate{});
     bin2->add(bin);
     bin2->add(t3);
     Rule rule(bin, bin2);

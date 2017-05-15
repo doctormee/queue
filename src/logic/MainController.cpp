@@ -9,7 +9,7 @@
 #include <memory>
 #include <set>
 
-Parser MainController::parser = Parser();
+Parser MainController::parser = Parser{};
 const int MainController::MAX_USERS = 100;
 const int MainController::MAX_ROOMS = 10;
 int MainController::get_rid() {
@@ -148,6 +148,6 @@ void MainController::add_rule(const std::string &first, const std::string &secon
     auto left = parser.parse();
     parser.input(second);
     auto right = parser.parse();
-    std::unique_ptr<Rule> tmp(new Rule(left, right));
+    std::unique_ptr<Rule> tmp(new Rule{left, right});
     database.add_rule(tmp);
 }
