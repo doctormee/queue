@@ -11,6 +11,7 @@
 void Printer::visit(const Term &term) {
     Field field = term.get_field();
     Sign sign = term.get_sign();
+    auto value = term.get_value();
     switch (field) {
         case Field::ALL: {
             out += "ALL ";
@@ -65,7 +66,17 @@ void Printer::visit(const Term &term) {
             throw std::logic_error("Некорректное условие!");
         }
     }
-    out += std::to_string(term.get_value());
+    if (field == Field::GENDER) {
+        if (value == 'M') {
+            out += 'M';
+        } else if (value == 'F') {
+            out += 'F';
+        } else {
+            throw std::logic_error("Некорректное условие!");
+        }
+    } else {
+        out += std::to_string(term.get_value());
+    }
 }
 void Printer::visit(const ConjunctionPredicate &pred) {
     auto i = pred.begin();
