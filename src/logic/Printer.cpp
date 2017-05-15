@@ -14,7 +14,7 @@ void Printer::visit(const Term &term) {
     switch (field) {
         case Field::ALL: {
             out += "ALL ";
-            break;
+            return;
         }
         case Field::AGE: {
             out += "age ";
@@ -65,14 +65,14 @@ void Printer::visit(const Term &term) {
             throw std::logic_error("Некорректное условие!");
         }
     }
-    out += std::to_string(term.get_value()) + " ";
+    out += std::to_string(term.get_value());
 }
 void Printer::visit(const ConjunctionPredicate &pred) {
     auto i = pred.begin();
     for (i = pred.begin(); i != pred.end(); ++i) {
         out += "( ";
         (*i)->accept(*this);
-        out += ") ";
+        out += " ) ";
         if ( (i + 1) != pred.end()) {
             out += "& ";
         }
@@ -83,7 +83,7 @@ void Printer::visit(const DisjunctionPredicate &pred) {
     for (i = pred.begin(); i != pred.end(); ++i) {
         out += "( ";
         (*i)->accept(*this);
-        out += ") ";
+        out += " ) ";
         if ( (i + 1) != pred.end()) {
             out += "| ";
         }
@@ -92,14 +92,14 @@ void Printer::visit(const DisjunctionPredicate &pred) {
 void Printer::visit(const NegationPredicate &pred) {
     out += "!( ";
     pred.predicate().accept(*this);
-    out += ") ";
+    out += " ) ";
 }
 void Printer::visit(const ImplicationPredicate &pred) {
     auto i = pred.begin();
     for (i = pred.begin(); i != pred.end(); ++i) {
         out += "( ";
         (*i)->accept(*this);
-        out += ") ";
+        out += " ) ";
         if ( (i + 1) != pred.end()) {
             out += "-> ";
         }
@@ -112,9 +112,15 @@ std::string Printer::str() {
     return out;
 }
 void Printer::visit(const Specialist &spec) {
+    bool correct = false;
     out = spec.get_name() + " " + spec.get_surname() + " ";
     for (auto j = 0; j < spec.size(); ++j) {
+        correct = true;
         out += spec.get_service(j) + " ";
     }
+    if (!correct) {
+        throw std::logic_error("Невозможный специалист!");
+    }
+    out.pop_back();
     out += "\n";
 }

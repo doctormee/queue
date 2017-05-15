@@ -11,12 +11,12 @@ TEST(Specialist_Test, Spec_init) {
     Specialist spec2("Ivan", "Ivanov");
     std::unique_ptr<Specialist> spec3(new Specialist());
 }
-TEST(Specialist_Test, Default_Getters) {
+TEST(Specialist_Test, Default_getters) {
     Specialist spec1;
     ASSERT_STREQ(spec1.get_name().c_str(), "John");
     ASSERT_STRNE(spec1.get_surname().c_str(), "John");
 }
-TEST(Specialist_Test, Constructed_Getters) {
+TEST(Specialist_Test, Constructed_getters) {
     Specialist spec1("Ivan", "John");
     ASSERT_STREQ(spec1.get_name().c_str(), "Ivan");
     ASSERT_STREQ(spec1.get_surname().c_str(), "John");
@@ -43,7 +43,7 @@ TEST(Specialist_Test, Services) {
     }
 }
 
-TEST(Specialist_Test, Trying_to_Evaluate) {
+TEST(Specialist_Test, Trying_to_evaluate) {
     Specialist spec1;
     Evaluator eval;
     try {
