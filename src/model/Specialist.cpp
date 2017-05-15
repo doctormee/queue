@@ -2,11 +2,15 @@
 #include "Visitor.h"
 #include <stdexcept>
 
-Specialist::Specialist(): name{"John"}, surname{"Appleseed"} {
+Specialist::Specialist()
+    : name{"John"}, surname{"Appleseed"} 
+{
     services.clear();
 }
 
-Specialist::Specialist(std::string name_, std::string surname_): name{name_}, surname{surname_} {
+Specialist::Specialist(std::string name_, std::string surname_)
+    : name{name_}, surname{surname_} 
+{
     services.clear();
 }
 

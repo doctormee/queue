@@ -1,7 +1,10 @@
 #include "ConjunctionPredicate.h"
 #include "Visitor.h"
 
-ConjunctionPredicate::ConjunctionPredicate(std::shared_ptr<Predicate> left, std::shared_ptr<Predicate> right) {
+ConjunctionPredicate::ConjunctionPredicate(
+    std::shared_ptr<Predicate> left, 
+    std::shared_ptr<Predicate> right)
+{
     add(left);
     add(right);
 }

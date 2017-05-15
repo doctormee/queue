@@ -6,7 +6,7 @@
 #include <stdexcept>
 #include <string>
 
-void add( std::vector<std::unique_ptr<User>> &vect, User* u ) {
+void add( std::vector<std::unique_ptr<User>> &vect, User *u ) {
     std::unique_ptr<User> s(u);
     vect.push_back(std::move(s));
 }

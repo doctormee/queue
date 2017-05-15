@@ -4,9 +4,15 @@
 #include <algorithm>
 #include <iostream>
 
-UI::UI(): controller(nullptr) {}
+UI::UI()
+    : controller{nullptr} 
+{
+}
 
-UI::UI(MainController *src): controller(src) {}
+UI::UI(MainController *src)
+    : controller{src} 
+{
+}
 
 void UI::attached() {
     if (controller == nullptr) {

@@ -62,7 +62,15 @@ std::vector<std::string> MainController::get_services() {
     }
 }
 
-int MainController::add_user(std::string service, std::string name, std::string surname, int age, int height, int weight, char gender) {
+int MainController::add_user(
+    std::string service, 
+    std::string name, 
+    std::string surname, 
+    int age, 
+    int height, 
+    int weight, 
+    char gender)
+{
     int rid, uid;
     uid = get_uid();
     auto it = services_map.find(service);
@@ -78,7 +86,11 @@ int MainController::add_user(std::string service, std::string name, std::string 
     return uid;
 }
 
-void MainController::add_room(std::string name, std::string surname, std::vector<std::string> services) {
+void MainController::add_room(
+    std::string name, 
+    std::string surname, 
+    std::vector<std::string> services)
+{
     int rid;
     rid = get_rid();
     database.add_room(rid, name, surname, services);
@@ -135,7 +147,8 @@ std::vector<std::string> MainController::get_rooms() {
     for (auto i: rids) {
         print.flush();
         Specialist &spec = database.get_specialist(i);
-        msg = std::to_string(i) + ". " + (spec.accept(print), print.str()) + "В очереди " + std::to_string(database.room_size(i));
+        msg = std::to_string(i) + ". " + (spec.accept(print), print.str());
+        msg += "В очереди " + std::to_string(database.room_size(i));
         ret.push_back(msg);
     }
     return ret;
@@ -143,7 +156,10 @@ std::vector<std::string> MainController::get_rooms() {
 bool MainController::user_in(int uid) {
     return (users_map.find(uid) != users_map.end());
 }
-void MainController::add_rule(const std::string &first, const std::string &second) {
+void MainController::add_rule(
+    const std::string &first, 
+    const std::string &second)
+{
     parser.input(first);
     auto left = parser.parse();
     parser.input(second);

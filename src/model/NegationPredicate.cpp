@@ -7,10 +7,12 @@ void NegationPredicate::accept(Visitor &visitor) {
 }
 
 
-Predicate & NegationPredicate::predicate() const {
+Predicate &NegationPredicate::predicate() const {
     return *pred;
 }
-NegationPredicate::NegationPredicate(std::shared_ptr<Predicate> src) : pred(src) { 
+NegationPredicate::NegationPredicate(std::shared_ptr<Predicate> src)
+    : pred{src}
+{ 
     if (!pred) {
         throw std::logic_error("Null pointer added");
     }

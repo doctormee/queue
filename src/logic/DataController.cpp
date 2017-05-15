@@ -1,26 +1,3 @@
-/* //#ifndef ROOMCONTROLLER_H
-#define ROOMCONTROLLER_H
-#include <vector>
-#include <memory>
-class Specialist;
-class Queue;
-class User;
-class Rule;
-class DataController {
-    struct Room {
-        int rid;
-        std::unique_ptr<Specialist> specialist;
-        std::unique_ptr<Queue> queue;
-        Room(int);
-        };
-    std::vector<std::unique_ptr<Rule>> rules;
-public:
-    //DataController();
-    int matching_rules(User&, User&) const;
-    bool evaluate(Rule &, int, User&) const;
-    bool update(Queue &); //
-};
-#endif*/
 #include "DataController.h"
 #include "Rule.h"
 #include "Constants.h"
@@ -32,14 +9,17 @@ public:
 #include <stdexcept>
 #include <memory>
 
-DataController::Room::Room(int rid_, std::unique_ptr<Specialist> &spec): rid(rid_), specialist(std::move(spec)), queue(new Queue()) {} 
-
-void DataController::add_room(int rid, std::string name, std::string surname, std::vector<std::string> services) {
+void DataController::add_room(
+    int rid, 
+    std::string name, 
+    std::string surname, 
+    std::vector<std::string> services) 
+{
     std::unique_ptr<Specialist> tmp(new Specialist{name, surname});
     for (auto &i: services) {
         tmp->add_service(i);
     }
-    rooms[rid] = (std::unique_ptr<Room>)(new Room(rid, tmp));
+    rooms[rid] = (std::unique_ptr<Room>)(new Room{rid, tmp});
 }
 
 void DataController::delete_room(int rid) {
@@ -97,7 +77,9 @@ int DataController::matching_rules(User &user1, User &user2) const {
     int ret = 0;
     Evaluator eval;
     for (auto &i: rules) {
-        ret += (eval.set_user(&user1), i->get_first()->accept(eval), eval.get_answer()) && (eval.set_user(&user2), i->get_second()->accept(eval), eval.get_answer());
+        eval.set_user(&user1);
+        i->get_first()->accept(eval);
+        ret += eval.get_answer() && (eval.set_user(&user2), i->get_second()->accept(eval), eval.get_answer());
     }
     return ret;
 }
@@ -121,7 +103,15 @@ Specialist &DataController::get_specialist(int rid) {
 }
 
 
-void DataController::add_user(int rid, int uid, std::string name, std::string surname, int age, int height, int weight, char gender)
+void DataController::add_user(
+    int rid, 
+    int uid, 
+    std::string name, 
+    std::string surname, 
+    int age, 
+    int height, 
+    int weight, 
+    char gender)
  {
     decltype(rooms.begin()) it = rooms.find(rid);
     if (it == rooms.end()) {
@@ -132,7 +122,10 @@ void DataController::add_user(int rid, int uid, std::string name, std::string su
     rooms[rid]->queue->push(tmp);
     update_room(rid);
 }
-void DataController::add_user(int rid, std::unique_ptr<User> &user) {
+void DataController::add_user(
+    int rid, 
+    std::unique_ptr<User> &user) 
+{
     decltype(rooms.begin()) it = rooms.find(rid);
     if (it == rooms.end()) {
         std::out_of_range ex("Нет комнаты с таким номером!");

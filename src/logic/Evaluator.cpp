@@ -1,19 +1,4 @@
 #include "Evaluator.h"
-/*#pragma once
-#include "Visitor.h"
-#include <memory>
-class User;
-class NaryPredicate;
-class Term;
-class Evaluator: public Visitor {
-    bool answer;
-    User* user;
-public:
-    void visit(Term &);
-    void visit(NaryPredicate &);
-    bool answer() const;
-    void set_user();
-}*/
 #include "User.h"
 #include "Predicate.h"
 #include "NaryPredicate.h"
@@ -28,8 +13,14 @@ public:
 #include <stdexcept>
 class Specialist;
 
-Evaluator::Evaluator(): answer(false), user(nullptr) {}
-Evaluator::Evaluator(User *user_): answer(false), user(user_) {}
+Evaluator::Evaluator()
+    : answer{false}, user{nullptr}
+{
+}
+Evaluator::Evaluator(User *user_)
+    : answer{false}, user{user_}
+{
+}
 
 
 void Evaluator::set_user(User *inp) {

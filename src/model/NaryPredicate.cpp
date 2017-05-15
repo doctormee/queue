@@ -1,4 +1,3 @@
-
 #include "NaryPredicate.h"
 void NaryPredicate::add(std::shared_ptr<Predicate> f) { 
     if (!f) {
@@ -6,9 +5,11 @@ void NaryPredicate::add(std::shared_ptr<Predicate> f) {
     }
     operands.push_back(f);
 }
-std::vector<std::shared_ptr<Predicate>>::const_iterator NaryPredicate::begin() const {
+std::vector<std::shared_ptr<Predicate>>::const_iterator
+NaryPredicate::begin() const {
     return operands.cbegin();
 }
-std::vector<std::shared_ptr<Predicate>>::const_iterator NaryPredicate::end() const {
+std::vector<std::shared_ptr<Predicate>>::const_iterator
+NaryPredicate::end() const {
     return operands.cend();
 }

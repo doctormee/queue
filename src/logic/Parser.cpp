@@ -7,6 +7,10 @@
 #include "ImplicationPredicate.h"
 #include "Constants.h"
 #include "ParseException.h"
+
+Parser::Parser(const std::string &buf) {
+    inp.str(buf);
+}
 void Parser::gt() {
     do {
         t = inp.get();
@@ -208,9 +212,6 @@ std::shared_ptr<Predicate> Parser::parse() {
         throw ParseException("Некорректный ввод!");
     }
     return ret;
-}
-Parser::Parser(const std::string &buf) {
-    inp.str(buf);
 }
 void Parser::input(const std::string &buf) {
     inp.str(buf);
