@@ -27,25 +27,25 @@ TEST(Parser_test, Empty_parenthesis1) {
 TEST(Parser_test, Bad_parenthesis1) {
     std::stringstream inp;
     Parser p(inp);
-    inp << "(all))";
+    inp << "(ALL))";
     ASSERT_THROW(p.parse(), ParseException);
 }
 TEST(Parser_test, Bad_parenthesis2) {
     std::stringstream inp;
     Parser p(inp);
-    inp << "(all";
+    inp << "(ALL";
     ASSERT_THROW(p.parse(), ParseException);
 }
 TEST(Parser_test, Bad_parenthesis3) {
     std::stringstream inp;
     Parser p(inp);
-    inp << "all(";
+    inp << "ALL(";
     ASSERT_THROW(p.parse(), ParseException);
 }
 TEST(Parser_test, Empty_parenthesis2) {
     std::stringstream inp;
     Parser p(inp);
-    inp << "all()";
+    inp << "ALL()";
     ASSERT_THROW(p.parse(), ParseException);
 }
 
@@ -347,6 +347,62 @@ TEST(Parser_test, Priority_check2) {
         User ivan(0, "Ivan", "Ivanov", 19, 100, 100, 'M');
         Evaluator eval(&ivan);
         ASSERT_FALSE((pred->accept(eval), eval.get_answer()));
+    }
+    catch (...) {
+        FAIL();
+    }
+}
+TEST(Parser_test, Priority_check3) {
+    std::stringstream inp;
+    Parser p(inp);
+    inp << "ALL | age != 19  -> gender != M";
+    try {
+        std::shared_ptr<Predicate> pred(p.parse());
+        User ivan(0, "Ivan", "Ivanov", 19, 100, 100, 'M');
+        Evaluator eval(&ivan);
+        ASSERT_FALSE((pred->accept(eval), eval.get_answer()));
+    }
+    catch (...) {
+        FAIL();
+    }
+}
+TEST(Parser_test, Priority_check4) {
+    std::stringstream inp;
+    Parser p(inp);
+    inp << "  ALL | (age != 19 -> gender != M)";
+    try {
+        std::shared_ptr<Predicate> pred(p.parse());
+        User ivan(0, "Ivan", "Ivanov", 19, 100, 100, 'M');
+        Evaluator eval(&ivan);
+        ASSERT_TRUE((pred->accept(eval), eval.get_answer()));
+    }
+    catch (...) {
+        FAIL();
+    }
+}
+TEST(Parser_test, Priority_check5) {
+    std::stringstream inp;
+    Parser p(inp);
+    inp << "! ALL & age >= 19";
+    try {
+        std::shared_ptr<Predicate> pred(p.parse());
+        User ivan(0, "Ivan", "Ivanov", 19, 100, 100, 'M');
+        Evaluator eval(&ivan);
+        ASSERT_FALSE((pred->accept(eval), eval.get_answer()));
+    }
+    catch (...) {
+        FAIL();
+    }
+}
+TEST(Parser_test, Priority_check6) {
+    std::stringstream inp;
+    Parser p(inp);
+    inp << "! !(ALL & age = 19)";
+    try {
+        std::shared_ptr<Predicate> pred(p.parse());
+        User ivan(0, "Ivan", "Ivanov", 19, 100, 100, 'M');
+        Evaluator eval(&ivan);
+        ASSERT_TRUE((pred->accept(eval), eval.get_answer()));
     }
     catch (...) {
         FAIL();
