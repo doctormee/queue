@@ -1,5 +1,6 @@
 #include "StreamUI.h"
 #include "MainController.h"
+#include "ParseException.h"
 #include "gtest/gtest.h"
 #include <memory>
 #include <iostream>
@@ -172,6 +173,25 @@ TEST(StreamUI_Test, Print_rooms) {
     expected = "0. Ivan Ivanov Dentist\nВ очереди 0\n1. Peter Ivanov Dentist Therapist\nВ очереди 1\n";
     actual = out.str();
     ASSERT_EQ(actual, expected);
+}
+TEST(StreamUI_Test, Add_rule) {
+    MainController main;
+    std::stringstream inp, out;
+    std::string expected, input;
+    StreamUI ui(inp, out);
+    ASSERT_THROW(ui.add_rule(), std::logic_error);
+    ui.attach(&main);
+    out.str("");
+    expected = "Введите левое условие ";
+    expected += "(корректное выражение на языке логических выражений) ";
+    expected += "и нажмите enter: \n";
+    expected += "Введите правое условие ";
+    expected += "(корректное выражение на языке логических выражений) ";
+    expected += "и нажмите enter: \n";
+    input = "ALL \n gender = M\n";
+    inp.str(input);
+    ASSERT_NO_THROW(ui.add_rule());
+    ASSERT_EQ(out.str(), expected);
 }
 
 TEST(StreamUI_Test, Login_logout) {
