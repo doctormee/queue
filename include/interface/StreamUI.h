@@ -18,5 +18,4 @@ public:
     bool inp(char &) override;
     std::istream &get_istream();
     std::ostream &get_ostream();
-    void add_rule();
 };

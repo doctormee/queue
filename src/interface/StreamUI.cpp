@@ -76,7 +76,3 @@ std::istream &StreamUI::get_istream() {
 std::ostream &StreamUI::get_ostream() {
     return output_stream;
 }
-void StreamUI::add_rule() {
-    attached();
-    
-}

@@ -24,4 +24,5 @@ public:
     void print_rooms();
     void logout();
     bool login(int);
+    void add_rule();
 };

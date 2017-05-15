@@ -186,3 +186,16 @@ bool UI::login(int uid_) {
     err("Нет такого пользователя!");
     return false;
 }
+void UI::add_rule() {
+    attached();
+    try {
+        std::string left, right;
+        msg("Введите левое условие (корректное выражение на языке логических выражений) и нажмите enter: ");
+        inp(left);
+        msg("Введите правое условие (корректное выражение на языке логических выражений) и нажмите enter: ");
+        inp(right);
+        controller->add_rule(left, right);
+    } catch (std::exception &ex) {
+        err(ex.what());
+    }
+}
