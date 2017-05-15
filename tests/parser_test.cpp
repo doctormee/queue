@@ -51,19 +51,19 @@ TEST(Parser_test, Empty_parenthesis1) {
     ASSERT_THROW(p.parse(), ParseException);
 }
 TEST(Parser_test, Bad_parenthesis1) {
-    Parser p("(all))");
+    Parser p("(ALL))");
     ASSERT_THROW(p.parse(), ParseException);
 }
 TEST(Parser_test, Bad_parenthesis2) {
-    Parser p("(all");
+    Parser p("(ALL");
     ASSERT_THROW(p.parse(), ParseException);
 }
 TEST(Parser_test, Bad_parenthesis3) {
-    Parser p("all(");
+    Parser p("ALL(");
     ASSERT_THROW(p.parse(), ParseException);
 }
 TEST(Parser_test, Empty_parenthesis2) {
-    Parser p("all()");
+    Parser p("ALL()");
     ASSERT_THROW(p.parse(), ParseException);
 }
 

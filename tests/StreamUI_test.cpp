@@ -169,7 +169,7 @@ TEST(StreamUI_Test, Print_rooms) {
     std::string actual, expected;
     main.add_user(serv[1], name, surname, 10, 100, 10, 'M');
     ASSERT_NO_THROW(ui.print_rooms());
-    expected = "0. Ivan Ivanov. В очереди 0. Услуги: Dentist \n1. Peter Ivanov. В очереди 1. Услуги: Dentist Therapist \n";
+    expected = "0. Ivan Ivanov Dentist \nВ очереди 0\n1. Peter Ivanov Dentist Therapist \nВ очереди 1\n";
     actual = out.str();
     ASSERT_EQ(actual, expected);
 }

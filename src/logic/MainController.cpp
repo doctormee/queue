@@ -2,6 +2,7 @@
 #include "UI.h"
 #include "Parser.h"
 #include "Rule.h"
+#include "Printer.h"
 #include <stdexcept>
 #include <algorithm>
 #include <iostream>
@@ -9,7 +10,8 @@
 #include <set>
 
 Parser MainController::parser = Parser();
-
+const int MainController::MAX_USERS = 100;
+const int MainController::MAX_ROOMS = 10;
 int MainController::get_rid() {
     if (free_rids.size() == 0) {
         throw std::out_of_range("Нельзя добавить больше специалистов!");
@@ -129,13 +131,11 @@ std::vector<std::string> MainController::get_rooms() {
             }
         }
     }
+    Printer print{};
     for (auto i: rids) {
-        msg.clear();
+        print.flush();
         Specialist &spec = database.get_specialist(i);
-        msg = std::to_string(i) + ". " + spec.get_name() + " " + spec.get_surname() + ". В очереди " + std::to_string(database.room_size(i)) + ". Услуги: ";
-        for (auto j = 0; j < spec.size(); ++j) {
-            msg += spec.get_service(j) + " ";
-        }
+        msg = std::to_string(i) + ". " + (spec.accept(print), print.str()) + "В очереди " + std::to_string(database.room_size(i));
         ret.push_back(msg);
     }
     return ret;
