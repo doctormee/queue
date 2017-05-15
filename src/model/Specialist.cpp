@@ -14,7 +14,7 @@ Specialist::Specialist(std::string name_, std::string surname_) {
     services.clear();
 }
 
-std::string Specialist::get_service(int i) {
+std::string Specialist::get_service(int i) const {
     if (i >= services.size()) {
         std::out_of_range ex("Индекс вне границ");
         throw ex;
@@ -32,7 +32,7 @@ void Specialist::add_service(std::string service) {
     services.push_back(service);
 }
 
-int Specialist::size() {
+int Specialist::size() const {
     return services.size();
 }
 

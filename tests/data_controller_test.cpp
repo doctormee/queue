@@ -50,14 +50,14 @@ TEST(DataController_test, Add_and_delete_rule) {
     dc.add_rule(rule);
     ASSERT_EQ(rule, nullptr);
     try {
-        dc.delete_rule(2);
+        dc.delete_rule(1);
     }
     catch(std::exception &ex) {
         std::string actual = ex.what();
         std::string expected = "Нет такого правила";
         ASSERT_EQ(actual, expected);
     }
-    dc.delete_rule(1);
+    ASSERT_NO_THROW(dc.delete_rule(0));
 }
 TEST(DataController_test, Matching_rules_test) {
     DataController dc;

@@ -40,7 +40,7 @@ class Term;
 class ImplicationPredicate;
 class Parser {
     int t;
-    std::iostream &inp;
+    std::stringstream inp;
     void gt();
     std::string gs();
     Sign eqnoteq();
@@ -55,6 +55,8 @@ class Parser {
     std::shared_ptr<Predicate> disj();
     std::shared_ptr<Predicate> imp();
 public:
-    Parser(std::iostream &);
+    Parser() = default;
+    Parser(const std::string &);
+    void input(const std::string &);
     std::shared_ptr<Predicate> parse();
 }; 

@@ -84,11 +84,11 @@ void DataController::add_rule(std::unique_ptr<Rule> &rule) {
 }
 
 void DataController::delete_rule(int num) {
-    if ((num > rules.size()) || (num <= 0)) {
+    if ((num >= rules.size()) || (num < 0)) {
         std::out_of_range ex("Нет такого правила");
         throw ex;
     }
-    rules.erase(rules.begin() + num - 1); 
+    rules.erase(rules.begin() + num); 
     update_all();
 }
 

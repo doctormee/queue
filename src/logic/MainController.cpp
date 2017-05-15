@@ -1,11 +1,14 @@
 #include "MainController.h"
 #include "UI.h"
 #include "Parser.h"
-#include "DataController.h"
+#include "Rule.h"
 #include <stdexcept>
 #include <algorithm>
 #include <iostream>
+#include <memory>
 #include <set>
+
+Parser MainController::parser = Parser();
 
 int MainController::get_rid() {
     if (free_rids.size() == 0) {
@@ -137,7 +140,14 @@ std::vector<std::string> MainController::get_rooms() {
     }
     return ret;
 }
-
 bool MainController::user_in(int uid) {
     return (users_map.find(uid) != users_map.end());
+}
+void MainController::add_rule(const std::string &first, const std::string &second) {
+    parser.input(first);
+    auto left = parser.parse();
+    parser.input(second);
+    auto right = parser.parse();
+    std::unique_ptr<Rule> tmp(new Rule(left, right));
+    database.add_rule(tmp);
 }

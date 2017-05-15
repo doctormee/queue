@@ -4,6 +4,7 @@ class MainController;
 class UI {
     int uid;
     MainController *controller;
+protected:
     void attached();
 public:
     UI();

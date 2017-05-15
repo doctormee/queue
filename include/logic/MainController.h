@@ -31,4 +31,5 @@ public:
     void remove_room(int);
     std::vector<std::string> get_rooms();
     bool user_in(int);
+    void add_rule(const std::string &, const std::string &);
 };

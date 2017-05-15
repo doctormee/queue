@@ -1,6 +1,7 @@
 #include "StreamUI.h"
 #include "MainController.h"
 #include "gtest/gtest.h"
+#include "ParseException.h"
 #include <memory>
 #include <iostream>
 #include <sstream>
@@ -117,4 +118,17 @@ TEST(MainController_Test, User_in) {
     main.add_user(serv[0], name, surname, 10, 100, 60, 'F');
     ASSERT_TRUE(main.user_in(0));
     ASSERT_FALSE(main.user_in(1));
+}
+TEST(MainController_Test, Add_rule) {
+    MainController main;
+    std::string first, second, first_exp, second_exp;
+    first_exp = "ALL ";
+    first = first_exp;
+    second_exp = "(gender = F)";
+    second = second_exp;
+    ASSERT_NO_THROW(main.add_rule(first, second));
+    ASSERT_EQ(first, first_exp);
+    ASSERT_EQ(second, second_exp);
+    ASSERT_THROW(main.add_rule("", "ALL "), ParseException);
+    ASSERT_THROW(main.add_rule("ALL ", "gender > M"), ParseException);
 }

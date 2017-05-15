@@ -209,4 +209,10 @@ std::shared_ptr<Predicate> Parser::parse() {
     }
     return ret;
 }
-Parser::Parser(std::iostream &src): inp(src) {}
+Parser::Parser(const std::string &buf) {
+    inp.str(buf);
+}
+void Parser::input(const std::string &buf) {
+    inp.str(buf);
+    inp.clear();
+}
