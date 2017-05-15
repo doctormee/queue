@@ -47,28 +47,44 @@ TEST(Printer_Test, Term) {
     expected = "ALL ";
     ASSERT_EQ(p.str(), expected);
     p.flush();
-    Term term2{Field::HEIGHT, Sign::LESSEQ, 120};
-    ASSERT_NO_THROW(term2.accept(p));
-    expected = "height <= 120";
-    ASSERT_EQ(p.str(), expected);
-    p.flush();
     Term term3{Field::WEIGHT, Sign::MORE, 120};
     ASSERT_NO_THROW(term3.accept(p));
     expected = "weight > 120";
     ASSERT_EQ(p.str(), expected);
     p.flush();
-    Term term4{Field::GENDER, Sign::NOTEQ, 'F'};
-    ASSERT_NO_THROW(term4.accept(p));
-    expected = "gender != F";
+}
+TEST(Printer_Test, Negation) {
+    Printer p{};
+    std::shared_ptr<Term> term{ new Term{Field::AGE, Sign::MOREEQ, 12}};
+    NegationPredicate neg{term};
+    ASSERT_NO_THROW(neg.accept(p));
+    std::string expected = "!( age >= 12 ) ";
     ASSERT_EQ(p.str(), expected);
-    p.flush();
-    Term term5{Field::AGE, Sign::LESS, 12};
-    ASSERT_NO_THROW(term5.accept(p));
-    expected = "age < 12";
+}
+TEST(Printer_Test, Implication) {
+    Printer p{};
+    std::shared_ptr<Term> term{ new Term{Field::AGE, Sign::MOREEQ, 12}};
+    std::shared_ptr<Term> term1{ new Term{Field::AGE, Sign::LESS, 12}};
+    ImplicationPredicate pred{term, term1};
+    ASSERT_NO_THROW(pred.accept(p));
+    std::string expected = "( age >= 12 ) -> ( age < 12 ) ";
     ASSERT_EQ(p.str(), expected);
-    p.flush();
-    Term term6{Field::AGE, Sign::MOREEQ, 12};
-    ASSERT_NO_THROW(term6.accept(p));
-    expected = "age >= 12";
+}
+TEST(Printer_Test, Conjunction) {
+    Printer p{};
+    std::shared_ptr<Term> term{ new Term{Field::AGE, Sign::MOREEQ, 12}};
+    std::shared_ptr<Term> term1{ new Term{Field::GENDER, Sign::NOTEQ, 'M'}};
+    ConjunctionPredicate pred{term, term1};
+    ASSERT_NO_THROW(pred.accept(p));
+    std::string expected = "( age >= 12 ) & ( gender != M ) ";
+    ASSERT_EQ(p.str(), expected);
+}
+TEST(Printer_Test, Disjunction) {
+    Printer p{};
+    std::shared_ptr<Term> term{ new Term{Field::HEIGHT, Sign::LESSEQ, 120}};
+    std::shared_ptr<Term> term1{ new Term{Field::GENDER, Sign::NOTEQ, 'F'}};
+    DisjunctionPredicate pred{term, term1};
+    ASSERT_NO_THROW(pred.accept(p));
+    std::string expected = "( height <= 120 ) | ( gender != F ) ";
     ASSERT_EQ(p.str(), expected);
 }
