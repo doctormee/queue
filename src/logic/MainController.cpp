@@ -1,4 +1,4 @@
-#include "System.h"
+#include "MainController.h"
 #include "UI.h"
 #include "Parser.h"
 #include "DataController.h"
@@ -7,7 +7,7 @@
 #include <iostream>
 #include <set>
 
-int System::get_rid() {
+int MainController::get_rid() {
     if (free_rids.size() == 0) {
         throw std::out_of_range("Нельзя добавить больше специалистов!");
     }
@@ -18,7 +18,7 @@ int System::get_rid() {
     }
 }
 
-int System::get_uid() {
+int MainController::get_uid() {
     if (free_uids.size() == 0) {
         throw std::out_of_range("Нельзя добавить больше пользователей!");
     }
@@ -29,7 +29,7 @@ int System::get_uid() {
     }
 }
 
-void System::init() {
+void MainController::init() {
     int i;
     for (i = (MAX_USERS - 1); i >= 0; --i) {
         free_uids.push(i);
@@ -40,11 +40,11 @@ void System::init() {
     }
 }
 
-System::System() {
+MainController::MainController() {
     init();
 }
 
-std::vector<std::string> System::get_services() {
+std::vector<std::string> MainController::get_services() {
     if (services_map.size() == 0) {
         throw std::logic_error("Нет доступных услуг!");
     }
@@ -57,7 +57,7 @@ std::vector<std::string> System::get_services() {
     }
 }
 
-int System::add_user(std::string service, std::string name, std::string surname, int age, int height, int weight, char gender) {
+int MainController::add_user(std::string service, std::string name, std::string surname, int age, int height, int weight, char gender) {
     int rid, uid;
     uid = get_uid();
     auto it = services_map.find(service);
@@ -73,7 +73,7 @@ int System::add_user(std::string service, std::string name, std::string surname,
     return uid;
 }
 
-void System::add_room(std::string name, std::string surname, std::vector<std::string> services) {
+void MainController::add_room(std::string name, std::string surname, std::vector<std::string> services) {
     int rid;
     rid = get_rid();
     database.add_room(rid, name, surname, services);
@@ -82,7 +82,7 @@ void System::add_room(std::string name, std::string surname, std::vector<std::st
     }
 }
 
-Queue &System::get_queue(int uid) {
+Queue &MainController::get_queue(int uid) {
     auto it = users_map.find(uid);
     if (it == users_map.end()) {
         throw std::logic_error("Пользователь не существует!");
@@ -91,7 +91,7 @@ Queue &System::get_queue(int uid) {
     return database.get_queue(rid);
 }
 
-void System::remove_user(int uid) {
+void MainController::remove_user(int uid) {
     auto it = users_map.find(uid);
     if (it == users_map.end()) {
         throw std::logic_error("Пользователь не существует!");
@@ -101,7 +101,7 @@ void System::remove_user(int uid) {
     free_uids.push(uid);
     users_map.erase(uid);
 }
-void System::remove_room(int rid) {
+void MainController::remove_room(int rid) {
     for (auto &i: users_map) {
         if (i.second == rid) {
             remove_user(i.first);
@@ -115,7 +115,7 @@ void System::remove_room(int rid) {
     database.delete_room(rid);
     free_rids.push(rid);
 }
-std::vector<std::string> System::get_rooms() {
+std::vector<std::string> MainController::get_rooms() {
     std::vector<std::string> ret;
     std::string msg;
     std::set<int> rids;
@@ -138,6 +138,6 @@ std::vector<std::string> System::get_rooms() {
     return ret;
 }
 
-bool System::user_in(int uid) {
+bool MainController::user_in(int uid) {
     return (users_map.find(uid) != users_map.end());
 }

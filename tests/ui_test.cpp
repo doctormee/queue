@@ -1,5 +1,5 @@
 #include "StreamUI.h"
-#include "System.h"
+#include "MainController.h"
 #include "gtest/gtest.h"
 #include <memory>
 #include <iostream>
@@ -32,7 +32,7 @@ TEST(StreamUI_Test, Add_room) {
     std::string actual, expected, empty;
     empty.clear();
     StreamUI ui(inp, out);
-    System main;
+    MainController main;
     ui.attach(&main);
     inp << empty << std::endl << "John" << std::endl << empty << std::endl << "Appleseed" << std::endl << "Dental" << std::endl << "Therapist" << std::endl << "end" << std::endl;
     ui.add_room();
@@ -43,7 +43,7 @@ TEST(StreamUI_Test, Add_room) {
 TEST(StreamUI_Test, Add_user) {
     std::stringstream inp, out;
     StreamUI ui(inp, out);
-    System main;
+    MainController main;
     std::string name, surname, actual, expected, empty;
     empty.clear();
     std::vector<std::string> serv;
@@ -63,7 +63,7 @@ TEST(StreamUI_Test, Add_user) {
 }
 TEST(StreamUI_Test, Empty_or_failed_stream) {
     std::stringstream inp, out;
-    System main;
+    MainController main;
     StreamUI ui(inp, out, &main);
     int i;
     char c;
@@ -84,7 +84,7 @@ TEST(StreamUI_Test, Empty_or_failed_stream) {
 }
 
 TEST(StreamUI_Test, Print_services) {
-    System main;
+    MainController main;
     std::stringstream out;
     StreamUI ui(std::cin, out, &main);
     std::string name, surname;
@@ -100,7 +100,7 @@ TEST(StreamUI_Test, Print_services) {
 }
 
 TEST(StreamUI_Test, Empty_services) {
-    System main;
+    MainController main;
     std::stringstream out;
     StreamUI ui(std::cin, out, &main);
     ui.print_services();
@@ -114,7 +114,7 @@ TEST(StreamUI_Test, No_system_attached) {
     ASSERT_THROW(ui.add_user(), std::logic_error);
 }
 TEST(StreamUI_Test, Print_queue) {
-    System main;
+    MainController main;
     std::stringstream out;
     std::string name, surname;
     std::vector<std::string> serv;
@@ -134,7 +134,7 @@ TEST(StreamUI_Test, Print_queue) {
     ASSERT_EQ(actual, expected);
 }
 TEST(StreamUI_Test, Print_queue_nonexist_user) {
-    System main;
+    MainController main;
     std::stringstream out;
     std::string name, surname;
     std::vector<std::string> serv;
@@ -154,7 +154,7 @@ TEST(StreamUI_Test, Print_queue_nonexist_user) {
 }
 
 TEST(StreamUI_Test, Print_rooms) {
-    System main;
+    MainController main;
     std::stringstream out;
     std::string name, surname;
     std::vector<std::string> serv;
@@ -175,7 +175,7 @@ TEST(StreamUI_Test, Print_rooms) {
 }
 
 TEST(StreamUI_Test, Login_logout) {
-    System main;
+    MainController main;
     std::string name, surname;
     std::vector<std::string> serv;
     name = "Ivan";

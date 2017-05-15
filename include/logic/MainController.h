@@ -7,7 +7,7 @@
 
 class Parser;
 
-class System {
+class MainController {
     const int MAX_USERS = 10;
     const int MAX_ROOMS = 10;
     
@@ -22,7 +22,7 @@ class System {
     int get_uid();
     void init();
 public:
-    System();
+    MainController();
     std::vector<std::string> get_services();
     int add_user(std::string, std::string, std::string, int, int, int, char);
     void add_room(std::string, std::string, std::vector<std::string>);

@@ -1,5 +1,5 @@
 #include "StreamUI.h"
-#include "System.h"
+#include "MainController.h"
 #include "gtest/gtest.h"
 #include <memory>
 #include <iostream>
@@ -7,12 +7,12 @@
 #include <string>
 #include <stdexcept>
 
-TEST(System_Test, Empty_services) {
-    System main;
+TEST(MainController_Test, Empty_services) {
+    MainController main;
     ASSERT_THROW(main.get_services(), std::logic_error);
 }
-TEST(System_Test, Get_services) {
-    System main;
+TEST(MainController_Test, Get_services) {
+    MainController main;
     std::string name, surname;
     std::vector<std::string> serv;
     name = "Ivan";
@@ -27,8 +27,8 @@ TEST(System_Test, Get_services) {
     ASSERT_EQ(serv.size(), 2);
 }
 
-TEST(System_Test, Add_user) {
-    System main;
+TEST(MainController_Test, Add_user) {
+    MainController main;
     std::string name, surname;
     std::vector<std::string> serv;
     name = "Ivan";
@@ -44,8 +44,8 @@ TEST(System_Test, Add_user) {
     ASSERT_EQ(main.get_queue(0).size(), 1);
     ASSERT_EQ(main.get_queue(1).size(), 1);
 } 
-TEST(System_Test, Remove_user) {
-    System main;
+TEST(MainController_Test, Remove_user) {
+    MainController main;
     std::string name, surname;
     std::vector<std::string> serv;
     name = "Ivan";
@@ -66,8 +66,8 @@ TEST(System_Test, Remove_user) {
     ASSERT_EQ(main.add_user(serv[0], name, surname, 10, 100, 60, 'F'), 0);
 }
 
-TEST(System_Test, Remove_room) {
-    System main;
+TEST(MainController_Test, Remove_room) {
+    MainController main;
     std::string name, surname;
     std::vector<std::string> serv;
     name = "Ivan";
@@ -88,8 +88,8 @@ TEST(System_Test, Remove_room) {
     ASSERT_NO_THROW(main.get_queue(1));
 }
 
-TEST(System_Test, Get_rooms) {
-    System main;
+TEST(MainController_Test, Get_rooms) {
+    MainController main;
     ASSERT_EQ(main.get_rooms().size(), 0);
     std::string name, surname;
     std::vector<std::string> serv;
@@ -103,8 +103,8 @@ TEST(System_Test, Get_rooms) {
     ASSERT_EQ(main.get_rooms().size(), 2);
 }
 
-TEST(System_Test, User_in) {
-    System main;
+TEST(MainController_Test, User_in) {
+    MainController main;
     std::string name, surname;
     std::vector<std::string> serv;
     name = "Ivan";

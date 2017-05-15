@@ -86,7 +86,7 @@ $(DEPSDIR)/deps.make: $(SRCFILES)
 include $(DEPSDIR)/deps.make
 
 build: $(OBJFILES) 
-	@ echo Compiling objective files into $(OUT) executable(s)
+	@ echo Compiling objective files into $(OUT) executable
 	@ $(CPPC) -o $(OUT) $^ $(CPPFLAGS)
 	@ echo Done!
 	

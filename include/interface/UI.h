@@ -1,14 +1,14 @@
 #pragma once
 #include <string>
-class System;
+class MainController;
 class UI {
     int uid;
-    System *controller;
+    MainController *controller;
     void attached();
 public:
     UI();
-    UI(System *);
-    void attach(System *);
+    UI(MainController *);
+    void attach(MainController *);
     virtual void msg(std::string) = 0;
     virtual void err(std::string) = 0;
     virtual bool inp(std::string &) = 0;

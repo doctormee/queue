@@ -1,19 +1,19 @@
 #include "UI.h"
-#include "System.h"
+#include "MainController.h"
 #include <stdexcept>
 #include <algorithm>
 #include <iostream>
 
 UI::UI(): controller(nullptr) {}
 
-UI::UI(System *src): controller(src) {}
+UI::UI(MainController *src): controller(src) {}
 
 void UI::attached() {
     if (controller == nullptr) {
         throw std::logic_error("Нет присоединённой системы!");
     }
 }
-void UI::attach(System *src) {
+void UI::attach(MainController *src) {
     controller = src;
 }
 void UI::set_uid(int uid_) {

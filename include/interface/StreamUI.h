@@ -2,7 +2,7 @@
 #include <string>
 #include <iostream>
 #include "UI.h"
-class System;
+class MainController;
 
 class StreamUI: public UI {
     const std::string ERR_MSG = "Неожиданный конец ввода!";
@@ -10,7 +10,7 @@ class StreamUI: public UI {
     std::ostream &output_stream;
 public:
     StreamUI(std::istream &, std::ostream &);
-    StreamUI(std::istream &, std::ostream &, System *);
+    StreamUI(std::istream &, std::ostream &, MainController *);
     void msg(std::string) override;
     void err(std::string) override;
     bool inp(std::string &) override;

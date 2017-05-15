@@ -27,25 +27,25 @@ TEST(Parser_test, Empty_parenthesis1) {
 TEST(Parser_test, Bad_parenthesis1) {
     std::stringstream inp;
     Parser p(inp);
-    inp << "(ALL))";
+    inp << "(all))";
     ASSERT_THROW(p.parse(), ParseException);
 }
 TEST(Parser_test, Bad_parenthesis2) {
     std::stringstream inp;
     Parser p(inp);
-    inp << "(ALL";
+    inp << "(all";
     ASSERT_THROW(p.parse(), ParseException);
 }
 TEST(Parser_test, Bad_parenthesis3) {
     std::stringstream inp;
     Parser p(inp);
-    inp << "ALL(";
+    inp << "all(";
     ASSERT_THROW(p.parse(), ParseException);
 }
 TEST(Parser_test, Empty_parenthesis2) {
     std::stringstream inp;
     Parser p(inp);
-    inp << "ALL()";
+    inp << "all()";
     ASSERT_THROW(p.parse(), ParseException);
 }
 
