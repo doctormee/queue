@@ -10,7 +10,7 @@
 
 TEST(StreamUI_Test, Message) {
     std::stringstream inp, out;
-    StreamUI ui(inp, out);
+    StreamUI ui{inp, out};
     std::string expected = "Hello, World!";
     ui.msg(expected);
     std::string actual;
@@ -19,7 +19,7 @@ TEST(StreamUI_Test, Message) {
 }
 TEST(StreamUI_Test, Error) {
     std::stringstream inp, out;
-    StreamUI ui(inp, out);
+    StreamUI ui{inp, out};
     std::string expected = "All gone wrong!";
     ui.err(expected);
     std::string actual;
@@ -32,7 +32,7 @@ TEST(StreamUI_Test, Add_room) {
     std::stringstream inp, out;
     std::string actual, expected, empty;
     empty.clear();
-    StreamUI ui(inp, out);
+    StreamUI ui{inp, out};
     MainController main;
     ui.attach(&main);
     inp << empty << std::endl << "John" << std::endl << empty << std::endl << "Appleseed" << std::endl << "Dental" << std::endl << "Therapist" << std::endl << "end" << std::endl;
@@ -43,7 +43,7 @@ TEST(StreamUI_Test, Add_room) {
 }
 TEST(StreamUI_Test, Add_user) {
     std::stringstream inp, out;
-    StreamUI ui(inp, out);
+    StreamUI ui{inp, out};
     MainController main;
     std::string name, surname, actual, expected, empty;
     empty.clear();
@@ -65,7 +65,7 @@ TEST(StreamUI_Test, Add_user) {
 TEST(StreamUI_Test, Empty_or_failed_stream) {
     std::stringstream inp, out;
     MainController main;
-    StreamUI ui(inp, out, &main);
+    StreamUI ui{inp, out, &main};
     int i;
     char c;
     std::string expected;
@@ -87,7 +87,7 @@ TEST(StreamUI_Test, Empty_or_failed_stream) {
 TEST(StreamUI_Test, Print_services) {
     MainController main;
     std::stringstream out;
-    StreamUI ui(std::cin, out, &main);
+    StreamUI ui{std::cin, out, &main};
     std::string name, surname;
     std::vector<std::string> serv;
     name = "Ivan";
@@ -103,7 +103,7 @@ TEST(StreamUI_Test, Print_services) {
 TEST(StreamUI_Test, Empty_services) {
     MainController main;
     std::stringstream out;
-    StreamUI ui(std::cin, out, &main);
+    StreamUI ui{std::cin, out, &main};
     ui.print_services();
     std::string actual = out.str();
     std::string expected = "Ошибка! Нет доступных услуг!\n";
@@ -111,7 +111,7 @@ TEST(StreamUI_Test, Empty_services) {
 }
 
 TEST(StreamUI_Test, No_system_attached) {
-    StreamUI ui(std::cin, std::cout);
+    StreamUI ui{std::cin, std::cout};
     ASSERT_THROW(ui.add_user(), std::logic_error);
 }
 TEST(StreamUI_Test, Print_queue) {
@@ -123,7 +123,7 @@ TEST(StreamUI_Test, Print_queue) {
     surname = "Ivanov";
     serv.push_back("Dentist");
     serv.push_back("Therapist");
-    StreamUI ui(std::cin, out, &main);
+    StreamUI ui{std::cin, out, &main};
     main.add_room(name, surname, serv);
     main.add_user(serv[0], name, surname, 10, 100, 40, 'M');
     main.add_user(serv[0], "Semen", surname, 10, 100, 40, 'M');
@@ -143,7 +143,7 @@ TEST(StreamUI_Test, Print_queue_nonexist_user) {
     surname = "Ivanov";
     serv.push_back("Dentist");
     serv.push_back("Therapist");
-    StreamUI ui(std::cin, out, &main);
+    StreamUI ui{std::cin, out, &main};
     main.add_room(name, surname, serv);
     main.add_user(serv[0], name, surname, 10, 100, 40, 'M');
     ui.set_uid(1);
@@ -166,7 +166,7 @@ TEST(StreamUI_Test, Print_rooms) {
     name = "Peter";
     serv.push_back("Therapist");
     main.add_room(name, surname, serv);
-    StreamUI ui(std::cin, out, &main);
+    StreamUI ui{std::cin, out, &main};
     std::string actual, expected;
     main.add_user(serv[1], name, surname, 10, 100, 10, 'M');
     ASSERT_NO_THROW(ui.print_rooms());
@@ -174,11 +174,26 @@ TEST(StreamUI_Test, Print_rooms) {
     actual = out.str();
     ASSERT_EQ(actual, expected);
 }
+TEST(StreamUI_Test, Print_rules) {
+    MainController main;
+    std::stringstream inp, out;
+    StreamUI ui{inp, out, &main}; 
+    std::string first, second;
+    ui.print_rules();
+    ASSERT_EQ(out.str(), "Нет правил определения приоритета!\n");
+    out.str("");
+    out.clear();
+    first = "ALL ";
+    second = "(gender = F)";
+    main.add_rule(first, second);
+    ui.print_rules();
+    ASSERT_EQ(out.str(), "1. IF ALL  THEN gender = F\n");
+}
 TEST(StreamUI_Test, Add_rule) {
     MainController main;
     std::stringstream inp, out;
     std::string expected, input;
-    StreamUI ui(inp, out);
+    StreamUI ui{inp, out};
     ASSERT_THROW(ui.add_rule(), std::logic_error);
     ui.attach(&main);
     out.str("");
@@ -206,7 +221,7 @@ TEST(StreamUI_Test, Login_logout) {
     main.add_user(serv[0], name, surname, 10, 100, 60, 'F');
     std::stringstream out;
     std::string actual, expected;
-    StreamUI ui(std::cin, out, &main);
+    StreamUI ui{std::cin, out, &main};
     ASSERT_FALSE(ui.login(2));
     ASSERT_TRUE(ui.login(1));
     ui.logout();
