@@ -174,6 +174,30 @@ TEST(StreamUI_Test, Print_rooms) {
     actual = out.str();
     ASSERT_EQ(actual, expected);
 }
+
+TEST(StreamUI_Test, Remove_room) {
+    MainController main;
+    std::stringstream out;
+    std::string name, surname;
+    std::vector<std::string> serv;
+    name = "Ivan";
+    surname = "Ivanov";
+    serv.push_back("Dentist");
+    main.add_room(name, surname, serv);
+    name = "Peter";
+    serv.push_back("Therapist");
+    main.add_room(name, surname, serv);
+    StreamUI ui{std::cin, out, &main};
+    std::string actual, expected;
+    main.add_user(serv[1], name, surname, 10, 100, 10, 'M');
+    expected = "Выберите удаляемого специалиста, введите его номер и нажмите enter\n0. Ivan Ivanov Dentist\nВ очереди 0\n1. Peter Ivanov Dentist Therapist\nВ очереди 1\nСпециалист удалён!\n0. Ivan Ivanov Dentist\nВ очереди 0\nВыберите удаляемого специалиста, введите его номер и нажмите enter\n0. Ivan Ivanov Dentist\nВ очереди 0\nОшибка! Нет комнаты с таким номером!\n";
+    ui.remove_room(1);
+    ui.print_rooms();
+    ASSERT_NO_THROW(ui.remove_room(1));
+    actual = out.str();
+    ASSERT_EQ(actual, expected);
+}
+
 TEST(StreamUI_Test, Print_rules) {
     MainController main;
     std::stringstream inp, out;
