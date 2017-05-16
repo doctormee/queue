@@ -19,6 +19,7 @@ public:
     int get_uid();
     void add_room();
     void add_user();
+    void add_rule();
     void remove_room(int);
     void print_services(); 
     void print_queue();
@@ -26,5 +27,4 @@ public:
     void print_rules();
     void logout();
     bool login(int);
-    void add_rule();
 };

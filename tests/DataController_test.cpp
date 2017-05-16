@@ -27,8 +27,7 @@ TEST(DataController_test, Deleting_room) {
     dc.add_room(0, "Ivan", "Ivanov", serv);
     try {
         dc.delete_room(1);
-    }
-    catch(std::exception &ex) {
+    } catch(std::exception &ex) {
         std::string actual = ex.what();
         std::string expected = "Нет комнаты с таким номером!";
         ASSERT_EQ(actual, expected);
@@ -52,8 +51,7 @@ TEST(DataController_test, Add_and_delete_rule) {
     ASSERT_EQ(rule, nullptr);
     try {
         dc.delete_rule(1);
-    }
-    catch(std::exception &ex) {
+    } catch(std::exception &ex) {
         std::string actual = ex.what();
         std::string expected = "Нет такого правила";
         ASSERT_EQ(actual, expected);
@@ -122,8 +120,7 @@ TEST(DataController_test, Add_user_ptr) {
     try {
         dc.add_user(1, jack);
         FAIL();
-    }
-    catch (...) {
+    } catch (...) {
         //ok
     }
 } 
@@ -204,8 +201,7 @@ TEST(DataController_test, Get_queue_test) {
     try {
         dc.get_queue(1);
         FAIL();
-    }
-    catch (...)
+    } catch (...)
     {
         //ok
     }

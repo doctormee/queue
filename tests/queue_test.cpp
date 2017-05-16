@@ -39,8 +39,7 @@ TEST(Queue_test, Get_user) {
     try {
         my_queue.get_user(3);
        FAIL();
-    }
-    catch (...) {
+    } catch (...) {
         //ok
     }
 }

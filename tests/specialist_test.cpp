@@ -28,8 +28,7 @@ TEST(Specialist_Test, Services) {
     try {
         spec1.get_service(1);
         FAIL();
-    }
-    catch (std::out_of_range &ex) {
+    } catch (std::out_of_range &ex) {
         //ok
     }
     spec1.add_service("Vet");
@@ -37,8 +36,7 @@ TEST(Specialist_Test, Services) {
         for (auto i = 0; i < spec1.size(); ++i) {
             ASSERT_STRNE(spec1.get_service(i).c_str(), "");
         }
-    }
-    catch (...) {
+    } catch (...) {
         FAIL();//bad
     }
 }
@@ -49,11 +47,9 @@ TEST(Specialist_Test, Trying_to_evaluate) {
     try {
         spec1.accept(eval);
         FAIL();
-    }
-    catch (std::logic_error &ex) {
+    } catch (std::logic_error &ex) {
         //ok
-    }
-    catch (...) {
+    } catch (...) {
         FAIL();
     }
 }

@@ -57,8 +57,7 @@ int Parser::value() {
     try {
         ret = std::stoi(val);
         return ret;
-    }
-    catch (...) {
+    } catch (...) {
         throw ParseException("Некорректный ввод!");
     }
 }

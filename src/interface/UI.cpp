@@ -57,8 +57,7 @@ void UI::add_room() {
             return;
         }
         controller->add_room(name, surname, services);
-    }
-    catch (std::exception &ex) {
+    } catch (std::exception &ex) {
         err(ex.what());
         return;
     }
@@ -118,8 +117,7 @@ void UI::add_user() {
             msg("Введите пол (латинская M или F)");
         }
         set_uid(controller->add_user(service, name, surname, age, height, weight, gender));
-    }
-    catch (std::exception &ex) {
+    } catch (std::exception &ex) {
         err(ex.what());
         return;
     }
@@ -165,8 +163,7 @@ void UI::print_queue() {
             ++it;
         }
         msg("Ваш номер в очереди: " + std::to_string(pos));
-    }
-    catch (std::exception &ex) {
+    } catch (std::exception &ex) {
         err(ex.what());
     }
 }
@@ -204,8 +201,7 @@ void UI::logout() {
     attached();
     try {
         controller->remove_user(uid);
-    }
-    catch (std::exception &ex) {
+    } catch (std::exception &ex) {
         err(ex.what());
     }
 }

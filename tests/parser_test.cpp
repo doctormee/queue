@@ -74,8 +74,7 @@ TEST(Parser_test, One_term_no_par) {
         User ivan(0, "Ivan", "Ivanov", 19, 100, 100, 'M');
         Evaluator eval(&ivan);
         ASSERT_TRUE((pred->accept(eval), eval.get_answer()));
-    }
-    catch (...) {
+    } catch (...) {
         FAIL();
     }
 }
@@ -87,8 +86,7 @@ TEST(Parser_test, One_term_par) {
         User ivan(0, "Ivan", "Ivanov", 19, 100, 100, 'M');
         Evaluator eval(&ivan);
         ASSERT_TRUE((pred->accept(eval), eval.get_answer()));
-    }
-    catch (...) {
+    } catch (...) {
         FAIL();
     }
 }
@@ -100,8 +98,7 @@ TEST(Parser_test, One_term_many_par) {
         User ivan(0, "Ivan", "Ivanov", 19, 100, 100, 'M');
         Evaluator eval(&ivan);
         ASSERT_TRUE((pred->accept(eval), eval.get_answer()));
-    }
-    catch (...) {
+    } catch (...) {
         FAIL();
     }
 }
@@ -113,8 +110,7 @@ TEST(Parser_test,Term_gender) {
         User ivan(0, "Ivan", "Ivanov", 19, 100, 100, 'F');
         Evaluator eval(&ivan);
         ASSERT_TRUE((pred->accept(eval), eval.get_answer()));
-    }
-    catch (...) {
+    } catch (...) {
         FAIL();
     }
 }
@@ -181,8 +177,7 @@ TEST(Parser_test, Conjunction_good) {
         User ivan(0, "Ivan", "Ivanov", 19, 100, 100, 'M');
         Evaluator eval(&ivan);
         ASSERT_TRUE((pred->accept(eval), eval.get_answer()));
-    }
-    catch (...) {
+    } catch (...) {
         FAIL();
     }
 }
@@ -193,8 +188,7 @@ TEST(Parser_test, Conjunction_long) {
         User ivan(0, "Ivan", "Ivanov", 19, 100, 100, 'M');
         Evaluator eval(&ivan);
         ASSERT_TRUE((pred->accept(eval), eval.get_answer()));
-    }
-    catch (...) {
+    } catch (...) {
         FAIL();
     }
 }
@@ -213,8 +207,7 @@ TEST(Parser_test, Disjunction_good) {
         User ivan(0, "Ivan", "Ivanov", 19, 100, 100, 'M');
         Evaluator eval(&ivan);
         ASSERT_TRUE((pred->accept(eval), eval.get_answer()));
-    }
-    catch (...) {
+    } catch (...) {
         FAIL();
     }
 }
@@ -225,8 +218,7 @@ TEST(Parser_test, Disjunction_long) {
         User ivan(0, "Ivan", "Ivanov", 19, 100, 100, 'M');
         Evaluator eval(&ivan);
         ASSERT_TRUE((pred->accept(eval), eval.get_answer()));
-    }
-    catch (...) {
+    } catch (...) {
         FAIL();
     }
 }
@@ -245,8 +237,7 @@ TEST(Parser_test, Implication_good) {
         User ivan(0, "Ivan", "Ivanov", 19, 100, 100, 'M');
         Evaluator eval(&ivan);
         ASSERT_TRUE((pred->accept(eval), eval.get_answer()));
-    }
-    catch (...) {
+    } catch (...) {
         FAIL();
     }
 }
@@ -257,8 +248,7 @@ TEST(Parser_test, Implication_long) {
         User ivan(0, "Ivan", "Ivanov", 19, 100, 100, 'M');
         Evaluator eval(&ivan);
         ASSERT_TRUE((pred->accept(eval), eval.get_answer()));
-    }
-    catch (...) {
+    } catch (...) {
         FAIL();
     }
 }
@@ -277,8 +267,7 @@ TEST(Parser_test, Negation_good) {
         User ivan(0, "Ivan", "Ivanov", 19, 100, 100, 'M');
         Evaluator eval(&ivan);
         ASSERT_TRUE((pred->accept(eval), eval.get_answer()));
-    }
-    catch (...) {
+    } catch (...) {
         FAIL();
     }
 }
@@ -289,8 +278,7 @@ TEST(Parser_test, Negation_long) {
         User ivan(0, "Ivan", "Ivanov", 19, 100, 100, 'M');
         Evaluator eval(&ivan);
         ASSERT_TRUE((pred->accept(eval), eval.get_answer()));
-    }
-    catch (...) {
+    } catch (...) {
         FAIL();
     }
 }
@@ -302,8 +290,7 @@ TEST(Parser_test, Priority_check1) {
         User ivan(0, "Ivan", "Ivanov", 19, 100, 100, 'M');
         Evaluator eval(&ivan);
         ASSERT_TRUE((pred->accept(eval), eval.get_answer()));
-    }
-    catch (...) {
+    } catch (...) {
         FAIL();
     }
 }
@@ -315,8 +302,7 @@ TEST(Parser_test, Priority_check2) {
         User ivan(0, "Ivan", "Ivanov", 19, 100, 100, 'M');
         Evaluator eval(&ivan);
         ASSERT_FALSE((pred->accept(eval), eval.get_answer()));
-    }
-    catch (...) {
+    } catch (...) {
         FAIL();
     }
 }
@@ -327,8 +313,7 @@ TEST(Parser_test, Priority_check3) {
         User ivan(0, "Ivan", "Ivanov", 19, 100, 100, 'M');
         Evaluator eval(&ivan);
         ASSERT_FALSE((pred->accept(eval), eval.get_answer()));
-    }
-    catch (...) {
+    } catch (...) {
         FAIL();
     }
 }
@@ -339,8 +324,7 @@ TEST(Parser_test, Priority_check4) {
         User ivan(0, "Ivan", "Ivanov", 19, 100, 100, 'M');
         Evaluator eval(&ivan);
         ASSERT_TRUE((pred->accept(eval), eval.get_answer()));
-    }
-    catch (...) {
+    } catch (...) {
         FAIL();
     }
 }
@@ -351,8 +335,7 @@ TEST(Parser_test, Priority_check5) {
         User ivan(0, "Ivan", "Ivanov", 19, 100, 100, 'M');
         Evaluator eval(&ivan);
         ASSERT_FALSE((pred->accept(eval), eval.get_answer()));
-    }
-    catch (...) {
+    } catch (...) {
         FAIL();
     }
 }
@@ -363,8 +346,7 @@ TEST(Parser_test, Priority_check6) {
         User ivan(0, "Ivan", "Ivanov", 19, 100, 100, 'M');
         Evaluator eval(&ivan);
         ASSERT_TRUE((pred->accept(eval), eval.get_answer()));
-    }
-    catch (...) {
+    } catch (...) {
         FAIL();
     }
 }
