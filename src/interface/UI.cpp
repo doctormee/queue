@@ -124,6 +124,18 @@ void UI::add_user() {
         return;
     }
 }
+void UI::remove_room(int rid) {
+    attached();
+    try {
+        msg("Выберите удаляемого специалиста, введите его номер и нажмите enter");
+        print_rooms();
+        controller->remove_room(rid);
+        msg("Специалист удалён!");
+    } catch (std::exception &ex) {
+        err(ex.what());
+    }
+}
+
 
 void UI::print_services() {
     attached();
@@ -132,8 +144,7 @@ void UI::print_services() {
         for (auto &i: services) {
             msg(i);
         }
-    }
-    catch (std::exception &ex) {
+    } catch (std::exception &ex) {
         err(ex.what());
     }
 }

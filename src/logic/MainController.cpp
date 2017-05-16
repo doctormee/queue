@@ -119,11 +119,15 @@ void MainController::remove_user(int uid) {
     free_uids.push(uid);
     users_map.erase(uid);
 }
-void MainController::remove_room(int rid) {
-    for (auto &i: users_map) {
+void MainController::remove_room(int rid) {  
+    std::vector<int> users_to_remove;  
+    for (auto const &i: users_map) {    
         if (i.second == rid) {
-            remove_user(i.first);
+            users_to_remove.push_back(i.first);
         }
+    }    
+    for (auto &i: users_to_remove) {
+        remove_user(i);
     }
     auto &spec = database.get_specialist(rid);
     for (int i = 0; i < spec.size(); ++i) {

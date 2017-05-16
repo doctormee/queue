@@ -19,6 +19,7 @@ public:
     int get_uid();
     void add_room();
     void add_user();
+    void remove_room(int);
     void print_services(); 
     void print_queue();
     void print_rooms();
