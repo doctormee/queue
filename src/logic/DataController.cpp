@@ -15,11 +15,11 @@ void DataController::add_room(
     std::string surname, 
     std::vector<std::string> services) 
 {
-    std::unique_ptr<Specialist> tmp(new Specialist{name, surname});
+    std::unique_ptr<Specialist> tmp{new Specialist{name, surname}};
     for (auto &i: services) {
         tmp->add_service(i);
     }
-    rooms[rid] = (std::unique_ptr<Room>)(new Room{rid, tmp});
+    rooms[rid] = (std::unique_ptr<Room>){new Room{rid, tmp}};
 }
 
 void DataController::delete_room(int rid) {
@@ -62,6 +62,14 @@ void DataController::add_rule(std::unique_ptr<Rule> &rule) {
     rules.push_back(std::move(rule));
     update_all();
 }
+std::vector<Rule *> DataController::get_rules() {
+    std::vector<Rule *> tmp;
+    for (auto &i: rules) {
+        tmp.push_back(i.get());
+    }
+    return tmp;
+}
+
 
 void DataController::delete_rule(int num) {
     if ((num >= rules.size()) || (num < 0)) {
@@ -118,7 +126,7 @@ void DataController::add_user(
         std::out_of_range ex("Нет комнаты с таким номером!");
         throw ex;
     }
-    std::unique_ptr<User> tmp(new User{uid, name, surname, age, height, weight, gender});
+    std::unique_ptr<User> tmp{new User{uid, name, surname, age, height, weight, gender}};
     rooms[rid]->queue->push(tmp);
     update_room(rid);
 }

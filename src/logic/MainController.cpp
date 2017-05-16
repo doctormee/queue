@@ -164,6 +164,6 @@ void MainController::add_rule(
     auto left = parser.parse();
     parser.input(second);
     auto right = parser.parse();
-    std::unique_ptr<Rule> tmp(new Rule{left, right});
+    std::unique_ptr<Rule> tmp{new Rule{left, right}};
     database.add_rule(tmp);
 }

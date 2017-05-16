@@ -2,7 +2,7 @@
 #include "User.h"
 #include <algorithm>
 void Queue::push(std::unique_ptr<User> &user_) {
-    std::unique_ptr<Item> tmp(new Item{user_});
+    std::unique_ptr<Item> tmp{new Item{user_}};
     container.push_back(std::move(tmp));
 }
 

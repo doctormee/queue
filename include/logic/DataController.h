@@ -26,6 +26,7 @@ public:
     void delete_user(int, int);
     Queue &get_queue(int); 
     void add_rule(std::unique_ptr<Rule> &);
+    std::vector<Rule *> get_rules();
     void delete_rule(int);
     int matching_rules(User &, User &) const;
     void update_room(int);
