@@ -122,11 +122,13 @@ void UI::add_user() {
         return;
     }
 }
-void UI::remove_room(int rid) {
+void UI::remove_room() {
     attached();
     try {
-        msg("Выберите удаляемого специалиста, введите его номер и нажмите enter");
+        int rid;
+        msg("Выберите удаляемого специалиста, введите его номер и нажмите enter: ");
         print_rooms();
+        inp(rid);
         controller->remove_room(rid);
         msg("Специалист удалён!");
     } catch (std::exception &ex) {
@@ -223,6 +225,19 @@ void UI::add_rule() {
         msg("Введите правое условие (корректное выражение на языке логических выражений) и нажмите enter: ");
         inp(right);
         controller->add_rule(left, right);
+    } catch (std::exception &ex) {
+        err(ex.what());
+    }
+}
+void UI::remove_rule() {
+    attached();
+    try {
+        int rule_number;
+        msg("Выберите удаляемое правило, введите его номер и нажмите enter: ");
+        print_rules();
+        inp(rule_number);
+        controller->remove_rule(rule_number);
+        msg("Правило удалено!");
     } catch (std::exception &ex) {
         err(ex.what());
     }

@@ -177,20 +177,24 @@ std::vector<std::string> MainController::get_rules() {
     Printer print;
     std::string tmp;
     int number = 0;
-    auto rules_tmp = database.get_rules();
-    if (rules_tmp.size() == 0) {
+    auto rules_list = database.get_rules();
+    if (rules_list.size() == 0) {
         return ret;
     }
-    for (auto &i: rules_tmp) {
+    for (auto &i: rules_list) {
         ++number;
         print.flush();
         i->get_first()->accept(print);
         tmp = std::to_string(number);
-        tmp += ". IF " + print.str();
+        tmp += ". Prioritize " + print.str();
         print.flush();
         i->get_second()->accept(print);
-        tmp += " THEN " + print.str();
+        tmp += " over " + print.str();
         ret.push_back(tmp);
     }
     return ret;
+}
+
+void MainController::remove_rule(int rule_number) {
+    database.delete_rule(rule_number - 1);
 }

@@ -177,9 +177,11 @@ TEST(StreamUI_Test, Print_rooms) {
 
 TEST(StreamUI_Test, Remove_room) {
     MainController main;
-    std::stringstream out;
+    std::stringstream inp, out;
     std::string name, surname;
     std::vector<std::string> serv;
+    std::string actual, expected;
+    StreamUI ui{inp, out, &main};
     name = "Ivan";
     surname = "Ivanov";
     serv.push_back("Dentist");
@@ -187,13 +189,29 @@ TEST(StreamUI_Test, Remove_room) {
     name = "Peter";
     serv.push_back("Therapist");
     main.add_room(name, surname, serv);
-    StreamUI ui{std::cin, out, &main};
-    std::string actual, expected;
     main.add_user(serv[1], name, surname, 10, 100, 10, 'M');
-    expected = "Выберите удаляемого специалиста, введите его номер и нажмите enter\n0. Ivan Ivanov Dentist\nВ очереди 0\n1. Peter Ivanov Dentist Therapist\nВ очереди 1\nСпециалист удалён!\n0. Ivan Ivanov Dentist\nВ очереди 0\nВыберите удаляемого специалиста, введите его номер и нажмите enter\n0. Ivan Ivanov Dentist\nВ очереди 0\nОшибка! Нет комнаты с таким номером!\n";
-    ui.remove_room(1);
+    expected = "Выберите удаляемого специалиста, введите его номер и нажмите enter: \n0. Ivan Ivanov Dentist\nВ очереди 0\n1. Peter Ivanov Dentist Therapist\nВ очереди 1\nСпециалист удалён!\n0. Ivan Ivanov Dentist\nВ очереди 0\nВыберите удаляемого специалиста, введите его номер и нажмите enter: \n0. Ivan Ivanov Dentist\nВ очереди 0\nОшибка! Нет комнаты с таким номером!\n";
+    inp << 1 << std::endl << 1 << std::endl;
+    ui.remove_room();
     ui.print_rooms();
-    ASSERT_NO_THROW(ui.remove_room(1));
+    ui.remove_room();
+    actual = out.str();
+    ASSERT_EQ(actual, expected);
+}
+
+TEST(StreamUI_Test, Remove_rule) {
+    MainController main;
+    std::stringstream inp, out;
+    std::string actual, expected;
+    std::vector<std::string> serv;
+    StreamUI ui{inp, out, &main};
+    main.add_rule("ALL ", "height != 90");
+    main.add_rule("weight < 80 ", "gender = M");
+    expected = "Выберите удаляемое правило, введите его номер и нажмите enter: \n1. Prioritize ALL  over height != 90\n2. Prioritize weight < 80 over gender = M\nОшибка! Нет такого правила!\nВыберите удаляемое правило, введите его номер и нажмите enter: \n1. Prioritize ALL  over height != 90\n2. Prioritize weight < 80 over gender = M\nПравило удалено!\n1. Prioritize weight < 80 over gender = M\n";
+    inp << 3 << std::endl << 1 << std::endl;
+    ui.remove_rule();
+    ui.remove_rule();
+    ui.print_rules();
     actual = out.str();
     ASSERT_EQ(actual, expected);
 }
@@ -211,7 +229,7 @@ TEST(StreamUI_Test, Print_rules) {
     second = "(gender = F)";
     main.add_rule(first, second);
     ui.print_rules();
-    ASSERT_EQ(out.str(), "1. IF ALL  THEN gender = F\n");
+    ASSERT_EQ(out.str(), "1. Prioritize ALL  over gender = F\n");
 }
 TEST(StreamUI_Test, Add_rule) {
     MainController main;

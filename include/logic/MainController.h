@@ -28,6 +28,7 @@ public:
     Queue &get_queue(int);
     void remove_user(int);
     void remove_room(int);
+    void remove_rule(int);
     std::vector<std::string> get_rooms();
     bool user_in(int);
     void add_rule(const std::string &, const std::string &);

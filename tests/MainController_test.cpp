@@ -159,10 +159,10 @@ TEST(MainController_test, Get_rules) {
     second = "(gender = F)";
     main.add_rule(first, second);
     auto answer = main.get_rules();
-    ASSERT_EQ(answer[0], "1. IF ALL  THEN gender = F");
+    ASSERT_EQ(answer[0], "1. Prioritize ALL  over gender = F");
     main.add_rule(second, first);
     answer = main.get_rules();
-    ASSERT_EQ(answer[1], "2. IF gender = F THEN ALL ");
+    ASSERT_EQ(answer[1], "2. Prioritize gender = F over ALL ");
 }
 
 TEST(MainController_Test, User_in) {
@@ -192,4 +192,21 @@ TEST(MainController_Test, Add_rule) {
     ASSERT_EQ(second, second_exp);
     ASSERT_THROW(main.add_rule("", "ALL "), ParseException);
     ASSERT_THROW(main.add_rule("ALL ", "gender > M"), ParseException);
+}
+
+TEST(MainController_Test, Remove_rule) {
+    MainController main;
+    std::string first, second;
+    first = "ALL ";
+    second = "(gender = F)";
+    main.add_rule(first, second);
+    main.add_rule(second, first);
+    main.add_rule(first, first);
+    ASSERT_THROW(main.remove_rule(0), std::out_of_range);
+    ASSERT_THROW(main.remove_rule(4), std::out_of_range);
+    ASSERT_NO_THROW(main.remove_rule(2));
+    auto answer = main.get_rules();
+    ASSERT_EQ(answer[0], "1. Prioritize ALL  over gender = F");
+    ASSERT_EQ(answer[1], "2. Prioritize ALL  over ALL ");
+    ASSERT_EQ(answer.size(), 2);
 }

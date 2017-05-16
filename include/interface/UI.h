@@ -20,7 +20,8 @@ public:
     void add_room();
     void add_user();
     void add_rule();
-    void remove_room(int);
+    void remove_room();
+    void remove_rule();
     void print_services(); 
     void print_queue();
     void print_rooms();

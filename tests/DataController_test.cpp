@@ -53,7 +53,7 @@ TEST(DataController_test, Add_and_delete_rule) {
         dc.delete_rule(1);
     } catch(std::exception &ex) {
         std::string actual = ex.what();
-        std::string expected = "Нет такого правила";
+        std::string expected = "Нет такого правила!";
         ASSERT_EQ(actual, expected);
     }
     ASSERT_NO_THROW(dc.delete_rule(0));
@@ -182,7 +182,6 @@ TEST(DataController_test, Update_All) {
     std::unique_ptr<User> peter{new User{2, "Peter", "Petroff", 10, 191, 69, 'M'}};
     dc.add_user(0, ivan);
     dc.add_user(0, peter);
-    dc.update_room(0);
     auto &q = dc.get_queue(0);
     ASSERT_EQ((*(q.begin()))->user->get_uid(), 2);
 } 
