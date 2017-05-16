@@ -3,6 +3,7 @@
 #include "Parser.h"
 #include "Rule.h"
 #include "Printer.h"
+#include "Predicate.h"
 #include <stdexcept>
 #include <algorithm>
 #include <iostream>
@@ -143,7 +144,7 @@ std::vector<std::string> MainController::get_rooms() {
             }
         }
     }
-    Printer print{};
+    Printer print;
     for (auto i: rids) {
         print.flush();
         Specialist &spec = database.get_specialist(i);
@@ -166,4 +167,26 @@ void MainController::add_rule(
     auto right = parser.parse();
     std::unique_ptr<Rule> tmp{new Rule{left, right}};
     database.add_rule(tmp);
+}
+std::vector<std::string> MainController::get_rules() {
+    std::vector<std::string> ret;
+    Printer print;
+    std::string tmp;
+    int number = 0;
+    auto rules_tmp = database.get_rules();
+    if (rules_tmp.size() == 0) {
+        return ret;
+    }
+    for (auto &i: rules_tmp) {
+        ++number;
+        print.flush();
+        i->get_first()->accept(print);
+        tmp = std::to_string(number);
+        tmp += ". IF " + print.str();
+        print.flush();
+        i->get_second()->accept(print);
+        tmp += " THEN " + print.str();
+        ret.push_back(tmp);
+    }
+    return ret;
 }

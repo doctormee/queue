@@ -162,9 +162,30 @@ void UI::print_queue() {
 
 void UI::print_rooms() {
     attached();
-    std::vector<std::string> buf = controller->get_rooms();
-    for (auto i: buf) {
-        msg(i);
+    try {
+        std::vector<std::string> buf = controller->get_rooms();
+        for (auto i: buf) {
+            msg(i);
+        }
+    } catch (std::exception &ex) {
+        err(ex.what());
+        return;
+    }
+}
+
+void UI::print_rules() {
+    attached();
+    try {
+        auto rules = controller->get_rules();
+        if (rules.empty()) {
+            msg("Нет правил определения приоритета!");
+            return;
+        }
+        for (auto &i: rules) {
+            msg(i);
+        }
+    } catch (std::exception &ex) {
+        err(ex.what());
     }
 }
 

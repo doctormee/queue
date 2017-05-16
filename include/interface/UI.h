@@ -14,7 +14,7 @@ public:
     virtual void err(std::string) = 0;
     virtual bool inp(std::string &) = 0;
     virtual bool inp(int &) = 0;
-    virtual bool inp(char &) = 0;   
+    virtual bool inp(char &) = 0;
     void set_uid(int);
     int get_uid();
     void add_room();
@@ -22,6 +22,7 @@ public:
     void print_services(); 
     void print_queue();
     void print_rooms();
+    void print_rules();
     void logout();
     bool login(int);
     void add_rule();

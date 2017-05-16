@@ -152,6 +152,19 @@ TEST(MainController_Test, Get_rooms) {
     ASSERT_EQ(main.get_rooms().size(), 2);
 }
 
+TEST(MainController_test, Get_rules) {
+    MainController main;
+    std::string first, second;
+    first = "ALL ";
+    second = "(gender = F)";
+    main.add_rule(first, second);
+    auto answer = main.get_rules();
+    ASSERT_EQ(answer[0], "1. IF ALL  THEN gender = F");
+    main.add_rule(second, first);
+    answer = main.get_rules();
+    ASSERT_EQ(answer[1], "2. IF gender = F THEN ALL ");
+}
+
 TEST(MainController_Test, User_in) {
     MainController main;
     std::string name, surname;
