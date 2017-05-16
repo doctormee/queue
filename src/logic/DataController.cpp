@@ -16,14 +16,14 @@ void DataController::add_room(
     std::vector<std::string> services) 
 {
     std::unique_ptr<Specialist> tmp{new Specialist{name, surname}};
-    for (auto &i: services) {
+    for (auto const &i: services) {
         tmp->add_service(i);
     }
     rooms[rid] = (std::unique_ptr<Room>){new Room{rid, tmp}};
 }
 
 void DataController::delete_room(int rid) {
-    decltype(rooms.begin()) it = rooms.find(rid);
+    auto it = rooms.find(rid);
     if (it == rooms.end()) {
         std::out_of_range ex("Нет комнаты с таким номером!");
         throw ex;
@@ -32,24 +32,23 @@ void DataController::delete_room(int rid) {
 }
 
 void DataController::update_room(int rid) {
-    decltype(rooms.begin()) it = rooms.find(rid);
+    auto it = rooms.find(rid);
     if (it == rooms.end()) {
         std::out_of_range ex("Нет комнаты с таким номером!");
         throw ex;
     }
-    auto &q = rooms[rid]->queue;
+    auto &queue = rooms[rid]->queue;
     int priority;
-    for (auto &&i = q->begin(); i != q->end(); ++i) {
+    for (auto &&i: *queue) {
         priority = 0;
-        for (auto &&j = q->begin(); j != i; ++j) {
-            priority += matching_rules(*((*i)->user), *((*j)->user));
+        for (auto &&j: *queue) {
+            if (j != i) {
+                priority += matching_rules(*(i->user), *(j->user));
+            }
         }
-        for (auto &&j = i + 1; j != q->end(); ++j) {
-            priority += matching_rules(*((*i)->user), *((*j)->user));
-        }
-        (*i)->set_priority(priority);
+        i->set_priority(priority);
     }
-    q->sort();
+    queue->sort();
 }
 
 void DataController::update_all() {
@@ -64,7 +63,7 @@ void DataController::add_rule(std::unique_ptr<Rule> &rule) {
 }
 std::vector<Rule *> DataController::get_rules() {
     std::vector<Rule *> tmp;
-    for (auto &i: rules) {
+    for (auto const &i: rules) {
         tmp.push_back(i.get());
     }
     return tmp;
@@ -83,7 +82,7 @@ void DataController::delete_rule(int num) {
 int DataController::matching_rules(User &user1, User &user2) const {
     int ret = 0;
     Evaluator eval;
-    for (auto &i: rules) {
+    for (auto const &i: rules) {
         eval.set_user(&user1);
         i->get_first()->accept(eval);
         ret += eval.get_answer() && (eval.set_user(&user2), i->get_second()->accept(eval), eval.get_answer());
