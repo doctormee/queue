@@ -54,13 +54,14 @@ build: $(OBJFILES) $(OBJDIR)/$(MAIN).o
 
 test: $(OBJFILES) $(TOBJ) 
 	@ make swipe
+	@ echo Removing all saved data...
+	@ rm -rf ./.*.txt
+	@ echo Done!
 	@ echo Compiling objective files into $(TEST) test executable
 	@ $(CPPC) $^ -o $(TEST) $(CPPFLAGS) $(TESTFLAGS) 
 	@ echo Done!
 	@ echo Now launching tests
 	@ ./$(TEST)
-	@ echo Now making coverage
-	@ make cov
 
 $(OBJDIR)/%.o: %.cpp
 	@ echo Making $@
@@ -90,7 +91,7 @@ libtest:
 
 clean:
 	@ echo Cleaning...
-	@ rm -rf $(OBJDIR)/* *~ $(foreach exec, $(OUT) $(TEST), ./$(exec)) $(DEPSDIR)/deps.make *.txt
+	@ rm -rf ./.*.txt $(OBJDIR)/* *~ $(foreach exec, $(OUT) $(TEST), ./$(exec)) $(DEPSDIR)/deps.make 
 	@ echo Done!
 cov:
 	@ echo Making coverage...

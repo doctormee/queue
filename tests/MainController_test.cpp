@@ -132,6 +132,7 @@ TEST(MainController_Test, Remove_room) {
     main.add_user(serv[0], name, surname, 10, 100, 60, 'F');
     ASSERT_THROW(main.remove_room(2), std::exception);
     main.remove_room(1);
+    ASSERT_EQ(main.get_services().size(), 1);
     ASSERT_THROW(main.get_queue(1), std::exception);
     ASSERT_EQ(main.add_user(serv[0], name, surname, 10, 100, 60, 'F'), 1);
     ASSERT_EQ(main.get_queue(0).size(), 2);
@@ -279,8 +280,8 @@ TEST(MainController_Test, Save) {
     EXPECT_EQ(tmp, "ALL ");
     EXPECT_TRUE(rules_file.eof());
     rules_file.close();
-    ASSERT_EQ(remove(MainController::rooms_file_name.c_str()), 0);
-    ASSERT_EQ(remove(MainController::rules_file_name.c_str()), 0);
+  EXPECT_EQ(remove(MainController::rooms_file_name.c_str()), 0);
+  EXPECT_EQ(remove(MainController::rules_file_name.c_str()), 0);
 }
 
 TEST(MainController_Test, Load) {
@@ -307,6 +308,6 @@ TEST(MainController_Test, Load) {
     EXPECT_EQ(answer.size(), 2);
     EXPECT_EQ(answer[0], "0. Ivan Ivanov Dentist\nВ очереди 0");
     EXPECT_EQ(answer[1], "1. Ivan Ivanov Dentist Vet\nВ очереди 0");
-    ASSERT_EQ(remove(MainController::rooms_file_name.c_str()), 0);
-    ASSERT_EQ(remove(MainController::rules_file_name.c_str()), 0);
+  EXPECT_EQ(remove(MainController::rooms_file_name.c_str()), 0);
+  EXPECT_EQ(remove(MainController::rules_file_name.c_str()), 0);
 }

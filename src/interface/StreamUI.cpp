@@ -31,8 +31,10 @@ bool StreamUI::inp(std::string &to) {
         throw std::logic_error(ERR_MSG);
     }
     if (!input_stream) {
+        ignore();
         input_stream.clear();
-        input_stream.ignore(10000,'\n');
+        return false;
+    } else if (to.empty()) {
         return false;
     } else {
         return true;
@@ -40,29 +42,39 @@ bool StreamUI::inp(std::string &to) {
 }
 
 bool StreamUI::inp(int &to) {
-    input_stream >> to;
+    std::string tmp;
+    std::getline(input_stream, tmp, '\n');
     if (input_stream.eof()) {
         throw std::logic_error(ERR_MSG);
     }
     if (!input_stream) {
+        ignore();
         input_stream.clear();
-        input_stream.ignore(10000,'\n');
         return false;
-    } else {
+    } 
+    try {
+        to = stoi(tmp);
         return true;
+    } catch (...) {
+        return false;
     }
 }
-
+void StreamUI::ignore() {
+    input_stream.ignore(std::string{}.max_size(),'\n');
+}
 bool StreamUI::inp(char &to) {
-    input_stream >> to;
+    std::string tmp;
+    std::getline(input_stream, tmp, '\n');
     if (input_stream.eof()) {
         throw std::logic_error(ERR_MSG);
     }
     if (!input_stream) {
+        ignore();
         input_stream.clear();
-        input_stream.ignore(10000,'\n');
         return false;
-    } else {
-        return true;
+    } else if (tmp.size() != 1) {
+        return false;
     }
+    to = tmp[0];
+    return true;
 }

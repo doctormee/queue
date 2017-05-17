@@ -35,22 +35,26 @@ void UI::add_room() {
     std::vector<std::string> services;
     try {
         msg("Введите имя специалиста: ");
-        while (!inp(name) || name.empty()) {
+        while (!inp(name)) {
             err("Некорректное имя!");
             msg("Введите имя специалиста: ");
         }
         msg("Введите фамилию специалиста: ");
-        while (!inp(surname) || surname.empty()) {
+        while (!inp(surname)) {
             err("Некорректная фамилия!");
             msg("Введите фамилию специалиста: ");
         }
         msg("Введите услуги, оказываемые специалистом, по одной услуге на строку. В конце ввода введите строку end");
         inp(buf);
         while (buf != "end") {
-            if (std::find(services.begin(), services.end(), buf) == services.end()) {
-                services.push_back(buf);
+            if (buf != "") {
+                if (std::find(services.begin(), services.end(), buf) == services.end()) {
+                    services.push_back(buf);
+                }
+                inp(buf);
+            } else {
+                err("Пустая услуга!");
             }
-            inp(buf);
         }
         if (services.empty()) {
             err("Список услуг не может быть пустым!");
@@ -84,12 +88,12 @@ bool UI::add_user() {
             }
         }
         msg("Введите имя");
-        while (!inp(name) || name.empty()) {
+        while (!inp(name)) {
             err("Некорректное имя!");
             msg("Введите имя");
         }
         msg("Введите фамилию");
-        while (!inp(surname) || surname.empty()) {
+        while (!inp(surname)) {
             err("Некорректная фамилия!");
             msg("Введите фамилию");
         }
@@ -211,6 +215,7 @@ void UI::add_rule() {
     attached();
     try {
         std::string left, right;
+        ignore();
         msg("Введите левое условие (корректное выражение на языке логических выражений) и нажмите enter: ");
         inp(left);
         msg("Введите правое условие (корректное выражение на языке логических выражений) и нажмите enter: ");
@@ -235,9 +240,5 @@ void UI::remove_rule() {
 }
 void UI::save() {
     attached();
-    try {
-        controller->save();
-    } catch (std::exception &ex) {
-        err(ex.what());
-    }
+    controller->save();
 }

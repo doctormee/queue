@@ -7,6 +7,7 @@
 #include <sstream>
 #include <string>
 #include <stdexcept>
+#include <cstdio>
 
 TEST(StreamUI_Test, Message) {
     std::stringstream inp, out;
@@ -54,10 +55,16 @@ TEST(StreamUI_Test, Add_user) {
     main.add_room(name, surname, serv);
     ui.attach(&main);
     ui.set_uid(1);
-    inp << 1 << std::endl << "Дантист" << std::endl << empty << std::endl << "Иван" << std::endl << empty << std::endl << "Иванов" << std::endl << "as" << std::endl << 1 << std::endl << "as" << std::endl << 2 << std::endl << "as" << std::endl << 3 << std::endl << 10 << std::endl << 'a' << std::endl << 'M'<< std::endl;
+    inp << 1 << std::endl << "Дантист" << std::endl;
+    inp << empty << std::endl << "Иван" << std::endl;
+    inp << empty << std::endl << "Иванов" << std::endl;
+    inp << "as" << std::endl << 1 << std::endl;
+    inp << "as" << std::endl << 2 << std::endl;
+    inp << "as" << std::endl << 3 << std::endl;
+    inp << 10 << std::endl << 'a' << std::endl;
+    inp << empty << std::endl << 'M'<< std::endl;
     expected = "Выберите услугу (или введите exit для выхода)\nДантист\nОшибка! Нет такой услуги!\nВыберите услугу (или введите exit для выхода)\nДантист\nВведите имя\nОшибка! Некорректное имя!\nВведите имя\nВведите фамилию\nОшибка! Некорректная фамилия!\nВведите фамилию\nВведите свой возраст (в годах)\nОшибка! Некорректный возраст!\nВведите свой возраст (в годах)\nВведите свой рост (в см)\nОшибка! Некорректный рост!\nВведите свой рост (в см)\nВведите свой вес (в кг)\nОшибка! Некорректный вес!\nВведите свой вес (в кг)\nВведите пол (латинская M или F)\nОшибка! Некорректный пол!\nВведите пол (латинская M или F)\nОшибка! Некорректный пол!\nВведите пол (латинская M или F)\nОшибка! Некорректный пол!\nВведите пол (латинская M или F)\n";
-    inp.flush();
-    ui.add_user();
+    ASSERT_TRUE(ui.add_user());
     actual = out.str();
     ASSERT_EQ(expected, actual);
     ASSERT_EQ(ui.get_uid(), 0);
@@ -272,4 +279,26 @@ TEST(StreamUI_Test, Login_logout) {
     expected = "Ошибка! Нет такого пользователя!\nОшибка! Нет такого пользователя!\nОшибка! Пользователь не существует!\n";
     actual = out.str();
     ASSERT_EQ(actual, expected);
+}
+TEST(StreamUI_Test, Save) {
+    MainController main;
+    std::string name, surname;
+    std::vector<std::string> serv;
+    name = "Ivan";
+    surname = "Ivanov";
+    serv.push_back("Dentist");
+    main.add_room(name, surname, serv);
+    std::stringstream out;
+    StreamUI ui{std::cin, out, &main};
+    ui.save();
+    MainController loading;
+    EXPECT_EQ(loading.get_services().size(), 1);
+    EXPECT_EQ(loading.get_rooms().size(), 1);
+    EXPECT_EQ(remove(MainController::rooms_file_name.c_str()), 0);
+    EXPECT_EQ(remove(MainController::rules_file_name.c_str()), 0);
+}
+TEST(StreamUI_Test, Save_no_attached) {
+    std::stringstream out;
+    StreamUI ui{std::cin, out};
+    ASSERT_THROW(ui.save(), std::logic_error);
 }

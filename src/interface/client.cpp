@@ -17,6 +17,7 @@ void Client::login_menu() {
     int ans;
     try {
         do {
+            msg("ГЛАВНОЕ МЕНЮ (введите номер пункта)");
             msg("1. Новый пользователь");
             msg("2. Войти по идентификатору");
             msg("3. Войти как администратор");
@@ -42,6 +43,7 @@ void Client::login_menu() {
                     clean();
                     user_menu();
                 }
+                clean();
                 break;
             case 3:
                 clean();
@@ -61,6 +63,7 @@ void Client::login_menu() {
 void Client::user_menu() {
     int ans;
     do {
+        msg("МЕНЮ ПОЛЬЗОВАТЕЛЯ (введите номер пункта)");
         msg("1. Проверить очередь");
         msg("2. Остаться в очереди и выйти в главное меню");
         msg("3. Покинуть очередь и выйти в главное меню");
@@ -82,11 +85,12 @@ void Client::user_menu() {
         default:
             err("Нет такого пункта!");
         }
-    } while (ans == 1);
+    } while ((ans != 2) && (ans != 3));
 }
 void Client::admin_menu() {
     int ans;
     do {
+        msg("МЕНЮ АДМИНИСТРАТОРА (введите номер пункта)");
         msg("1. Просмотреть список специалистов");
         msg("2. Добавить специалиста");
         msg("3. Удалить специалиста");
@@ -132,6 +136,7 @@ void Client::admin_menu() {
             save();
             break;
         case 8:
+            clean();
             break;
         default:
             err("Нет такого пункта!");

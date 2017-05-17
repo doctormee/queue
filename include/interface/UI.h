@@ -15,6 +15,7 @@ public:
     virtual bool inp(std::string &) = 0;
     virtual bool inp(int &) = 0;
     virtual bool inp(char &) = 0;
+    virtual void ignore() = 0;
     void set_uid(int);
     int get_uid();
     void add_room();

@@ -144,6 +144,9 @@ void MainController::remove_room(int rid) {
     for (int i = 0; i < spec.size(); ++i) {
         std::string current = spec.get_service(i);
         services_map[current].erase(std::find(services_map[current].begin(), services_map[current].end(), rid));
+        if (services_map[current].size() == 0) {
+            services_map.erase(current);
+        }
     }
     database.delete_room(rid);
     free_rids.push(rid);
@@ -270,8 +273,10 @@ void MainController::load() {
     }
     //reading rules
     std::string first, second;
-    while (std::getline(inp, first)) {
-        std::getline(inp, second);
+    while (
+        std::getline(inp, first)
+        && std::getline(inp, second))
+    {
         add_rule(first, second);
     }
     inp.close();
@@ -284,9 +289,11 @@ void MainController::load() {
     }
     std::string name, surname, unsplit, service;
     std::vector<std::string> services;
-    while (std::getline(inp, name, ' ')) {
-        std::getline(inp, surname, ' ');
-        std::getline(inp, unsplit);
+    while (
+        std::getline(inp, name, ' ') 
+        && std::getline(inp, surname, ' ')
+        && std::getline(inp, unsplit))
+    {
         std::stringstream split(unsplit);
         services.clear();
         while (std::getline(split, service, ' ')) {
