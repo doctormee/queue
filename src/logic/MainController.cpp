@@ -56,8 +56,8 @@ std::vector<std::string> MainController::get_services() {
     }
     else {
         std::vector<std::string> ret;
-        for (auto &i: services_map) {
-            ret.push_back(i.first);
+        for (auto const &service: services_map) {
+            ret.push_back(service.first);
         }
         return ret;
     }
@@ -74,12 +74,12 @@ int MainController::add_user(
 {
     int rid, uid;
     uid = get_uid();
-    auto it = services_map.find(service);
+    auto req_service = services_map.find(service);
     //поиск комнаты с наименьшей очередью
-    rid = it->second[0];
-    for (auto &j: it->second) {
-        if (database.room_size(j) < database.room_size(rid)) {
-            rid = j;
+    rid = req_service->second[0];
+    for (auto &current_rid: req_service->second) {
+        if (database.room_size(current_rid) < database.room_size(rid)) {
+            rid = current_rid;
         }
     }
     database.add_user(rid, uid, name, surname, age, height, weight, gender);
@@ -95,44 +95,44 @@ void MainController::add_room(
     int rid;
     rid = get_rid();
     database.add_room(rid, name, surname, services);
-    for (auto &i: services) {
-        services_map[i].push_back(rid);
+    for (auto const &service: services) {
+        services_map[service].push_back(rid);
     }
 }
 
 Queue &MainController::get_queue(int uid) {
-    auto it = users_map.find(uid);
-    if (it == users_map.end()) {
+    auto record = users_map.find(uid);
+    if (record == users_map.end()) {
         throw std::logic_error("Пользователь не существует!");
     }
-    auto rid = it->second;
+    auto rid = record->second;
     return database.get_queue(rid);
 }
 
 void MainController::remove_user(int uid) {
-    auto it = users_map.find(uid);
-    if (it == users_map.end()) {
+    auto record = users_map.find(uid);
+    if (record == users_map.end()) {
         throw std::logic_error("Пользователь не существует!");
     }
-    auto rid = it->second;
+    auto rid = record->second;
     database.delete_user(rid, uid);
     free_uids.push(uid);
     users_map.erase(uid);
 }
 void MainController::remove_room(int rid) {  
     std::vector<int> users_to_remove;  
-    for (auto const &i: users_map) {    
-        if (i.second == rid) {
-            users_to_remove.push_back(i.first);
+    for (auto const &record: users_map) {    
+        if (record.second == rid) {
+            users_to_remove.push_back(record.first);
         }
     }    
-    for (auto &i: users_to_remove) {
-        remove_user(i);
+    for (auto &user: users_to_remove) {
+        remove_user(user);
     }
     auto &spec = database.get_specialist(rid);
     for (int i = 0; i < spec.size(); ++i) {
-        std::string cur = spec.get_service(i);
-        services_map[cur].erase(std::find(services_map[cur].begin(), services_map[cur].end(), rid));
+        std::string current = spec.get_service(i);
+        services_map[current].erase(std::find(services_map[current].begin(), services_map[current].end(), rid));
     }
     database.delete_room(rid);
     free_rids.push(rid);
@@ -141,19 +141,19 @@ std::vector<std::string> MainController::get_rooms() {
     std::vector<std::string> ret;
     std::string msg;
     std::set<int> rids;
-    for (auto &i: services_map) {
-        for (auto j: i.second) {
-            if (rids.find(j) == rids.end()) {
-                rids.insert(j);
+    for (auto const &record: services_map) {
+        for (auto const &rid: record.second) {
+            if (rids.find(rid) == rids.end()) {
+                rids.insert(rid);
             }
         }
     }
     Printer print;
-    for (auto i: rids) {
+    for (auto rid: rids) {
         print.flush();
-        Specialist &spec = database.get_specialist(i);
-        msg = std::to_string(i) + ". " + (spec.accept(print), print.str());
-        msg += "В очереди " + std::to_string(database.room_size(i));
+        Specialist &spec = database.get_specialist(rid);
+        msg = std::to_string(rid) + ". " + (spec.accept(print), print.str());
+        msg += "В очереди " + std::to_string(database.room_size(rid));
         ret.push_back(msg);
     }
     return ret;
@@ -181,14 +181,14 @@ std::vector<std::string> MainController::get_rules() {
     if (rules_list.size() == 0) {
         return ret;
     }
-    for (auto &i: rules_list) {
+    for (auto const &rule: rules_list) {
         ++number;
         print.flush();
-        i->get_first()->accept(print);
+        rule->get_first()->accept(print);
         tmp = std::to_string(number);
         tmp += ". Prioritize " + print.str();
         print.flush();
-        i->get_second()->accept(print);
+        rule->get_second()->accept(print);
         tmp += " over " + print.str();
         ret.push_back(tmp);
     }

@@ -7,9 +7,10 @@ void Queue::push(std::unique_ptr<User> &user_) {
 }
 
 void Queue::remove(int uid) {
-    for (auto i = container.begin(); i != container.end(); ++i) {
-        if (((*i)->user->get_uid()) == uid) {
-            container.erase(i);
+    for (auto item = container.begin(); item != container.end(); ++item)
+    {
+        if (((*item)->user->get_uid()) == uid) {
+            container.erase(item);
             break;
         }
     }
@@ -38,10 +39,11 @@ int Queue::size() {
 }
 
 User &Queue::get_user(int uid) {
-    for (auto i = container.begin(); i != container.end(); ++i) {
-        if (((*i)->user->get_uid()) == uid) {
-            return *((*i)->user);
+    for (auto item = container.begin(); item != container.end(); ++item)
+    {
+        if (((*item)->user->get_uid()) == uid) {
+            return *((*item)->user);
         }
     }
-    throw std::out_of_range("No such User!");
+    throw std::logic_error("No such User!");
 }

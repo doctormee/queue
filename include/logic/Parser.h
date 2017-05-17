@@ -11,10 +11,10 @@ class NegationPredicate;
 class Term;
 class ImplicationPredicate;
 class Parser {
-    int t;
+    int token;
     std::stringstream inp;
-    void gt();
-    std::string gs();
+    void get_token();
+    std::string get_string();
     Sign eqnoteq();
     char genvalue();
     int value();

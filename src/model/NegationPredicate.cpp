@@ -14,6 +14,6 @@ NegationPredicate::NegationPredicate(std::shared_ptr<Predicate> src)
     : pred{src}
 { 
     if (!pred) {
-        throw std::logic_error("Null pointer added");
+        throw std::logic_error("Empty predicate (i.e. nullptr) is added");
     }
 }

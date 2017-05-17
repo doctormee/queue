@@ -79,8 +79,7 @@ void Printer::visit(const Term &term) {
     }
 }
 void Printer::visit(const ConjunctionPredicate &pred) {
-    auto i = pred.begin();
-    for (i = pred.begin(); i != pred.end(); ++i) {
+    for (auto i = pred.begin(); i != pred.end(); ++i) {
         out += "( ";
         (*i)->accept(*this);
         out += " ) ";
@@ -90,8 +89,7 @@ void Printer::visit(const ConjunctionPredicate &pred) {
     }
 }
 void Printer::visit(const DisjunctionPredicate &pred) {
-    auto i = pred.begin();
-    for (i = pred.begin(); i != pred.end(); ++i) {
+    for (auto i = pred.begin(); i != pred.end(); ++i) {
         out += "( ";
         (*i)->accept(*this);
         out += " ) ";
@@ -106,8 +104,7 @@ void Printer::visit(const NegationPredicate &pred) {
     out += " ) ";
 }
 void Printer::visit(const ImplicationPredicate &pred) {
-    auto i = pred.begin();
-    for (i = pred.begin(); i != pred.end(); ++i) {
+    for (auto i = pred.begin(); i != pred.end(); ++i) {
         out += "( ";
         (*i)->accept(*this);
         out += " ) ";

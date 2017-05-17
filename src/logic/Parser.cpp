@@ -11,35 +11,35 @@
 Parser::Parser(const std::string &buf) {
     inp.str(buf);
 }
-void Parser::gt() {
+void Parser::get_token() {
     do {
-        t = inp.get();
+        token = inp.get();
     } 
-    while ( isspace(t));
+    while ( isspace(token));
 }
-std::string Parser::gs() {
+std::string Parser::get_string() {
     std::string ret;
     std::getline(inp, ret, ' ');
     return ret;
 }
 Sign Parser::eqnoteq() {
-    if (t == '=') {
-        gt();
+    if (token == '=') {
+        get_token();
         return Sign::EQ;
     }
-    if (t == '!') {
-        gt();
-        if (t == '=') {
-            gt();
+    if (token == '!') {
+        get_token();
+        if (token == '=') {
+            get_token();
             return Sign::NOTEQ;
         }
     }
     throw ParseException("Некорректный ввод!");
 }
 char Parser::genvalue() {
-    if ((t == 'M') || (t == 'F')) {
-        char ret = t;
-        gt();
+    if ((token == 'M') || (token == 'F')) {
+        char ret = token;
+        get_token();
         return ret;
     }
     else {
@@ -49,9 +49,9 @@ char Parser::genvalue() {
 int Parser::value() {
     std::string val;
     val.clear();
-    while ((t >= '0') && (t <= '9')) {
-        val += t;
-        gt();
+    while ((token >= '0') && (token <= '9')) {
+        val += token;
+        get_token();
     }
     int ret;
     try {
@@ -62,18 +62,18 @@ int Parser::value() {
     }
 }
 Sign Parser::sign() {
-    if (t == '>') {
-        gt();
-        if (t == '=') {
-            gt();
+    if (token == '>') {
+        get_token();
+        if (token == '=') {
+            get_token();
             return Sign::MOREEQ;
         }
         return Sign::MORE;
     }
-    else if (t == '<') {
-        gt();
-        if (t == '=') {
-            gt();
+    else if (token == '<') {
+        get_token();
+        if (token == '=') {
+            get_token();
             return Sign::LESSEQ;
         }
         return Sign::LESS;
@@ -83,41 +83,41 @@ Sign Parser::sign() {
     }
 }
 Field Parser::field() {
-    if (t == 'h') {
-        if (gs() == "eight") {
-            gt();
+    if (token == 'h') {
+        if (get_string() == "eight") {
+            get_token();
             return Field::HEIGHT;
         }
     }
-    else if (t == 'w') {
-        if (gs() == "eight") {
-            gt();
+    else if (token == 'w') {
+        if (get_string() == "eight") {
+            get_token();
             return Field::WEIGHT;
         } 
     }
-    else if (t == 'a') {
-        if (gs() == "ge") {
-            gt();
+    else if (token == 'a') {
+        if (get_string() == "ge") {
+            get_token();
             return Field::AGE;
         }
     }
     throw ParseException("Некорректный ввод!");
 }
 std::shared_ptr<Predicate> Parser::term() {
-    if (t == 'A') {
-        if (gs() != "LL") {
+    if (token == 'A') {
+        if (get_string() != "LL") {
             throw ParseException("Некорректный ввод!");
         }
         std::shared_ptr<Term> ret{new Term{}};
-        gt();
+        get_token();
         return ret;
     }
     else {
-        if (t == 'g') {
-            if (gs() != "ender") {
+        if (token == 'g') {
+            if (get_string() != "ender") {
                 throw ParseException("Некорректный ввод!");
             }
-            gt();
+            get_token();
             Sign s = eqnoteq();
             int val = genvalue();
             std::shared_ptr<Term> ret{new Term{Field::GENDER, s, val}};
@@ -133,22 +133,22 @@ std::shared_ptr<Predicate> Parser::term() {
     }
 }
 std::shared_ptr<Predicate> Parser::par() {
-    if (t != '(') {
+    if (token != '(') {
         return term();
     }
     else {
-        gt();
+        get_token();
         auto ret = imp();
-        if (t != ')') {
+        if (token != ')') {
             throw ParseException("Некорректный ввод!");
         }
-        gt();
+        get_token();
         return ret;
     }
 }
 std::shared_ptr<Predicate> Parser::neg() {
-    if (t == '!') { 
-        gt();
+    if (token == '!') { 
+        get_token();
         std::shared_ptr<NegationPredicate> ret(new NegationPredicate{neg()});
         return ret;
     }
@@ -157,11 +157,11 @@ std::shared_ptr<Predicate> Parser::neg() {
 }
 std::shared_ptr<Predicate> Parser::conj() {
     auto tmp = neg();
-    if (t == '&') {
+    if (token == '&') {
         std::shared_ptr<ConjunctionPredicate> ret{new ConjunctionPredicate{}};
         ret->add(tmp);
-        while (t == '&') {
-            gt();
+        while (token == '&') {
+            get_token();
             ret->add(conj());
         }
         return ret;
@@ -172,11 +172,11 @@ std::shared_ptr<Predicate> Parser::conj() {
 }
 std::shared_ptr<Predicate> Parser::disj() {
     auto tmp = conj();
-    if (t == '|') {
+    if (token == '|') {
         std::shared_ptr<DisjunctionPredicate> ret{new DisjunctionPredicate{}};
         ret->add(tmp);
-        while (t == '|') {
-            gt();
+        while (token == '|') {
+            get_token();
             ret->add(disj());
         }
         return ret;
@@ -187,12 +187,12 @@ std::shared_ptr<Predicate> Parser::disj() {
 }
 std::shared_ptr<Predicate> Parser::imp() {
     auto tmp = disj();
-    if (t == '-') {
-        gt();
-        if (t == '>') {
+    if (token == '-') {
+        get_token();
+        if (token == '>') {
             std::shared_ptr<ImplicationPredicate> ret{new ImplicationPredicate{}};
             ret->add(tmp);
-            gt();
+            get_token();
             ret->add(imp());
             return ret;
         }
@@ -205,7 +205,7 @@ std::shared_ptr<Predicate> Parser::imp() {
     }
 }
 std::shared_ptr<Predicate> Parser::parse() {
-    gt();
+    get_token();
     auto ret = imp();
     if (!inp.eof()) {
         throw ParseException("Некорректный ввод!");

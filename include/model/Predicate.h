@@ -1,5 +1,4 @@
 #pragma once
-class User;
 class Visitor;
 class Predicate {
 public:

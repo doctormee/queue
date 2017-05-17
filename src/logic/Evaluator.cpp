@@ -96,16 +96,16 @@ void Evaluator::visit(const Term &term) {
 void Evaluator::visit(const ConjunctionPredicate &pred) {
     (*(pred.begin()))->accept(*this);
     bool tmp = answer;
-    for (auto i = ++pred.begin(); i != pred.end(); ++i) {
-        tmp = tmp && ((*i)->accept(*this), answer);
+    for (auto elem = pred.begin() + 1; elem != pred.end(); ++elem) {
+        tmp = tmp && ((*elem)->accept(*this), answer);
     }
     answer = tmp;
 }
 void Evaluator::visit(const DisjunctionPredicate &pred) {
     (*(pred.begin()))->accept(*this);
     bool tmp = answer;
-    for (auto i = ++pred.begin(); i != pred.end(); ++i) {
-        tmp = tmp || ((*i)->accept(*this), answer);
+    for (auto elem = pred.begin() + 1; elem != pred.end(); ++elem) {
+        tmp = tmp || ((*elem)->accept(*this), answer);
     }
     answer = tmp;
 }
@@ -116,8 +116,8 @@ void Evaluator::visit(const NegationPredicate &pred) {
 void Evaluator::visit(const ImplicationPredicate &pred) {
     (*(pred.begin()))->accept(*this);
     bool tmp = answer;
-    for (auto i = ++pred.begin(); i != pred.end(); ++i) {
-        tmp = !tmp || ((*i)->accept(*this), answer);
+    for (auto elem = pred.begin() + 1; elem != pred.end(); ++elem) {
+        tmp = !tmp || ((*elem)->accept(*this), answer);
     }
     answer = tmp;
 }
