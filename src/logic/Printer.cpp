@@ -130,5 +130,5 @@ void Printer::visit(const Specialist &spec) {
         throw std::logic_error("Невозможный специалист!");
     }
     out.pop_back();
-    out += "\n";
+    out += '\n';
 }

@@ -230,7 +230,7 @@ TEST(MainController_Test, Remove_rule) {
     ASSERT_EQ(answer[1], "2. Prioritize ALL  over ALL ");
     ASSERT_EQ(answer.size(), 2);
 }
-/*
+
 TEST(MainController_Test, Load_no_file) {
     if (std::ifstream(MainController::rooms_file_name)) {
         remove(MainController::rooms_file_name.c_str());
@@ -240,7 +240,7 @@ TEST(MainController_Test, Load_no_file) {
     }
     MainController main;
     ASSERT_THROW(main.load(), std::logic_error);
-}*/
+}
 TEST(MainController_Test, Save) {
     MainController main;
     std::string first, second;
@@ -254,16 +254,61 @@ TEST(MainController_Test, Save) {
     surname = "Ivanov";
     serv.push_back("Dentist");
     main.add_room(name, surname, serv);
+    serv.push_back("Vet");
+    main.add_room(name, surname, serv);
     ASSERT_NO_THROW(main.save());
-    std::ifstream rooms_file(MainController::rooms_file_name);
-    std::ifstream rules_file(MainController::rules_file_name);
+    std::ifstream rooms_file;
+    rooms_file.open(MainController::rooms_file_name, std::fstream::in);
     std::string tmp;
-    ASSERT_NO_THROW(std::getline(rules_file, tmp));
-    ASSERT_EQ(tmp, first);
-    ASSERT_NO_THROW(std::getline(rules_file, tmp));
-    ASSERT_EQ(tmp, second);
-    ASSERT_NO_THROW(std::getline(rules_file, tmp));
-    ASSERT_EQ(tmp, second);
-    ASSERT_NO_THROW(std::getline(rules_file, tmp));
-    ASSERT_EQ(tmp, first);
+    EXPECT_NO_THROW(std::getline(rooms_file, tmp));
+    EXPECT_EQ(tmp, "Ivan Ivanov Dentist");
+    EXPECT_NO_THROW(std::getline(rooms_file, tmp));
+    EXPECT_EQ(tmp, "Ivan Ivanov Dentist Vet");
+    EXPECT_FALSE(std::getline(rooms_file, tmp));
+    EXPECT_TRUE(rooms_file.eof());
+    rooms_file.close();
+    std::ifstream rules_file;
+    rules_file.open(MainController::rules_file_name, std::fstream::in);
+    EXPECT_NO_THROW(std::getline(rules_file, tmp));
+    EXPECT_EQ(tmp, "ALL ");
+    EXPECT_NO_THROW(std::getline(rules_file, tmp));
+    EXPECT_EQ(tmp, "gender = F");
+    EXPECT_NO_THROW(std::getline(rules_file, tmp));
+    EXPECT_EQ(tmp, "gender = F");
+    EXPECT_NO_THROW(std::getline(rules_file, tmp));
+    EXPECT_EQ(tmp, "ALL ");
+    EXPECT_TRUE(rules_file.eof());
+    rules_file.close();
+    ASSERT_EQ(remove(MainController::rooms_file_name.c_str()), 0);
+    ASSERT_EQ(remove(MainController::rules_file_name.c_str()), 0);
+}
+
+TEST(MainController_Test, Load) {
+    MainController main, loading;
+    std::string first, second;
+    first = "ALL ";
+    second = "(gender = F)";
+    main.add_rule(first, second);
+    main.add_rule(second, first);
+    std::string name, surname;
+    std::vector<std::string> serv;
+    name = "Ivan";
+    surname = "Ivanov";
+    serv.push_back("Dentist");
+    main.add_room(name, surname, serv);
+    serv.push_back("Vet");
+    main.add_room(name, surname, serv);
+    ASSERT_NO_THROW(main.save());
+    std::ifstream dev;
+    dev.open(MainController::rooms_file_name, std::fstream::in);
+    EXPECT_NO_THROW(loading.load());
+    auto answer = loading.get_rules();
+    EXPECT_EQ(answer[0], "1. Prioritize ALL  over gender = F");
+    EXPECT_EQ(answer[1], "2. Prioritize gender = F over ALL ");
+    answer = loading.get_rooms();
+    EXPECT_EQ(answer.size(), 2);
+    EXPECT_EQ(answer[0], "0. Ivan Ivanov Dentist\nВ очереди 0");
+    EXPECT_EQ(answer[1], "1. Ivan Ivanov Dentist Vet\nВ очереди 0");
+    ASSERT_EQ(remove(MainController::rooms_file_name.c_str()), 0);
+    ASSERT_EQ(remove(MainController::rules_file_name.c_str()), 0);
 }
