@@ -34,8 +34,7 @@ bool StreamUI::inp(std::string &to) {
         input_stream.clear();
         input_stream.ignore(10000,'\n');
         return false;
-    }
-    else {
+    } else {
         return true;
     }
 }
@@ -49,8 +48,7 @@ bool StreamUI::inp(int &to) {
         input_stream.clear();
         input_stream.ignore(10000,'\n');
         return false;
-    }
-    else {
+    } else {
         return true;
     }
 }
@@ -64,8 +62,7 @@ bool StreamUI::inp(char &to) {
         input_stream.clear();
         input_stream.ignore(10000,'\n');
         return false;
-    }
-    else {
+    } else {
         return true;
     }
 }

@@ -38,8 +38,7 @@ void Evaluator::visit(const Term &term) {
     int value = term.get_value();
     if (field == Field::ALL) {
         answer = true;
-    }
-    else {
+    } else {
         switch (field) {
             case Field::AGE: {
                 u_value = user->get_age();

@@ -41,8 +41,7 @@ char Parser::genvalue() {
         char ret = token;
         get_token();
         return ret;
-    }
-    else {
+    } else {
         throw ParseException("Некорректный ввод!");
     }
 }
@@ -69,16 +68,14 @@ Sign Parser::sign() {
             return Sign::MOREEQ;
         }
         return Sign::MORE;
-    }
-    else if (token == '<') {
+    } else if (token == '<') {
         get_token();
         if (token == '=') {
             get_token();
             return Sign::LESSEQ;
         }
         return Sign::LESS;
-    }
-    else {
+    } else {
         return eqnoteq();
     }
 }
@@ -87,15 +84,12 @@ Field Parser::field() {
         if (get_string() == "eight") {
             get_token();
             return Field::HEIGHT;
-        }
-    }
-    else if (token == 'w') {
+        } } else if (token == 'w') {
         if (get_string() == "eight") {
             get_token();
             return Field::WEIGHT;
         } 
-    }
-    else if (token == 'a') {
+    } else if (token == 'a') {
         if (get_string() == "ge") {
             get_token();
             return Field::AGE;
@@ -105,25 +99,19 @@ Field Parser::field() {
 }
 std::shared_ptr<Predicate> Parser::term() {
     if (token == 'A') {
-        if (get_string() != "LL") {
-            throw ParseException("Некорректный ввод!");
-        }
-        std::shared_ptr<Term> ret{new Term{}};
-        get_token();
-        return ret;
-    }
-    else {
-        if (token == 'g') {
-            if (get_string() != "ender") {
-                throw ParseException("Некорректный ввод!");
-            }
+        if (get_string() == "LL") {
+            std::shared_ptr<Term> ret{new Term{}};
             get_token();
-            Sign s = eqnoteq();
-            int val = genvalue();
-            std::shared_ptr<Term> ret{new Term{Field::GENDER, s, val}};
-            return ret;
-        }
-        else {
+            return ret; 
+        } } else {
+        if (token == 'g') {
+            if (get_string() == "ender") {
+                get_token();
+                Sign s = eqnoteq();
+                int val = genvalue();
+                std::shared_ptr<Term> ret{new Term{Field::GENDER, s, val}};
+                return ret;
+            } } else {
             Field f = field();
             Sign s = sign();
             int val = value();
@@ -131,19 +119,20 @@ std::shared_ptr<Predicate> Parser::term() {
             return ret;
         }
     }
+    throw ParseException("Некорректный ввод!");
 }
 std::shared_ptr<Predicate> Parser::par() {
     if (token != '(') {
         return term();
-    }
-    else {
+    } else {
         get_token();
         auto ret = imp();
-        if (token != ')') {
+        if (token == ')') {
+            get_token();
+            return ret;
+        } else {
             throw ParseException("Некорректный ввод!");
         }
-        get_token();
-        return ret;
     }
 }
 std::shared_ptr<Predicate> Parser::neg() {
@@ -165,8 +154,7 @@ std::shared_ptr<Predicate> Parser::conj() {
             ret->add(conj());
         }
         return ret;
-    }
-    else {
+    } else {
         return tmp;
     }
 }
@@ -180,8 +168,7 @@ std::shared_ptr<Predicate> Parser::disj() {
             ret->add(disj());
         }
         return ret;
-    }
-    else {
+    } else {
         return tmp;
     }
 }
@@ -195,12 +182,9 @@ std::shared_ptr<Predicate> Parser::imp() {
             get_token();
             ret->add(imp());
             return ret;
-        }
-        else {
+        } else {
             throw ParseException("Некорректный ввод!"); 
-        }
-    }
-    else {
+        } } else {
         return tmp;
     }
 }

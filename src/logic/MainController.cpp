@@ -16,8 +16,7 @@ const int MainController::MAX_ROOMS = 10;
 int MainController::get_rid() {
     if (free_rids.size() == 0) {
         throw std::out_of_range("Нельзя добавить больше специалистов!");
-    }
-    else {
+    } else {
         int tmp = free_rids.top();
         free_rids.pop();
         return tmp;
@@ -27,8 +26,7 @@ int MainController::get_rid() {
 int MainController::get_uid() {
     if (free_uids.size() == 0) {
         throw std::out_of_range("Нельзя добавить больше пользователей!");
-    }
-    else {
+    } else {
         int tmp = free_uids.top();
         free_uids.pop();
         return tmp;
@@ -53,8 +51,7 @@ MainController::MainController() {
 std::vector<std::string> MainController::get_services() {
     if (services_map.size() == 0) {
         throw std::logic_error("Нет доступных услуг!");
-    }
-    else {
+    } else {
         std::vector<std::string> ret;
         for (auto const &service: services_map) {
             ret.push_back(service.first);
