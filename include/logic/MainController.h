@@ -21,6 +21,8 @@ class MainController {
 public:
     static const int MAX_USERS;
     static const int MAX_ROOMS;
+    static const std::string rules_file_name;
+    static const std::string rooms_file_name;
     MainController();
     std::vector<std::string> get_services();
     int add_user(std::string, std::string, std::string, int, int, int, char);
@@ -33,4 +35,6 @@ public:
     bool user_in(int);
     void add_rule(const std::string &, const std::string &);
     std::vector<std::string> get_rules();
+    void save();
+    void load();
 };

@@ -7,12 +7,15 @@
 #include <stdexcept>
 #include <algorithm>
 #include <iostream>
+#include <fstream>
 #include <memory>
 #include <set>
 
 Parser MainController::parser = Parser{};
-const int MainController::MAX_USERS = 100;
-const int MainController::MAX_ROOMS = 10;
+const int MainController::MAX_USERS{100};
+const int MainController::MAX_ROOMS{10};
+const std::string MainController::rules_file_name{".rules"};
+const std::string MainController::rooms_file_name{".rooms"};
 int MainController::get_rid() {
     if (free_rids.size() == 0) {
         throw std::out_of_range("Нельзя добавить больше специалистов!");
@@ -40,7 +43,9 @@ void MainController::init() {
     }
     for (i = (MAX_ROOMS - 1); i >= 0; --i) {
         free_rids.push(i);
-        
+    }
+    if (std::ifstream(rooms_file_name) && std::ifstream(rules_file_name)) {
+        load();
     }
 }
 
@@ -194,4 +199,84 @@ std::vector<std::string> MainController::get_rules() {
 
 void MainController::remove_rule(int rule_number) {
     database.delete_rule(rule_number - 1);
+}
+
+void MainController::save() {
+    std::ofstream out;
+    out.open(rules_file_name, std::fstream::out | std::fstream::trunc);
+    Printer print;
+    //saving rules
+    auto rules_list = database.get_rules();
+    for (auto const &rule: rules_list) {
+        print.flush();
+        rule->get_first()->accept(print);
+        out << print.str() << std::endl;
+        print.flush();
+        rule->get_second()->accept(print);
+        out << print.str() << std::endl;
+    }
+    out.close();
+    //done saving rules
+    //saving specialists
+    //getting a set of all room ids
+    std::set<int> rids;
+    for (auto const &record: services_map) {
+        for (auto const &rid: record.second) {
+            if (rids.find(rid) == rids.end()) {
+                rids.insert(rid);
+            }
+        }
+    }
+    out.open(rooms_file_name, std::fstream::out | std::fstream::trunc);
+    //now printing specialists data to file 
+    for (auto rid: rids) {
+        print.flush();
+        Specialist &spec = database.get_specialist(rid);
+        spec.accept(print);
+        out << print.str();
+    }
+    out.close();
+    //done saving files
+}
+
+void MainController::load() {
+    std::ifstream inp;
+    inp.open(rules_file_name, std::fstream::in);
+    if (!inp) {
+        throw std::logic_error("Нет сохранённого состояния правил!");
+    }
+    //reading rules
+    std::string first, second;
+    while (!inp.eof()) {
+        std::getline(inp, first);
+        std::getline(inp, second);
+        add_rule(first, second);
+    }
+    inp.close();
+    //done reading rules
+    //reading specialists
+    inp.open(rooms_file_name, std::fstream::in);
+    if (!inp) {
+        throw std::logic_error("Нет сохранённого состояния специалистов!");
+    }
+    std::string name, surname;
+    std::vector<std::string> services;
+    while (!inp.eof()) {
+        std::getline(inp, name, ' ');
+        std::getline(inp, surname, ' ');
+        char c;
+        inp.get(c);
+        while (c != '\n') {
+            std::string service;
+            while (c != ' ') {
+                service.push_back(c);
+                inp.get(c);
+            }
+            services.push_back(service);
+            inp.get(c);
+        }
+        add_room(name, surname, services);
+    }
+    inp.close();
+    //done reading rooms
 }
