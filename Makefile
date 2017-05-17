@@ -21,13 +21,13 @@ CPPFLAGS = -std=c++11 $(IDIRS:%=-I% ) --coverage -Wall -Werror
 #test flags
 TESTFLAGS = -isystem $(GTESTDIR)/include $(LIBDIR)/libgtest.a 
 #file with int main name
-MAIN = main
+MAIN = client
 #output executable names
 OUT = priority_queue
 #test executable names
 TEST = test
 #all source .cpp files, except for main
-CPPFILES = $(shell ls $(SRCDIRS) | grep .cpp | grep -v $(MAIN))
+CPPFILES = $(shell ls $(SRCDIRS) | grep .cpp | grep -v $(MAIN).cpp)
 #all test files
 TESTFILES = $(shell ls $(TESTDIR)| grep .cpp)
 #test obj files
@@ -37,7 +37,7 @@ DEPS = $(shell ls $(IDIRS) | grep .h)
 #all object files (full paths), derived from source .cpp files
 OBJFILES = $(CPPFILES:%.cpp=$(OBJDIR)/%.o)
 #all source files
-SRCFILES = $(CPPFILES) $(DEPS) $(TESTFILES)
+SRCFILES = $(CPPFILES) $(DEPS) $(TESTFILES) $(MAIN).cpp
 #full objectives list (with path)
 ##OBJ = $(patsubst %,$(OBJDIR)/%,$(_OBJ))
 vpath
@@ -64,7 +64,7 @@ $(OBJDIR)/%.o: %.cpp
 	@ echo Making $@
 	@ $(CPPC) -c $(CPPFLAGS) $< -o $@
 
-$(DEPSDIR)/deps.make: $(SRCFILES) $(MAIN).cpp
+$(DEPSDIR)/deps.make: $(SRCFILES)
 	@ echo Making a dependencies list
 	@ rm -rf $(DEPSDIR)/deps.make $(foreach cpp, $(filter-out %.h, $^), && $(CPPC) -MM -MT '$(patsubst %.cpp,$(OBJDIR)/%.o, $(notdir $(cpp)))' $(cpp) $(CPPFLAGS) >> $(DEPSDIR)/deps.make)
 	@echo Done!
