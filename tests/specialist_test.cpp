@@ -13,43 +13,29 @@ TEST(Specialist_Test, Spec_init) {
 }
 TEST(Specialist_Test, Default_getters) {
     Specialist spec1;
-    ASSERT_STREQ(spec1.get_name().c_str(), "John");
-    ASSERT_STRNE(spec1.get_surname().c_str(), "John");
+    ASSERT_EQ(spec1.get_name(), "John");
+    ASSERT_NE(spec1.get_surname(), "John");
 }
 TEST(Specialist_Test, Constructed_getters) {
     Specialist spec1("Ivan", "John");
-    ASSERT_STREQ(spec1.get_name().c_str(), "Ivan");
-    ASSERT_STREQ(spec1.get_surname().c_str(), "John");
+    ASSERT_EQ(spec1.get_name(), "Ivan");
+    ASSERT_EQ(spec1.get_surname(), "John");
 }
 TEST(Specialist_Test, Services) {
     Specialist spec1;
     spec1.add_service("Dentist");
-    ASSERT_STREQ(spec1.get_service(0).c_str(), "Dentist" );
-    try {
-        spec1.get_service(1);
-        FAIL();
-    } catch (std::out_of_range &ex) {
-        //ok
-    }
+    ASSERT_EQ(spec1.get_service(0), "Dentist" );
+    ASSERT_THROW(spec1.get_service(1), std::out_of_range);
     spec1.add_service("Vet");
-    try {
-        for (auto i = 0; i < spec1.size(); ++i) {
-            ASSERT_STRNE(spec1.get_service(i).c_str(), "");
-        }
-    } catch (...) {
-        FAIL();//bad
+    for (auto i = 0; i < spec1.size(); ++i) {
+        std::string tmp;
+        ASSERT_NO_THROW(tmp = spec1.get_service(i));
+        ASSERT_NE(tmp, "");
     }
 }
 
 TEST(Specialist_Test, Trying_to_evaluate) {
     Specialist spec1;
     Evaluator eval;
-    try {
-        spec1.accept(eval);
-        FAIL();
-    } catch (std::logic_error &ex) {
-        //ok
-    } catch (...) {
-        FAIL();
-    }
+    ASSERT_THROW(spec1.accept(eval), std::logic_error);
 }

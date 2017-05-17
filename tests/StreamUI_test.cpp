@@ -130,7 +130,7 @@ TEST(StreamUI_Test, Print_queue) {
     ui.set_uid(0);
     ui.print_queue();
     std::string actual, expected;
-    expected = "Ваш идентификатор: 0\nIvan Ivanov. Идентификатор: 0\nSemen Ivanov. Идентификатор: 1\nВаш номер в очереди: 1\n";
+    expected = "Ваш идентификатор: 0\nIvan Ivanov. UID: 0\nSemen Ivanov. UID: 1\n";
     actual = out.str();
     ASSERT_EQ(actual, expected);
 }
