@@ -6,6 +6,7 @@ class MainController;
 
 class StreamUI: public UI {
     const std::string ERR_MSG = "Неожиданный конец ввода!";
+protected:
     std::istream &input_stream;
     std::ostream &output_stream;
 public:
@@ -16,6 +17,4 @@ public:
     bool inp(std::string &) override;
     bool inp(int &) override;
     bool inp(char &) override;
-    std::istream &get_istream();
-    std::ostream &get_ostream();
 };

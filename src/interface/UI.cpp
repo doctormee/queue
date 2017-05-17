@@ -63,7 +63,7 @@ void UI::add_room() {
     }
 }
 
-void UI::add_user() {
+bool UI::add_user() {
     attached();
     std::string name, surname, service;
     int age, height, weight;
@@ -75,11 +75,8 @@ void UI::add_user() {
         inp(service);
         while (std::find(services.begin(), services.end(), service) == services.end()) {
             if (service == "exit") {
-                return;
+                return false;
             } else {
-                if (service.empty()) {
-                    return;
-                }
                 err("Нет такой услуги!");
                 msg("Выберите услугу (или введите exit для выхода)");
                 print_services();
@@ -117,9 +114,10 @@ void UI::add_user() {
             msg("Введите пол (латинская M или F)");
         }
         set_uid(controller->add_user(service, name, surname, age, height, weight, gender));
+        return true;
     } catch (std::exception &ex) {
         err(ex.what());
-        return;
+        return false;
     }
 }
 void UI::remove_room() {
@@ -231,6 +229,14 @@ void UI::remove_rule() {
         inp(rule_number);
         controller->remove_rule(rule_number);
         msg("Правило удалено!");
+    } catch (std::exception &ex) {
+        err(ex.what());
+    }
+}
+void UI::save() {
+    attached();
+    try {
+        controller->save();
     } catch (std::exception &ex) {
         err(ex.what());
     }

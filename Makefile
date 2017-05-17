@@ -17,11 +17,11 @@ GTESTDIR = ../googletest/googletest
 #user libraries directory
 LIBDIR = ./libs
 #all compiler flags
-CPPFLAGS = -std=c++11 $(IDIRS:%=-I% ) --coverage -Wall -Werror
+CPPFLAGS = -std=c++11 $(IDIRS:%=-I% ) -Wall -Werror --coverage
 #test flags
 TESTFLAGS = -isystem $(GTESTDIR)/include $(LIBDIR)/libgtest.a 
 #file with int main name
-MAIN = client
+MAIN = main
 #output executable names
 OUT = priority_queue
 #test executable names
@@ -59,6 +59,8 @@ test: $(OBJFILES) $(TOBJ)
 	@ echo Done!
 	@ echo Now launching tests
 	@ ./$(TEST)
+	@ echo Now making coverage
+	@ make cov
 
 $(OBJDIR)/%.o: %.cpp
 	@ echo Making $@
@@ -88,10 +90,10 @@ libtest:
 
 clean:
 	@ echo Cleaning...
-	@ rm -rf $(OBJDIR)/* *~ $(foreach exec, $(OUT) $(TEST), ./$(exec)) $(DEPSDIR)/deps.make
+	@ rm -rf $(OBJDIR)/* *~ $(foreach exec, $(OUT) $(TEST), ./$(exec)) $(DEPSDIR)/deps.make *.txt
 	@ echo Done!
 cov:
-	@ Echo Making coverage...
+	@ echo Making coverage...
 	@ lcov -c -d . -o cov.info
 	@ genhtml -o html cov.info
 	@ rm cov.info

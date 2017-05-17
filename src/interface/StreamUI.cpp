@@ -66,10 +66,3 @@ bool StreamUI::inp(char &to) {
         return true;
     }
 }
-std::istream &StreamUI::get_istream() {
-    return input_stream;
-}
-
-std::ostream &StreamUI::get_ostream() {
-    return output_stream;
-}
