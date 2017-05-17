@@ -165,6 +165,24 @@ TEST(MainController_test, Get_rules) {
     answer = main.get_rules();
     ASSERT_EQ(answer[1], "2. Prioritize gender = F over ALL ");
 }
+TEST(MainController_test, Get_queue) {
+    MainController main;
+    std::string name, surname;
+    std::vector<std::string> serv;
+    name = "Ivan";
+    surname = "Ivanov";
+    serv.push_back("Dentist");
+    main.add_room(name, surname, serv);
+    serv.push_back("Therapist");
+    serv.push_back("Therapist");
+    main.add_room(name, surname, serv);
+    main.add_user(serv[0], name, surname, 10, 100, 60, 'F');
+    ASSERT_EQ((main.get_queue(0))[0], "Ivan Ivanov. UID: 0");
+    main.add_user(serv[0], name, surname, 10, 100, 60, 'F');
+    ASSERT_EQ((main.get_queue(0))[0], "Ivan Ivanov. UID: 0");
+    ASSERT_EQ((main.get_queue(1))[0], "Ivan Ivanov. UID: 1");
+    
+}
 
 TEST(MainController_Test, User_in) {
     MainController main;

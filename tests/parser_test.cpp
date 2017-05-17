@@ -69,50 +69,42 @@ TEST(Parser_test, Empty_parenthesis2) {
 
 TEST(Parser_test, One_term_no_par) {
     Parser p("age >= 19");
-    try {
+    ASSERT_NO_THROW(
         std::shared_ptr<Predicate> pred(p.parse());
         User ivan(0, "Ivan", "Ivanov", 19, 100, 100, 'M');
         Evaluator eval(&ivan);
         ASSERT_TRUE((pred->accept(eval), eval.get_answer()));
-    } catch (...) {
-        FAIL();
-    }
+    );
 }
 
 TEST(Parser_test, One_term_par) {
     Parser p("(age >= 19)");
-    try {
+    ASSERT_NO_THROW(
         std::shared_ptr<Predicate> pred(p.parse());
         User ivan(0, "Ivan", "Ivanov", 19, 100, 100, 'M');
         Evaluator eval(&ivan);
         ASSERT_TRUE((pred->accept(eval), eval.get_answer()));
-    } catch (...) {
-        FAIL();
-    }
+    );
 }
 
 TEST(Parser_test, One_term_many_par) {
     Parser p("(((age >= 19)))");
-    try {
+    ASSERT_NO_THROW(
         std::shared_ptr<Predicate> pred(p.parse());
         User ivan(0, "Ivan", "Ivanov", 19, 100, 100, 'M');
         Evaluator eval(&ivan);
         ASSERT_TRUE((pred->accept(eval), eval.get_answer()));
-    } catch (...) {
-        FAIL();
-    }
+    );
 }
 
 TEST(Parser_test,Term_gender) {
     Parser p("(((gender = F)))");
-    try {
+    ASSERT_NO_THROW(
         std::shared_ptr<Predicate> pred(p.parse());
         User ivan(0, "Ivan", "Ivanov", 19, 100, 100, 'F');
         Evaluator eval(&ivan);
         ASSERT_TRUE((pred->accept(eval), eval.get_answer()));
-    } catch (...) {
-        FAIL();
-    }
+    );
 }
 
 TEST(Parser_test, Term_bad_field) {
@@ -172,25 +164,21 @@ TEST(Parser_test, Conjunction_double) {
 
 TEST(Parser_test, Conjunction_good) {
     Parser p("(age >= 19) & ALL");
-    try {
+    ASSERT_NO_THROW(
         std::shared_ptr<Predicate> pred(p.parse());
         User ivan(0, "Ivan", "Ivanov", 19, 100, 100, 'M');
         Evaluator eval(&ivan);
         ASSERT_TRUE((pred->accept(eval), eval.get_answer()));
-    } catch (...) {
-        FAIL();
-    }
+    );
 }
 TEST(Parser_test, Conjunction_long) {
     Parser p("age < 20 & ALL & gender = M");
-    try {
+    ASSERT_NO_THROW(
         std::shared_ptr<Predicate> pred(p.parse());
         User ivan(0, "Ivan", "Ivanov", 19, 100, 100, 'M');
         Evaluator eval(&ivan);
         ASSERT_TRUE((pred->accept(eval), eval.get_answer()));
-    } catch (...) {
-        FAIL();
-    }
+    );
 }
 TEST(Parser_test, Disjunction_bad) {
     Parser p("age >= 19 | ");
@@ -202,25 +190,21 @@ TEST(Parser_test, Disjunction_double) {
 }
 TEST(Parser_test, Disjunction_good) {
     Parser p("(weight > 19) | ALL");
-    try {
+    ASSERT_NO_THROW(
         std::shared_ptr<Predicate> pred(p.parse());
         User ivan(0, "Ivan", "Ivanov", 19, 100, 100, 'M');
         Evaluator eval(&ivan);
         ASSERT_TRUE((pred->accept(eval), eval.get_answer()));
-    } catch (...) {
-        FAIL();
-    }
+    );
 }
 TEST(Parser_test, Disjunction_long) {
     Parser p("age <= 12 | height = 100 | gender != M");
-    try {
+    ASSERT_NO_THROW(
         std::shared_ptr<Predicate> pred(p.parse());
         User ivan(0, "Ivan", "Ivanov", 19, 100, 100, 'M');
         Evaluator eval(&ivan);
         ASSERT_TRUE((pred->accept(eval), eval.get_answer()));
-    } catch (...) {
-        FAIL();
-    }
+    );
 }
 TEST(Parser_test, Implication_bad) {
     Parser p("age >= 19 -> ");
@@ -232,25 +216,21 @@ TEST(Parser_test, Implication_bad2) {
 }
 TEST(Parser_test, Implication_good) {
     Parser p("age >= 19 -> ALL");
-    try {
+    ASSERT_NO_THROW(
         std::shared_ptr<Predicate> pred(p.parse());
         User ivan(0, "Ivan", "Ivanov", 19, 100, 100, 'M');
         Evaluator eval(&ivan);
         ASSERT_TRUE((pred->accept(eval), eval.get_answer()));
-    } catch (...) {
-        FAIL();
-    }
+    );
 }
 TEST(Parser_test, Implication_long) {
     Parser p("age >= 19 -> ALL -> gender = M");
-    try {
+    ASSERT_NO_THROW(
         std::shared_ptr<Predicate> pred(p.parse());
         User ivan(0, "Ivan", "Ivanov", 19, 100, 100, 'M');
         Evaluator eval(&ivan);
         ASSERT_TRUE((pred->accept(eval), eval.get_answer()));
-    } catch (...) {
-        FAIL();
-    }
+    );
 }
 TEST(Parser_test, Negation_bad) {
     Parser p("age >= 19 ! ");
@@ -262,91 +242,75 @@ TEST(Parser_test, Negation_bad2) {
 }
 TEST(Parser_test, Negation_good) {
     Parser p("!(age != 19)");
-    try {
+    ASSERT_NO_THROW(
         std::shared_ptr<Predicate> pred(p.parse());
         User ivan(0, "Ivan", "Ivanov", 19, 100, 100, 'M');
         Evaluator eval(&ivan);
         ASSERT_TRUE((pred->accept(eval), eval.get_answer()));
-    } catch (...) {
-        FAIL();
-    }
+    );
 }
 TEST(Parser_test, Negation_long) {
     Parser p("!!gender = M");
-    try {
+    ASSERT_NO_THROW(
         std::shared_ptr<Predicate> pred(p.parse());
         User ivan(0, "Ivan", "Ivanov", 19, 100, 100, 'M');
         Evaluator eval(&ivan);
         ASSERT_TRUE((pred->accept(eval), eval.get_answer()));
-    } catch (...) {
-        FAIL();
-    }
+    );
 }
 
 TEST(Parser_test, Priority_check1) {
     Parser p("ALL | ALL & gender != M");
-    try {
+    ASSERT_NO_THROW(
         std::shared_ptr<Predicate> pred(p.parse());
         User ivan(0, "Ivan", "Ivanov", 19, 100, 100, 'M');
         Evaluator eval(&ivan);
         ASSERT_TRUE((pred->accept(eval), eval.get_answer()));
-    } catch (...) {
-        FAIL();
-    }
+    );
 }
 
 TEST(Parser_test, Priority_check2) {
     Parser p("( ALL | ALL ) & gender != M");
-    try {
+    ASSERT_NO_THROW(
         std::shared_ptr<Predicate> pred(p.parse());
         User ivan(0, "Ivan", "Ivanov", 19, 100, 100, 'M');
         Evaluator eval(&ivan);
         ASSERT_FALSE((pred->accept(eval), eval.get_answer()));
-    } catch (...) {
-        FAIL();
-    }
+    );
 }
 TEST(Parser_test, Priority_check3) {
     Parser p("ALL | age != 19  -> gender != M");
-    try {
+    ASSERT_NO_THROW(
         std::shared_ptr<Predicate> pred(p.parse());
         User ivan(0, "Ivan", "Ivanov", 19, 100, 100, 'M');
         Evaluator eval(&ivan);
         ASSERT_FALSE((pred->accept(eval), eval.get_answer()));
-    } catch (...) {
-        FAIL();
-    }
+    );
 }
 TEST(Parser_test, Priority_check4) {
     Parser p("  ALL | (age != 19 -> gender != M)");
-    try {
+    ASSERT_NO_THROW(
         std::shared_ptr<Predicate> pred(p.parse());
         User ivan(0, "Ivan", "Ivanov", 19, 100, 100, 'M');
         Evaluator eval(&ivan);
         ASSERT_TRUE((pred->accept(eval), eval.get_answer()));
-    } catch (...) {
-        FAIL();
-    }
+    );
 }
 TEST(Parser_test, Priority_check5) {
     Parser p("! ALL & age >= 19");
-    try {
+    ASSERT_NO_THROW(
         std::shared_ptr<Predicate> pred(p.parse());
         User ivan(0, "Ivan", "Ivanov", 19, 100, 100, 'M');
         Evaluator eval(&ivan);
         ASSERT_FALSE((pred->accept(eval), eval.get_answer()));
-    } catch (...) {
-        FAIL();
-    }
+    );
 }
 TEST(Parser_test, Priority_check6) {
     Parser p("! !(ALL & age = 19)");
-    try {
+    ASSERT_NO_THROW(
         std::shared_ptr<Predicate> pred(p.parse());
         User ivan(0, "Ivan", "Ivanov", 19, 100, 100, 'M');
         Evaluator eval(&ivan);
         ASSERT_TRUE((pred->accept(eval), eval.get_answer()));
-    } catch (...) {
-        FAIL();
-    }
+    );
 }

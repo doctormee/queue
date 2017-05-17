@@ -102,13 +102,22 @@ void MainController::add_room(
     }
 }
 
-Queue &MainController::get_queue(int uid) {
+std::vector<std::string> MainController::get_queue(int uid) {
+    std::vector<std::string> ret;
     auto record = users_map.find(uid);
     if (record == users_map.end()) {
         throw std::logic_error("Пользователь не существует!");
     }
     auto rid = record->second;
-    return database.get_queue(rid);
+    Queue &queue = database.get_queue(rid);
+    for (auto &item: queue) {
+        std::string tmp;
+        tmp = item->user->get_name() + " ";
+        tmp += item->user->get_surname() + ". ";
+        tmp += "UID: " + std::to_string(item->user->get_uid());
+        ret.push_back(tmp);
+    }
+    return ret;
 }
 
 void MainController::remove_user(int uid) {

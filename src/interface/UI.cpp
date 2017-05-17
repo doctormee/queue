@@ -152,19 +152,12 @@ void UI::print_services() {
 void UI::print_queue() {
     attached();
     try {
-        Queue &q = controller->get_queue(uid);
+        auto queue = controller->get_queue(uid);
         std::string message = "Ваш идентификатор: " + std::to_string(uid);
         msg(message);
-        int pos = 0;
-        auto it = q.begin();
-        for (auto i = 0; it != q.end(); ++i) {
-            msg((*it)->user->get_name() + " " + (*it)->user->get_surname() + ". Идентификатор: " + std::to_string((*it)->user->get_uid()));
-            if ((*it)->user->get_uid() == uid) {
-                pos = i + 1;
-            }
-            ++it;
+        for (auto &user: queue) {
+            msg(user);
         }
-        msg("Ваш номер в очереди: " + std::to_string(pos));
     } catch (std::exception &ex) {
         err(ex.what());
     }
