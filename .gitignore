@@ -25,6 +25,8 @@
 *.log
 *.sql
 *.sqlite
+.rooms
+.rules
 
 # OS generated files #
 ######################

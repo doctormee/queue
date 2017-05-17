@@ -8,6 +8,7 @@
 #include <fstream>
 #include <string>
 #include <stdexcept>
+#include <cstdio>
 
 TEST(MainController_Test, Empty_services) {
     MainController main;
@@ -228,4 +229,41 @@ TEST(MainController_Test, Remove_rule) {
     ASSERT_EQ(answer[0], "1. Prioritize ALL  over gender = F");
     ASSERT_EQ(answer[1], "2. Prioritize ALL  over ALL ");
     ASSERT_EQ(answer.size(), 2);
+}
+/*
+TEST(MainController_Test, Load_no_file) {
+    if (std::ifstream(MainController::rooms_file_name)) {
+        remove(MainController::rooms_file_name.c_str());
+    }
+    if (std::ifstream(MainController::rules_file_name)) {
+        remove(MainController::rules_file_name.c_str());
+    }
+    MainController main;
+    ASSERT_THROW(main.load(), std::logic_error);
+}*/
+TEST(MainController_Test, Save) {
+    MainController main;
+    std::string first, second;
+    first = "ALL ";
+    second = "(gender = F)";
+    main.add_rule(first, second);
+    main.add_rule(second, first);
+    std::string name, surname;
+    std::vector<std::string> serv;
+    name = "Ivan";
+    surname = "Ivanov";
+    serv.push_back("Dentist");
+    main.add_room(name, surname, serv);
+    ASSERT_NO_THROW(main.save());
+    std::ifstream rooms_file(MainController::rooms_file_name);
+    std::ifstream rules_file(MainController::rules_file_name);
+    std::string tmp;
+    ASSERT_NO_THROW(std::getline(rules_file, tmp));
+    ASSERT_EQ(tmp, first);
+    ASSERT_NO_THROW(std::getline(rules_file, tmp));
+    ASSERT_EQ(tmp, second);
+    ASSERT_NO_THROW(std::getline(rules_file, tmp));
+    ASSERT_EQ(tmp, second);
+    ASSERT_NO_THROW(std::getline(rules_file, tmp));
+    ASSERT_EQ(tmp, first);
 }
