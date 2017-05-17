@@ -284,7 +284,7 @@ TEST(MainController_Test, Save) {
 }
 
 TEST(MainController_Test, Load) {
-    MainController main, loading;
+    MainController main;
     std::string first, second;
     first = "ALL ";
     second = "(gender = F)";
@@ -299,9 +299,7 @@ TEST(MainController_Test, Load) {
     serv.push_back("Vet");
     main.add_room(name, surname, serv);
     ASSERT_NO_THROW(main.save());
-    std::ifstream dev;
-    dev.open(MainController::rooms_file_name, std::fstream::in);
-    EXPECT_NO_THROW(loading.load());
+    MainController loading;
     auto answer = loading.get_rules();
     EXPECT_EQ(answer[0], "1. Prioritize ALL  over gender = F");
     EXPECT_EQ(answer[1], "2. Prioritize gender = F over ALL ");
