@@ -61,6 +61,7 @@ void DataController::add_rule(std::unique_ptr<Rule> &rule) {
     rules.push_back(std::move(rule));
     update_all();
 }
+
 std::vector<Rule *> DataController::get_rules() {
     std::vector<Rule *> tmp;
     for (auto const &rule: rules) {
@@ -109,7 +110,6 @@ Specialist &DataController::get_specialist(int rid) {
     return *(rooms[rid]->specialist);
 }
 
-
 void DataController::add_user(
     int rid, 
     int uid, 
@@ -129,6 +129,7 @@ void DataController::add_user(
     rooms[rid]->queue->push(tmp);
     update_room(rid);
 }
+
 void DataController::add_user(
     int rid, 
     std::unique_ptr<User> &user) 
@@ -141,6 +142,7 @@ void DataController::add_user(
     room->second->queue->push(user);
     update_room(rid);
 }
+
 void DataController::delete_user(int rid, int uid) {
     decltype(rooms.begin()) room = rooms.find(rid);
     if (room == rooms.end()) {

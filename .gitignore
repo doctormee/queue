@@ -46,3 +46,6 @@ src/obj/**
 test
 # DEPS DIR #
 src/deps/**
+# MAIN OBJ #
+############
+priority_queue
