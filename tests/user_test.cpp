@@ -28,7 +28,7 @@ TEST(User_Test, Getters) {
     ASSERT_STREQ((vect[0]->get_name()).c_str(),"John");
     ASSERT_STRNE((vect[1]->get_surname()).c_str(), "IvAnOV");
     ASSERT_LT(vect[0]->get_age(), 50);
-    ASSERT_TRUE(vect[0]->get_height());
+    ASSERT_TRUE(vect[0]->get_height() != 0);
     ASSERT_EQ(vect[1]->get_gender(), 'F');
     ASSERT_GT(vect[1]->get_weight(), 69);
     //ok
