@@ -45,7 +45,7 @@ vpath %.h $(IDIRS)
 vpath %.cpp $(SRCDIRS) $(TESTDIR)
 vpath %.o $(OBJDIR)
 
-all: build test
+all: build gtest test
 
 build: $(OBJFILES) $(OBJDIR)/$(MAIN).o
 	@ echo Compiling objective files into $(OUT) executable
@@ -79,7 +79,7 @@ include $(DEPSDIR)/deps.make
 
 gtest:
 	@ echo Cloning Google Tests into $(GTESTIDIR)
-	@ git clone https://github.com/google/googletest -q $(GTESTIDIR) 2>/dev/null|| echo Already installed!
+	@ git clone https://github.com/google/googletest -q $(GTESTIDIR) 2>/dev/null || echo Already installed!
 	@ echo Done!
 	@ make libtest
 
