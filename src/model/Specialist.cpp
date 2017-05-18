@@ -15,7 +15,7 @@ Specialist::Specialist(std::string name_, std::string surname_)
 }
 
 std::string Specialist::get_service(int i) const {
-    if (i >= services.size()) {
+    if (i >= int(services.size())) {
         std::out_of_range ex("Индекс вне границ");
         throw ex;
     }

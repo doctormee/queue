@@ -71,7 +71,7 @@ std::vector<Rule *> DataController::get_rules() {
 }
 
 void DataController::delete_rule(int num) {
-    if ((num >= rules.size()) || (num < 0)) {
+    if ((num >= int(rules.size())) || (num < 0)) {
         std::out_of_range ex("Нет такого правила!");
         throw ex;
     }

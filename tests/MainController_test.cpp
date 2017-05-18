@@ -93,7 +93,7 @@ TEST(MainController_Test, Add_user_overflow) {
     }
     ASSERT_THROW(main.add_user(serv[1], name, surname, 10, 100, 60, 'F'), std::out_of_range);
     ASSERT_THROW(main.add_user(serv[0], name, surname, 10, 100, 60, 'F'), std::out_of_range);
-    ASSERT_EQ(main.get_queue(0).size(), MainController::MAX_USERS);
+    ASSERT_EQ(int(main.get_queue(0).size()), MainController::MAX_USERS);
 } 
 TEST(MainController_Test, Remove_user) {
     MainController main;
