@@ -27,10 +27,12 @@ void Queue::sort() {
     std::sort(container.begin(), container.end(), Queue::queue_less);
 }
 
-std::vector<std::unique_ptr<Queue::Item>>::iterator Queue::begin() {
+std::vector<std::unique_ptr<Queue::Item>>::iterator
+Queue::begin() {
     return container.begin();
 }
-std::vector<std::unique_ptr<Queue::Item>>::iterator Queue::end() {
+std::vector<std::unique_ptr<Queue::Item>>::iterator
+Queue::end() {
     return container.end();
 }
 
