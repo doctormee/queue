@@ -1,3 +1,5 @@
+#operating system
+UNAME = $(shell uname)
 #default cpp compiler
 CPPC = g++
 #include directories
@@ -19,7 +21,11 @@ LIBDIR = ./libs
 #all compiler flags
 CPPFLAGS = -std=c++11 $(IDIRS:%=-I% ) -Wall -Werror --coverage
 #test flags
-TESTFLAGS = -isystem $(GTESTDIR)/include $(LIBDIR)/libgtest.a -pthread
+TESTFLAGS = -isystem $(GTESTDIR)/include $(LIBDIR)/libgtest.a
+#adding -pthread if not on mac 
+ifneq ($(UNAME),Darwin)
+TESTFLAGS = $(TESTFLAGS) + -pthread
+endif
 #file with int main name
 MAIN = main
 #output executable names
@@ -45,14 +51,15 @@ vpath %.h $(IDIRS)
 vpath %.cpp $(SRCDIRS) $(TESTDIR)
 vpath %.o $(OBJDIR)
 
-all: build gtest test
+all: build test
 
 build: $(OBJFILES) $(OBJDIR)/$(MAIN).o
 	@ echo Compiling objective files into $(OUT) executable
 	@ $(CPPC) -o $(OUT) $^ $(CPPFLAGS)
 	@ echo Done!
 
-test: $(OBJFILES) $(TOBJ) 
+test: $(OBJFILES) $(TOBJ)
+	@ ls $(GTESTIDIR) || make gtest 
 	@ make swipe
 	@ echo Removing all saved data...
 	@ rm -rf ./.*.txt
