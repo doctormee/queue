@@ -10,11 +10,62 @@
 #include <stdexcept>
 #include <cstdio>
 
-TEST(MainController_Test, Empty_services) {
+class MainController_Test: public ::testing::Test {
+protected:
+    std::ifstream inp_rooms, inp_rules;
+    std::ofstream out_rooms, out_rules;
+    virtual void SetUp() {
+        out_rooms.open(".roomstmp.txt", std::fstream::trunc);
+        out_rules.open(".rulestmp.txt", std::fstream::trunc);
+        inp_rooms.open(MainController::rooms_file_name);
+        inp_rules.open(MainController::rules_file_name);
+        std::string tmp;
+        while (std::getline(inp_rooms, tmp)) {
+          out_rooms << tmp << std::endl;
+        }
+        while (std::getline(inp_rules, tmp)) {
+          out_rules << tmp << std::endl;
+        }
+        out_rules.close();
+        out_rooms.close();
+        if (!inp_rooms.is_open() && !inp_rules.is_open()) {
+            remove(".rulestmp.txt");
+            remove(".roomstmp.txt");
+        }
+        remove(MainController::rooms_file_name.c_str());
+        remove(MainController::rules_file_name.c_str());
+        inp_rules.close();
+        inp_rooms.close();
+    }
+
+    virtual void TearDown() {
+        std::ifstream inp_rooms, inp_rules;
+        std::ofstream out_rooms, out_rules;
+        inp_rooms.open(".roomstmp.txt");
+        inp_rules.open(".rulestmp.txt");
+        out_rooms.open(MainController::rooms_file_name, std::fstream::trunc);
+        out_rules.open(MainController::rules_file_name, std::fstream::trunc);
+        std::string tmp;
+        while (std::getline(inp_rooms, tmp)) {
+           out_rooms << tmp << std::endl;
+        }
+        while (std::getline(inp_rules, tmp)) {
+           out_rules << tmp << std::endl;
+        }
+        out_rules.close();
+        out_rooms.close();
+        inp_rules.close();
+        inp_rooms.close();
+        remove(".rulestmp.txt");
+        remove(".roomstmp.txt");
+    }
+};
+
+TEST_F(MainController_Test, Empty_services) {
     MainController main;
     ASSERT_THROW(main.get_services(), std::logic_error);
 }
-TEST(MainController_Test, Get_services) {
+TEST_F(MainController_Test, Get_services) {
     MainController main;
     std::string name, surname;
     std::vector<std::string> serv;
@@ -30,7 +81,7 @@ TEST(MainController_Test, Get_services) {
     ASSERT_EQ(serv.size(), 2);
 }
 
-TEST(MainController_Test, Add_room) {
+TEST_F(MainController_Test, Add_room) {
     MainController main;
     std::string name, surname;
     std::vector<std::string> serv;
@@ -42,7 +93,7 @@ TEST(MainController_Test, Add_room) {
 }
 
 
-TEST(MainController_Test, Add_room_overflow) {
+TEST_F(MainController_Test, Add_room_overflow) {
     MainController main;
     std::string name, surname, service;
     std::vector<std::string> services;
@@ -58,7 +109,7 @@ TEST(MainController_Test, Add_room_overflow) {
     ASSERT_THROW(main.add_room(name, surname, services), std::out_of_range);
 } 
 
-TEST(MainController_Test, Add_user) {
+TEST_F(MainController_Test, Add_user) {
     MainController main;
     std::string name, surname;
     std::vector<std::string> serv;
@@ -76,7 +127,7 @@ TEST(MainController_Test, Add_user) {
     ASSERT_EQ(main.get_queue(1).size(), 1);
 } 
 
-TEST(MainController_Test, Add_user_overflow) {
+TEST_F(MainController_Test, Add_user_overflow) {
     MainController main;
     std::string name, surname;
     std::vector<std::string> serv;
@@ -95,7 +146,7 @@ TEST(MainController_Test, Add_user_overflow) {
     ASSERT_THROW(main.add_user(serv[0], name, surname, 10, 100, 60, 'F'), std::out_of_range);
     ASSERT_EQ(int(main.get_queue(0).size()), MainController::MAX_USERS);
 } 
-TEST(MainController_Test, Remove_user) {
+TEST_F(MainController_Test, Remove_user) {
     MainController main;
     std::string name, surname;
     std::vector<std::string> serv;
@@ -117,7 +168,7 @@ TEST(MainController_Test, Remove_user) {
     ASSERT_EQ(main.add_user(serv[0], name, surname, 10, 100, 60, 'F'), 0);
 }
 
-TEST(MainController_Test, Remove_room) {
+TEST_F(MainController_Test, Remove_room) {
     MainController main;
     std::string name, surname;
     std::vector<std::string> serv;
@@ -140,7 +191,7 @@ TEST(MainController_Test, Remove_room) {
     ASSERT_NO_THROW(main.get_queue(1));
 }
 
-TEST(MainController_Test, Get_rooms) {
+TEST_F(MainController_Test, Get_rooms) {
     MainController main;
     ASSERT_EQ(main.get_rooms().size(), 0);
     std::string name, surname;
@@ -155,7 +206,7 @@ TEST(MainController_Test, Get_rooms) {
     ASSERT_EQ(main.get_rooms().size(), 2);
 }
 
-TEST(MainController_test, Get_rules) {
+TEST_F(MainController_Test, Get_rules) {
     MainController main;
     std::string first, second;
     first = "ALL ";
@@ -167,7 +218,7 @@ TEST(MainController_test, Get_rules) {
     answer = main.get_rules();
     ASSERT_EQ(answer[1], "2. Prioritize gender = F over ALL ");
 }
-TEST(MainController_test, Get_queue) {
+TEST_F(MainController_Test, Get_queue) {
     MainController main;
     std::string name, surname;
     std::vector<std::string> serv;
@@ -186,7 +237,7 @@ TEST(MainController_test, Get_queue) {
     
 }
 
-TEST(MainController_Test, User_in) {
+TEST_F(MainController_Test, User_in) {
     MainController main;
     std::string name, surname;
     std::vector<std::string> serv;
@@ -201,7 +252,7 @@ TEST(MainController_Test, User_in) {
     ASSERT_TRUE(main.user_in(0));
     ASSERT_FALSE(main.user_in(1));
 }
-TEST(MainController_Test, Add_rule) {
+TEST_F(MainController_Test, Add_rule) {
     MainController main;
     std::string first, second, first_exp, second_exp;
     first_exp = "ALL ";
@@ -215,7 +266,7 @@ TEST(MainController_Test, Add_rule) {
     ASSERT_THROW(main.add_rule("ALL ", "gender > M"), ParseException);
 }
 
-TEST(MainController_Test, Remove_rule) {
+TEST_F(MainController_Test, Remove_rule) {
     MainController main;
     std::string first, second;
     first = "ALL ";
@@ -232,7 +283,7 @@ TEST(MainController_Test, Remove_rule) {
     ASSERT_EQ(answer.size(), 2);
 }
 
-TEST(MainController_Test, Load_no_file) {
+TEST_F(MainController_Test, Load_no_file) {
     if (std::ifstream(MainController::rooms_file_name)) {
         remove(MainController::rooms_file_name.c_str());
     }
@@ -242,7 +293,7 @@ TEST(MainController_Test, Load_no_file) {
     MainController main;
     ASSERT_THROW(main.load(), std::logic_error);
 }
-TEST(MainController_Test, Save) {
+TEST_F(MainController_Test, Save) {
     MainController main;
     std::string first, second;
     first = "ALL ";
@@ -280,11 +331,11 @@ TEST(MainController_Test, Save) {
     EXPECT_EQ(tmp, "ALL ");
     EXPECT_TRUE(rules_file.eof());
     rules_file.close();
-    EXPECT_EQ(remove(MainController::rooms_file_name.c_str()), 0);
-    EXPECT_EQ(remove(MainController::rules_file_name.c_str()), 0);
+    
+    
 }
 
-TEST(MainController_Test, Load) {
+TEST_F(MainController_Test, Load) {
     MainController main;
     std::string first, second;
     first = "ALL ";
@@ -308,6 +359,6 @@ TEST(MainController_Test, Load) {
     EXPECT_EQ(answer.size(), 2);
     EXPECT_EQ(answer[0], "0. Ivan Ivanov Dentist\nВ очереди 0");
     EXPECT_EQ(answer[1], "1. Ivan Ivanov Dentist Vet\nВ очереди 0");
-    EXPECT_EQ(remove(MainController::rooms_file_name.c_str()), 0);
-    EXPECT_EQ(remove(MainController::rules_file_name.c_str()), 0);
+    
+    
 }
