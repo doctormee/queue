@@ -4,12 +4,64 @@
 #include "gtest/gtest.h"
 #include <memory>
 #include <iostream>
+#include <fstream>
 #include <sstream>
 #include <string>
 #include <stdexcept>
 #include <cstdio>
 
-TEST(StreamUI_Test, Message) {
+class StreamUI_Test: public ::testing::Test {
+protected:
+    std::ifstream inp_rooms, inp_rules;
+    std::ofstream out_rooms, out_rules;
+    virtual void SetUp() {
+        out_rooms.open(".roomstmp.txt", std::fstream::trunc);
+        out_rules.open(".rulestmp.txt", std::fstream::trunc);
+        inp_rooms.open(MainController::rooms_file_name);
+        inp_rules.open(MainController::rules_file_name);
+        std::string tmp;
+        while (std::getline(inp_rooms, tmp)) {
+          out_rooms << tmp << std::endl;
+        }
+        while (std::getline(inp_rules, tmp)) {
+          out_rules << tmp << std::endl;
+        }
+        out_rules.close();
+        out_rooms.close();
+        if (!inp_rooms.is_open() && !inp_rules.is_open()) {
+            remove(".rulestmp.txt");
+            remove(".roomstmp.txt");
+        }
+        remove(MainController::rooms_file_name.c_str());
+        remove(MainController::rules_file_name.c_str());
+        inp_rules.close();
+        inp_rooms.close();
+    }
+
+    virtual void TearDown() {
+        std::ifstream inp_rooms, inp_rules;
+        std::ofstream out_rooms, out_rules;
+        inp_rooms.open(".roomstmp.txt");
+        inp_rules.open(".rulestmp.txt");
+        out_rooms.open(MainController::rooms_file_name, std::fstream::trunc);
+        out_rules.open(MainController::rules_file_name, std::fstream::trunc);
+        std::string tmp;
+        while (std::getline(inp_rooms, tmp)) {
+           out_rooms << tmp << std::endl;
+        }
+        while (std::getline(inp_rules, tmp)) {
+           out_rules << tmp << std::endl;
+        }
+        out_rules.close();
+        out_rooms.close();
+        inp_rules.close();
+        inp_rooms.close();
+        remove(".rulestmp.txt");
+        remove(".roomstmp.txt");
+    }
+};
+
+TEST_F(StreamUI_Test, Message) {
     std::stringstream inp, out;
     StreamUI ui{inp, out};
     std::string expected = "Hello, World!";
@@ -18,7 +70,7 @@ TEST(StreamUI_Test, Message) {
     std::getline(out, actual);
     ASSERT_EQ(actual, expected);
 }
-TEST(StreamUI_Test, Error) {
+TEST_F(StreamUI_Test, Error) {
     std::stringstream inp, out;
     StreamUI ui{inp, out};
     std::string expected = "All gone wrong!";
@@ -29,7 +81,7 @@ TEST(StreamUI_Test, Error) {
     ASSERT_EQ(actual, expected);
 }
 
-TEST(StreamUI_Test, Add_room) {
+TEST_F(StreamUI_Test, Add_room) {
     std::stringstream inp, out;
     std::string actual, expected, empty;
     empty.clear();
@@ -42,7 +94,7 @@ TEST(StreamUI_Test, Add_room) {
     actual = out.str();
     ASSERT_EQ(actual, expected);
 }
-TEST(StreamUI_Test, Add_user) {
+TEST_F(StreamUI_Test, Add_user) {
     std::stringstream inp, out;
     StreamUI ui{inp, out};
     MainController main;
@@ -69,7 +121,7 @@ TEST(StreamUI_Test, Add_user) {
     ASSERT_EQ(expected, actual);
     ASSERT_EQ(ui.get_uid(), 0);
 }
-TEST(StreamUI_Test, Empty_or_failed_stream) {
+TEST_F(StreamUI_Test, Empty_or_failed_stream) {
     std::stringstream inp, out;
     MainController main;
     StreamUI ui{inp, out, &main};
@@ -91,7 +143,7 @@ TEST(StreamUI_Test, Empty_or_failed_stream) {
     ASSERT_FALSE(ui.inp(expected));
 }
 
-TEST(StreamUI_Test, Print_services) {
+TEST_F(StreamUI_Test, Print_services) {
     MainController main;
     std::stringstream out;
     StreamUI ui{std::cin, out, &main};
@@ -107,7 +159,7 @@ TEST(StreamUI_Test, Print_services) {
     ASSERT_EQ(actual, expected);
 }
 
-TEST(StreamUI_Test, Empty_services) {
+TEST_F(StreamUI_Test, Empty_services) {
     MainController main;
     std::stringstream out;
     StreamUI ui{std::cin, out, &main};
@@ -117,11 +169,11 @@ TEST(StreamUI_Test, Empty_services) {
     ASSERT_EQ(actual, expected);
 }
 
-TEST(StreamUI_Test, No_system_attached) {
+TEST_F(StreamUI_Test, No_system_attached) {
     StreamUI ui{std::cin, std::cout};
     ASSERT_THROW(ui.add_user(), std::logic_error);
 }
-TEST(StreamUI_Test, Print_queue) {
+TEST_F(StreamUI_Test, Print_queue) {
     MainController main;
     std::stringstream out;
     std::string name, surname;
@@ -141,7 +193,7 @@ TEST(StreamUI_Test, Print_queue) {
     actual = out.str();
     ASSERT_EQ(actual, expected);
 }
-TEST(StreamUI_Test, Print_queue_nonexist_user) {
+TEST_F(StreamUI_Test, Print_queue_nonexist_user) {
     MainController main;
     std::stringstream out;
     std::string name, surname;
@@ -161,7 +213,7 @@ TEST(StreamUI_Test, Print_queue_nonexist_user) {
     ASSERT_EQ(actual, expected);
 }
 
-TEST(StreamUI_Test, Print_rooms) {
+TEST_F(StreamUI_Test, Print_rooms) {
     MainController main;
     std::stringstream out;
     std::string name, surname;
@@ -182,7 +234,7 @@ TEST(StreamUI_Test, Print_rooms) {
     ASSERT_EQ(actual, expected);
 }
 
-TEST(StreamUI_Test, Remove_room) {
+TEST_F(StreamUI_Test, Remove_room) {
     MainController main;
     std::stringstream inp, out;
     std::string name, surname;
@@ -206,7 +258,7 @@ TEST(StreamUI_Test, Remove_room) {
     ASSERT_EQ(actual, expected);
 }
 
-TEST(StreamUI_Test, Remove_rule) {
+TEST_F(StreamUI_Test, Remove_rule) {
     MainController main;
     std::stringstream inp, out;
     std::string actual, expected;
@@ -223,7 +275,7 @@ TEST(StreamUI_Test, Remove_rule) {
     ASSERT_EQ(actual, expected);
 }
 
-TEST(StreamUI_Test, Print_rules) {
+TEST_F(StreamUI_Test, Print_rules) {
     MainController main;
     std::stringstream inp, out;
     StreamUI ui{inp, out, &main}; 
@@ -238,7 +290,7 @@ TEST(StreamUI_Test, Print_rules) {
     ui.print_rules();
     ASSERT_EQ(out.str(), "1. Prioritize ALL  over gender = F\n");
 }
-TEST(StreamUI_Test, Add_rule) {
+TEST_F(StreamUI_Test, Add_rule) {
     MainController main;
     std::stringstream inp, out;
     std::string expected, input;
@@ -258,7 +310,7 @@ TEST(StreamUI_Test, Add_rule) {
     ASSERT_EQ(out.str(), expected);
 }
 
-TEST(StreamUI_Test, Login_logout) {
+TEST_F(StreamUI_Test, Login_logout) {
     MainController main;
     std::string name, surname;
     std::vector<std::string> serv;
@@ -280,7 +332,7 @@ TEST(StreamUI_Test, Login_logout) {
     actual = out.str();
     ASSERT_EQ(actual, expected);
 }
-TEST(StreamUI_Test, Save) {
+TEST_F(StreamUI_Test, Save) {
     MainController main;
     std::string name, surname;
     std::vector<std::string> serv;
@@ -297,7 +349,7 @@ TEST(StreamUI_Test, Save) {
     EXPECT_EQ(remove(MainController::rooms_file_name.c_str()), 0);
     EXPECT_EQ(remove(MainController::rules_file_name.c_str()), 0);
 }
-TEST(StreamUI_Test, Save_no_attached) {
+TEST_F(StreamUI_Test, Save_no_attached) {
     std::stringstream out;
     StreamUI ui{std::cin, out};
     ASSERT_THROW(ui.save(), std::logic_error);

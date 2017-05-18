@@ -35,21 +35,23 @@ void Client::login_menu() {
                 }
                 break;
             case 2:
+                clean();
                 msg("Введите индентификатор: ");
                 while (!inp(ans)) {
+                    clean();
                     err("Введите число!");
                 }
                 if (login(ans)) {
                     clean();
                     user_menu();
                 }
-                clean();
                 break;
             case 3:
                 clean();
                 admin_menu();
                 break;
             case 4:
+                clean();
                 break;
             default:
                 err("Нет такого пункта!");
@@ -91,55 +93,60 @@ void Client::admin_menu() {
     int ans;
     do {
         msg("МЕНЮ АДМИНИСТРАТОРА (введите номер пункта)");
-        msg("1. Просмотреть список специалистов");
-        msg("2. Добавить специалиста");
-        msg("3. Удалить специалиста");
-        msg("4. Просмотреть правила определения приоритетов");
-        msg("5. Добавить правило");
-        msg("6. Удалить правило");
-        msg("7. Сохранить состояние системы");
-        msg("8. Выйти в главное меню");
+        msg("1. Просмотреть список услуг");
+        msg("2. Просмотреть список специалистов");
+        msg("3. Добавить специалиста");
+        msg("4. Удалить специалиста");
+        msg("5. Просмотреть правила определения приоритетов");
+        msg("6. Добавить правило");
+        msg("7. Удалить правило");
+        msg("8. Сохранить состояние системы");
+        msg("9. Выйти в главное меню");
         while (!inp(ans)) {
             err("Введите номер пункта!");
         }
         switch (ans) {
         case 1:
             clean();
-            print_rooms();
+            print_services();
             break;
         case 2:
             clean();
-            std::cin.clear();
-            add_room();
+            print_rooms();
             break;
         case 3:
             clean();
             std::cin.clear();
-            remove_room();
+            add_room();
             break;
         case 4:
             clean();
-            print_rules();
+            std::cin.clear();
+            remove_room();
             break;
         case 5:
             clean();
-            std::cin.clear();
-            add_rule();
+            print_rules();
             break;
         case 6:
             clean();
             std::cin.clear();
-            remove_rule();
+            add_rule();
             break;
         case 7:
             clean();
-            save();
+            std::cin.clear();
+            remove_rule();
             break;
         case 8:
+            clean();
+            save();
+            break;
+        case 9:
             clean();
             break;
         default:
             err("Нет такого пункта!");
         }
-    } while (ans != 8);
+    } while (ans != 9);
 }
