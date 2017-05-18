@@ -19,7 +19,7 @@ LIBDIR = ./libs
 #all compiler flags
 CPPFLAGS = -std=c++11 $(IDIRS:%=-I% ) -Wall -Werror --coverage
 #test flags
-TESTFLAGS = -isystem $(GTESTDIR)/include $(LIBDIR)/libgtest.a -pthread
+TESTFLAGS = -isystem $(GTESTDIR)/include $(LIBDIR)/libgtest.a
 #file with int main name
 MAIN = main
 #output executable names
