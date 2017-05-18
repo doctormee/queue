@@ -45,17 +45,17 @@ void UI::add_room() {
             msg("Введите фамилию специалиста: ");
         }
         msg("Введите услуги, оказываемые специалистом, по одной услуге на строку. В конце ввода введите строку end");
-        inp(buf);
+        buf = " ";
         while (buf != "end") {
-            if (buf != "") {
-                if (std::find(services.begin(), services.end(), buf) == services.end()) {
-                    services.push_back(buf);
-                }
-                inp(buf);
-            } else {
-                err("Пустая услуга!");
+            while(!inp(buf)) {
+                err("Некорректная услуга!");
+            }
+            auto pos = std::find(services.begin(), services.end(), buf);
+            if ( pos == services.end()) {
+                services.push_back(buf);
             }
         }
+        services.pop_back();
         if (services.empty()) {
             err("Список услуг не может быть пустым!");
             return;

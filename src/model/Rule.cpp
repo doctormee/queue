@@ -13,5 +13,3 @@ std::shared_ptr<Predicate> Rule::get_first() const {
 std::shared_ptr<Predicate> Rule::get_second() const {
     return second;
 }
-
-

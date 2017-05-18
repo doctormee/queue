@@ -34,7 +34,7 @@ bool StreamUI::inp(std::string &to) {
         ignore();
         input_stream.clear();
         return false;
-    } else if (to.empty()) {
+    } else if (to.empty() || (to.find_first_not_of(' ') == to.npos)) {
         return false;
     } else {
         return true;
@@ -43,15 +43,9 @@ bool StreamUI::inp(std::string &to) {
 
 bool StreamUI::inp(int &to) {
     std::string tmp;
-    std::getline(input_stream, tmp, '\n');
-    if (input_stream.eof()) {
-        throw std::logic_error(ERR_MSG);
-    }
-    if (!input_stream) {
-        ignore();
-        input_stream.clear();
+    if (!inp(tmp) || (tmp.find_first_of(' ') != tmp.npos)) {
         return false;
-    } 
+    }
     try {
         to = stoi(tmp);
         return true;
@@ -64,15 +58,10 @@ void StreamUI::ignore() {
 }
 bool StreamUI::inp(char &to) {
     std::string tmp;
-    std::getline(input_stream, tmp, '\n');
-    if (input_stream.eof()) {
-        throw std::logic_error(ERR_MSG);
-    }
-    if (!input_stream) {
-        ignore();
-        input_stream.clear();
+    if (!inp(tmp)) {
         return false;
-    } else if (tmp.size() != 1) {
+    }
+    if (tmp.size() != 1) {
         return false;
     }
     to = tmp[0];

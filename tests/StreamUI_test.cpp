@@ -58,8 +58,8 @@ TEST(StreamUI_Test, Add_user) {
     inp << 1 << std::endl << "Дантист" << std::endl;
     inp << empty << std::endl << "Иван" << std::endl;
     inp << empty << std::endl << "Иванов" << std::endl;
-    inp << "as" << std::endl << 1 << std::endl;
-    inp << "as" << std::endl << 2 << std::endl;
+    inp << "1 " << std::endl << 1 << std::endl;
+    inp << "   " << std::endl << 2 << std::endl;
     inp << "as" << std::endl << 3 << std::endl;
     inp << 10 << std::endl << 'a' << std::endl;
     inp << empty << std::endl << 'M'<< std::endl;
