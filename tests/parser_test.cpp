@@ -314,3 +314,6 @@ TEST(Parser_test, Priority_check6) {
         ASSERT_TRUE((pred->accept(eval), eval.get_answer()));
     );
 }
+TEST(ParseException_test, Destructor) {
+    ParseException ex{"Test"};
+}

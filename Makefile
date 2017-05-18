@@ -19,7 +19,7 @@ LIBDIR = ./libs
 #all compiler flags
 CPPFLAGS = -std=c++11 $(IDIRS:%=-I% ) -Wall -Werror --coverage
 #test flags
-TESTFLAGS = -isystem $(GTESTDIR)/include $(LIBDIR)/libgtest.a 
+TESTFLAGS = -isystem $(GTESTDIR)/include $(LIBDIR)/libgtest.a
 #file with int main name
 MAIN = main
 #output executable names
@@ -95,8 +95,8 @@ clean:
 	@ echo Done!
 cov:
 	@ echo Making coverage...
-	@ lcov -c -d . -o cov.info
-	@ genhtml -o html cov.info
+	@ lcov -c -d . -o cov.info 
+	@ genhtml -o html cov.info --demangle-cpp --branch-coverage
 	@ rm cov.info
 	@ open html/index.html
 	@ echo Done!

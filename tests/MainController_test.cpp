@@ -280,8 +280,8 @@ TEST(MainController_Test, Save) {
     EXPECT_EQ(tmp, "ALL ");
     EXPECT_TRUE(rules_file.eof());
     rules_file.close();
-  EXPECT_EQ(remove(MainController::rooms_file_name.c_str()), 0);
-  EXPECT_EQ(remove(MainController::rules_file_name.c_str()), 0);
+    EXPECT_EQ(remove(MainController::rooms_file_name.c_str()), 0);
+    EXPECT_EQ(remove(MainController::rules_file_name.c_str()), 0);
 }
 
 TEST(MainController_Test, Load) {
@@ -308,6 +308,6 @@ TEST(MainController_Test, Load) {
     EXPECT_EQ(answer.size(), 2);
     EXPECT_EQ(answer[0], "0. Ivan Ivanov Dentist\nВ очереди 0");
     EXPECT_EQ(answer[1], "1. Ivan Ivanov Dentist Vet\nВ очереди 0");
-  EXPECT_EQ(remove(MainController::rooms_file_name.c_str()), 0);
-  EXPECT_EQ(remove(MainController::rules_file_name.c_str()), 0);
+    EXPECT_EQ(remove(MainController::rooms_file_name.c_str()), 0);
+    EXPECT_EQ(remove(MainController::rules_file_name.c_str()), 0);
 }
