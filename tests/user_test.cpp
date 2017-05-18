@@ -25,8 +25,8 @@ TEST(User_Test, Getters) {
     add(vect, (new User{2, "Ivan", "Ivanov", 10, 192, 70, 'F'}));
     ASSERT_EQ(vect[0]->get_uid(), 1);
     ASSERT_NE(vect[1]->get_uid(), 1);
-    ASSERT_STREQ((vect[0]->get_name()).c_str(),"John");
-    ASSERT_STRNE((vect[1]->get_surname()).c_str(), "IvAnOV");
+    ASSERT_EQ(vect[0]->get_name(),"John");
+    ASSERT_NE(vect[1]->get_surname(), "IvAnOV");
     ASSERT_LT(vect[0]->get_age(), 50);
     ASSERT_TRUE(vect[0]->get_height() != 0);
     ASSERT_EQ(vect[1]->get_gender(), 'F');
