@@ -34,16 +34,15 @@ bool StreamUI::inp(std::string &to) {
         ignore();
         input_stream.clear();
         return false;
-    } else if (to.empty() || (to.find_first_not_of(' ') == to.npos)) {
+    } else if (to.empty() || (to.find_first_of(' ') != to.npos)) {
         return false;
-    } else {
-        return true;
     }
+    return true;
 }
 
 bool StreamUI::inp(int &to) {
     std::string tmp;
-    if (!inp(tmp) || (tmp.find_first_of(' ') != tmp.npos)) {
+    if (!inp(tmp)) {
         return false;
     }
     try {
@@ -53,17 +52,15 @@ bool StreamUI::inp(int &to) {
         return false;
     }
 }
-void StreamUI::ignore() {
-    input_stream.ignore(std::string{}.max_size(),'\n');
-}
+
 bool StreamUI::inp(char &to) {
     std::string tmp;
-    if (!inp(tmp)) {
-        return false;
-    }
-    if (tmp.size() != 1) {
+    if (!inp(tmp) || (tmp.size() != 1)) {
         return false;
     }
     to = tmp[0];
     return true;
+}
+void StreamUI::ignore() {
+    input_stream.ignore(std::string{}.max_size(),'\n');
 }

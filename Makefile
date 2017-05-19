@@ -15,7 +15,7 @@ TESTDIR = ./tests
 #googletest installing directory
 GTESTIDIR = ../googletest
 #googletest directory
-GTESTDIR = ../googletest/googletest
+GTESTDIR = $(GTESTIDIR)/googletest
 #user libraries directory
 LIBDIR = ./libs
 #all compiler flags
@@ -44,14 +44,14 @@ DEPS = $(shell ls $(IDIRS) | grep .h)
 OBJFILES = $(CPPFILES:%.cpp=$(OBJDIR)/%.o)
 #all source files
 SRCFILES = $(CPPFILES) $(DEPS) $(TESTFILES) $(MAIN).cpp
-#full objectives list (with path)
-##OBJ = $(patsubst %,$(OBJDIR)/%,$(_OBJ))
 vpath
 vpath %.h $(IDIRS)
 vpath %.cpp $(SRCDIRS) $(TESTDIR)
 vpath %.o $(OBJDIR)
 
-all: build test
+all:
+	@ make gtest
+	@ make build test
 
 build: $(OBJFILES) $(OBJDIR)/$(MAIN).o
 	@ echo Compiling objective files into $(OUT) executable
@@ -59,7 +59,6 @@ build: $(OBJFILES) $(OBJDIR)/$(MAIN).o
 	@ echo Done!
 
 test: $(OBJFILES) $(TOBJ)
-	@ ls $(GTESTIDIR) || make gtest 
 	@ make swipe
 	@ echo Removing all saved data...
 	@ rm -rf ./.*.txt
@@ -74,22 +73,17 @@ $(OBJDIR)/%.o: %.cpp
 	@ echo Making $@
 	@ $(CPPC) -c $(CPPFLAGS) $< -o $@
 
+gtest:
+	@ echo Checking Google Tests in $(GTESTIDIR).
+	@ (git clone https://github.com/google/googletest -q $(GTESTIDIR) 2>/dev/null && make libtest) || echo Already installed!
+
 $(DEPSDIR)/deps.make: $(SRCFILES)
 	@ echo Making a dependencies list
 	@ rm -rf $(DEPSDIR)/deps.make $(foreach cpp, $(filter-out %.h, $^), && $(CPPC) -MM -MT '$(patsubst %.cpp,$(OBJDIR)/%.o, $(notdir $(cpp)))' $(cpp) $(CPPFLAGS) >> $(DEPSDIR)/deps.make)
 	@echo Done!
-	@ #$(CPPC) $(CPPFLAGS) -MM $(filter-out %.h, $^) > $(DEPSDIR)/deps.make 
-
 include $(DEPSDIR)/deps.make
 
-.PHONY: clean libtest cov swipe gtest
-
-gtest:
-	@ echo Cloning Google Tests into $(GTESTIDIR)
-	@ git clone https://github.com/google/googletest -q $(GTESTIDIR) 2>/dev/null || echo Already installed!
-	@ echo Done!
-	@ make libtest
-
+.PHONY: clean libtest cov swipe
 libtest:
 	@ echo Making a gtest library in $(LIBDIR)...
 	@ $(CPPC) -isystem $(GTESTDIR)/include -I$(GTESTDIR) -pthread -c $(GTESTDIR)/src/gtest-all.cc -o $(OBJDIR)/gtest-all.o
@@ -108,4 +102,4 @@ cov:
 	@ open html/index.html
 	@ echo Done!
 swipe:
-	@ rm -rf $(OBJDIR)/*.gcda
+	@ rm -rf $(OBJDIR)/*.gcda $(DEPSDIR)/deps.make 

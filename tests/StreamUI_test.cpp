@@ -39,8 +39,6 @@ protected:
     }
 
     virtual void TearDown() {
-        std::ifstream inp_rooms, inp_rules;
-        std::ofstream out_rooms, out_rules;
         inp_rooms.open(".roomstmp.txt");
         inp_rules.open(".rulestmp.txt");
         out_rooms.open(MainController::rooms_file_name, std::fstream::trunc);
