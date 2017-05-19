@@ -16,6 +16,7 @@ void Client::clean() {
 void Client::login_menu() {
     int ans;
     try {
+        clean();
         do {
             msg("ГЛАВНОЕ МЕНЮ (введите номер пункта)");
             msg("1. Новый пользователь");
@@ -91,6 +92,7 @@ void Client::user_menu() {
 }
 void Client::admin_menu() {
     int ans;
+    clean();
     do {
         msg("МЕНЮ АДМИНИСТРАТОРА (введите номер пункта)");
         msg("1. Просмотреть список услуг");
