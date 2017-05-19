@@ -1,6 +1,7 @@
 #include "Queue.h"
 #include "User.h"
 #include "gtest/gtest.h"
+#include <stdexcept>
 
 TEST(Queue_test, Item_init_and_Push) {
     std::unique_ptr<User> new_user{new User{0}};
@@ -36,10 +37,5 @@ TEST(Queue_test, Get_user) {
     my_queue.push(new_user2);
     ASSERT_TRUE(my_queue.get_user(0).get_uid() == 0);
     ASSERT_TRUE(my_queue.get_user(2).get_weight() == 72);
-    try {
-        my_queue.get_user(3);
-       FAIL();
-    } catch (...) {
-        //ok
-    }
+    ASSERT_THROW(my_queue.get_user(3), std::logic_error);
 }
