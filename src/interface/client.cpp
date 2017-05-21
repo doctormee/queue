@@ -27,7 +27,7 @@ void Client::login_menu() {
                 err("Введите номер пункта!");
             }
             switch (ans) {
-            case 1:
+            case 1: //Новый пользователь
                 std::cin.clear();
                 clean();
                 if (add_user()) {
@@ -35,7 +35,7 @@ void Client::login_menu() {
                     user_menu();
                 }
                 break;
-            case 2:
+            case 2: //Войти по идентификатору
                 clean();
                 msg("Введите индентификатор: ");
                 while (!inp(ans)) {
@@ -47,11 +47,11 @@ void Client::login_menu() {
                     user_menu();
                 }
                 break;
-            case 3:
+            case 3: //Войти как администратор
                 clean();
                 admin_menu();
                 break;
-            case 4:
+            case 4: //Завершить работу системы
                 clean();
                 break;
             default:
@@ -74,14 +74,14 @@ void Client::user_menu() {
             err("Введите номер пункта!");
         }
         switch (ans) {
-        case 1:
+        case 1: //Проверить очередь
             clean();
             print_queue();
             break;
-        case 2:
+        case 2: //Остаться в очереди и выйти в главное меню
             clean();
             break;
-        case 3:
+        case 3: //Покинуть очередь и выйти в главное меню
             clean();
             logout();
             break;
@@ -108,43 +108,43 @@ void Client::admin_menu() {
             err("Введите номер пункта!");
         }
         switch (ans) {
-        case 1:
+        case 1: //Просмотреть список услуг
             clean();
             print_services();
             break;
-        case 2:
+        case 2: //Просмотреть список специалистов
             clean();
             print_rooms();
             break;
-        case 3:
+        case 3: //Добавить специалиста
             clean();
             std::cin.clear();
             add_room();
             break;
-        case 4:
+        case 4: //Удалить специалиста
             clean();
             std::cin.clear();
             remove_room();
             break;
-        case 5:
+        case 5: //Просмотреть правила определения приоритетов
             clean();
             print_rules();
             break;
-        case 6:
+        case 6: //Добавить правило
             clean();
             std::cin.clear();
             add_rule();
             break;
-        case 7:
+        case 7: //Удалить правило
             clean();
             std::cin.clear();
             remove_rule();
             break;
-        case 8:
+        case 8: //Сохранить состояние системы
             clean();
             save();
             break;
-        case 9:
+        case 9: //Выйти в главное меню
             clean();
             break;
         default:
