@@ -87,6 +87,9 @@ bool UI::add_user() {
                 inp(service);
             }
         }
+        if (service == "exit") {
+            return false;
+        }
         msg("Введите имя");
         while (!inp(name)) {
             err("Некорректное имя!");
