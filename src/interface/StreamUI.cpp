@@ -42,7 +42,7 @@ bool StreamUI::inp(std::string &to) {
 
 bool StreamUI::inp(int &to) {
     std::string tmp;
-    if (!inp(tmp)) {
+    if (!inp(tmp) || (tmp.find_first_not_of("1234567890") != tmp.npos)) {
         return false;
     }
     try {
