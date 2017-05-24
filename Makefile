@@ -49,9 +49,7 @@ vpath %.h $(IDIRS)
 vpath %.cpp $(SRCDIRS) $(TESTDIR)
 vpath %.o $(OBJDIR)
 
-all:
-	@ make gtest
-	@ make build test
+all: gtest libtest build test
 
 build: $(OBJFILES) $(OBJDIR)/$(MAIN).o
 	@ echo Compiling objective files into $(OUT) executable
@@ -60,8 +58,7 @@ build: $(OBJFILES) $(OBJDIR)/$(MAIN).o
 
 test: $(OBJFILES) $(TOBJ)
 	@ make swipe
-	@ echo Removing all saved data...
-	@ rm -rf ./.*.txt
+	@ make gtest
 	@ echo Done!
 	@ echo Compiling objective files into $(TEST) test executable
 	@ $(CPPC) $^ -o $(TEST) $(CPPFLAGS) $(TESTFLAGS) 
