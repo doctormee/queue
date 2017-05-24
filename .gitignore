@@ -51,3 +51,6 @@ src/deps/**
 # MAIN OBJ #
 ############
 priority_queue
+# GTEST LIB #
+############
+libs/libgtest.a
