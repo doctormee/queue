@@ -24,7 +24,7 @@ CPPFLAGS = -std=c++11 $(IDIRS:%=-I% ) -Wall -Werror --coverage
 TESTFLAGS = -isystem $(GTESTDIR)/include $(LIBDIR)/libgtest.a
 #adding -pthread if not on mac 
 ifneq ($(UNAME),Darwin)
-TESTFLAGS = $(TESTFLAGS) + -pthread
+TESTFLAGS += -pthread
 endif
 #file with int main name
 MAIN = main
