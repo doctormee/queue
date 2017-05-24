@@ -73,7 +73,7 @@ TEST(DataController_test, Get_rules) {
     std::unique_ptr<Rule> rule{new Rule{bin, bin2}};
     dc.add_rule(rule);
     auto answer = dc.get_rules();
-    ASSERT_EQ(answer.size(), 1);
+    ASSERT_EQ(int(answer.size()), 1);
     Printer print;
     answer[0]->get_first()->accept(print);
     ASSERT_EQ(print.str(), "( height > 190 ) & ( gender = F ) ");
@@ -116,7 +116,7 @@ TEST(DataController_test, Add_user_ptr) {
     std::unique_ptr<User> jack{new User{2, "Jack", "Kindred", 10, 192, 78, 'F'}};
     dc.add_user(0, jack);
     auto &q = dc.get_queue(0);
-    ASSERT_EQ(q.size(), 1);
+    ASSERT_EQ(int(q.size()), 1);
     try {
         dc.add_user(1, jack);
         FAIL();
@@ -135,7 +135,7 @@ TEST(DataController_test, Delete_user) {
     ASSERT_THROW(dc.delete_user(1, 2), std::out_of_range);
     dc.delete_user(0, 2);
     auto &q = dc.get_queue(0);
-    ASSERT_EQ(q.size(), 0);
+    ASSERT_EQ(int(q.size()), 0);
 } 
 
 TEST(DataController_test, Update_room) {
@@ -193,10 +193,10 @@ TEST(DataController_test, Get_queue_test) {
     serv.push_back("Two");
     dc.add_room(0, "Ivan", "Ivanov", serv);
     auto &q = dc.get_queue(0);
-    ASSERT_EQ(q.size(), 0);
+    ASSERT_EQ(int(q.size()), 0);
     std::unique_ptr<User> jack{new User{2, "Jack", "Kindred", 10, 192, 78, 'F'}};
     dc.add_user(0, jack);
-    ASSERT_EQ(q.size(), 1);
+    ASSERT_EQ(int(q.size()), 1);
     try {
         dc.get_queue(1);
         FAIL();
@@ -212,7 +212,7 @@ TEST(DataController_test, Get_specialist_test) {
     serv.push_back("Two");
     dc.add_room(0, "Ivan", "Ivanov", serv);
     auto &s = dc.get_specialist(0);
-    ASSERT_EQ(s.size(), 2);
+    ASSERT_EQ(int(s.size()), 2);
     ASSERT_STREQ(s.get_service(0).c_str(), "One");
     ASSERT_STREQ(s.get_service(1).c_str(), "Two");
     ASSERT_THROW(dc.get_specialist(1), std::out_of_range);

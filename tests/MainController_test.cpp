@@ -75,10 +75,10 @@ TEST_F(MainController_Test, Get_services) {
     main.add_room(name, surname, serv);
     serv.push_back("Therapist");
     serv.push_back("Therapist");
-    ASSERT_EQ(serv.size(), 3);
+    ASSERT_EQ(int(serv.size()), 3);
     main.add_room(name, surname, serv);
     ASSERT_NO_THROW(serv = main.get_services());
-    ASSERT_EQ(serv.size(), 2);
+    ASSERT_EQ(int(serv.size()), 2);
 }
 
 TEST_F(MainController_Test, Add_room) {
@@ -356,7 +356,7 @@ TEST_F(MainController_Test, Load) {
     EXPECT_EQ(answer[0], "1. Prioritize ALL  over gender = F");
     EXPECT_EQ(answer[1], "2. Prioritize gender = F over ALL ");
     answer = loading.get_rooms();
-    EXPECT_EQ(answer.size(), 2);
+    EXPECT_EQ(int(answer.size()), 2);
     EXPECT_EQ(answer[0], "0. Ivan Ivanov Dentist\nВ очереди 0");
     EXPECT_EQ(answer[1], "1. Ivan Ivanov Dentist Vet\nВ очереди 0");
     

@@ -342,8 +342,8 @@ TEST_F(StreamUI_Test, Save) {
     StreamUI ui{std::cin, out, &main};
     ui.save();
     MainController loading;
-    EXPECT_EQ(loading.get_services().size(), 1);
-    EXPECT_EQ(loading.get_rooms().size(), 1);
+    EXPECT_EQ(int(loading.get_services().size()), 1);
+    EXPECT_EQ(int(loading.get_rooms().size()), 1);
     EXPECT_EQ(remove(MainController::rooms_file_name.c_str()), 0);
     EXPECT_EQ(remove(MainController::rules_file_name.c_str()), 0);
 }
