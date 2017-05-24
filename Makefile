@@ -21,11 +21,11 @@ LIBDIR = ./libs
 #all compiler flags
 CPPFLAGS = -std=c++11 $(IDIRS:%=-I% ) -Wall -Werror --coverage
 #test flags
-TESTFLAGS = -isystem $(GTESTDIR)/include $(LIBDIR)/libgtest.a
+TESTFLAGS = -isystem $(GTESTDIR)/include $(LIBDIR)/libgtest.a -pthread
 #adding -pthread if not on mac 
-ifneq ($(UNAME),Darwin)
-TESTFLAGS += -pthread
-endif
+#ifneq ($(UNAME),Darwin)
+#TESTFLAGS += -pthread
+#endif
 #file with int main name
 MAIN = main
 #output executable names
