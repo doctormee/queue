@@ -33,7 +33,7 @@ TEST(DataController_test, Deleting_room) {
         std::string expected = "Нет комнаты с таким номером!";
         ASSERT_EQ(actual, expected);
     }
-    dc.delete_room(0);
+    EXPECT_NO_THROW(dc.delete_room(0));
 }
 
 TEST(DataController_test, Add_and_delete_rule) {
