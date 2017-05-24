@@ -93,8 +93,8 @@ clean:
 	@ echo Done!
 cov:
 	@ echo Making coverage...
-	@ lcov -c -d . -o cov.info 
-	@ genhtml -o html cov.info --demangle-cpp --branch-coverage
+	@ lcov -c -d $(OBJDIR) -o cov.info
+	@ genhtml -o html cov.info --demangle-cpp
 	@ rm cov.info
 	@ open html/index.html
 	@ echo Done!

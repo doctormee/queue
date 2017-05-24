@@ -27,7 +27,8 @@ TEST(DataController_test, Deleting_room) {
     dc.add_room(0, "Ivan", "Ivanov", serv);
     try {
         dc.delete_room(1);
-    } catch(std::exception &ex) {
+        FAIL();
+    } catch(std::out_of_range &ex) {
         std::string actual = ex.what();
         std::string expected = "Нет комнаты с таким номером!";
         ASSERT_EQ(actual, expected);

@@ -1,5 +1,4 @@
 #include "gtest/gtest.h"
-#include "MainController.h"
 #include <iostream>
 #include <fstream>
 #include <cstdio>
