@@ -84,7 +84,8 @@ Field Parser::field() {
         if (get_string() == "eight") {
             get_token();
             return Field::HEIGHT;
-        } } else if (token == 'w') {
+        }
+    } else if (token == 'w') {
         if (get_string() == "eight") {
             get_token();
             return Field::WEIGHT;
@@ -184,7 +185,8 @@ std::shared_ptr<Predicate> Parser::imp() {
             return ret;
         } else {
             throw ParseException("Некорректный ввод!"); 
-        } } else {
+        }
+    } else {
         return tmp;
     }
 }
