@@ -91,7 +91,7 @@ clean:
 	@ echo Cleaning...
 	@ rm -rf ./.*.txt $(OBJDIR)/* *~ $(foreach exec, $(OUT) $(TEST), ./$(exec)) $(DEPSDIR)/deps.make 
 	@ echo Done!
-cov:
+cov: lcov
 	@ echo Making coverage...
 	@ lcov/bin/lcov -c -d $(OBJDIR) -o cov.info
 	@ lcov/bin/genhtml -o html cov.info --demangle-cpp
@@ -100,6 +100,8 @@ cov:
 	@ echo Done!
 swipe:
 	@ rm -rf $(OBJDIR)/*.gcda $(DEPSDIR)/deps.make 
+lcov: lcov/README
+
 lcov/README:
 	@ echo Downloading lcov into ./lcov
-	@ git clone http://github.com/linux-test-project/lcov
+	@ git clone http://github.com/linux-test-project/lcov 2>/dev/null
