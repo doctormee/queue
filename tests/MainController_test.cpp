@@ -37,7 +37,6 @@ protected:
         inp_rules.close();
         inp_rooms.close();
     }
-
     virtual void TearDown() {
         std::ifstream inp_rooms, inp_rules;
         std::ofstream out_rooms, out_rules;

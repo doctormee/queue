@@ -93,10 +93,13 @@ clean:
 	@ echo Done!
 cov:
 	@ echo Making coverage...
-	@ lcov -c -d $(OBJDIR) -o cov.info
-	@ genhtml -o html cov.info --demangle-cpp
+	@ lcov/bin/lcov -c -d $(OBJDIR) -o cov.info
+	@ lcov/bin/genhtml -o html cov.info --demangle-cpp
 	@ rm cov.info
 	@ open html/index.html
 	@ echo Done!
 swipe:
 	@ rm -rf $(OBJDIR)/*.gcda $(DEPSDIR)/deps.make 
+lcov/README:
+	@ echo Downloading lcov into ./lcov
+	@ git clone http://github.com/linux-test-project/lcov

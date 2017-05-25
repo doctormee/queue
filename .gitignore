@@ -54,3 +54,6 @@ priority_queue
 # GTEST LIB #
 ############
 libs/libgtest.a
+# LCOV DIR #
+############
+lcov/**
