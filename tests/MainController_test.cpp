@@ -284,12 +284,6 @@ TEST_F(MainController_Test, Remove_rule) {
 }
 
 TEST_F(MainController_Test, Load_no_file) {
-    if (std::ifstream(MainController::rooms_file_name)) {
-        remove(MainController::rooms_file_name.c_str());
-    }
-    if (std::ifstream(MainController::rules_file_name)) {
-        remove(MainController::rules_file_name.c_str());
-    }
     MainController main;
     ASSERT_THROW(main.load(), std::logic_error);
 }
